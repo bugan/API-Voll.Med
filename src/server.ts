@@ -14,4 +14,4 @@ route.get("/", (req: Request, res: Response) => {
 
 app.use(route);
 
-app.listen(3000, () => "server running on port 3333");
+app.listen(3000, () => console.log("server running on port 3000"));
