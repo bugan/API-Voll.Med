@@ -2,18 +2,18 @@ import express from "express";
 import { pacienteRouter } from "./routes/pacienteRoutes.js";
 
 import { Router, Request, Response } from "express";
+import { especialistaRouter } from "../build/routes/especialistaRoutes.js";
 
 const app = express();
 
-const route = Router();
+const router = Router();
 
 app.use(express.json());
 
-route.get("/", (req: Request, res: Response) => {
+router.get("/", (req: Request, res: Response) => {
   res.json({ message: "oi" });
 });
 
-route.use(pacienteRouter);
-
-app.use(route);
+router.use(pacienteRouter);
+app.use(router);
 app.listen(3000, () => "server running on port 3000");
