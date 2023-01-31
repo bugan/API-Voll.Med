@@ -1,4 +1,5 @@
 import express from "express";
+import { pacienteRouter } from "./routes/pacienteRoutes.js";
 
 import { Router, Request, Response } from "express";
 
@@ -12,6 +13,7 @@ route.get("/", (req: Request, res: Response) => {
   res.json({ message: "oi" });
 });
 
-app.use(route);
+route.use(pacienteRouter);
 
-app.listen(3000, () => "server running on port 3333");
+app.use(route);
+app.listen(3000, () => "server running on port 3000");
