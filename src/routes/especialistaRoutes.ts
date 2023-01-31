@@ -4,11 +4,11 @@ import {
   especialistaPost,
   mostrarEspecialista,
   apagarEspecialista,
-} from '../controllers/especialistaController'
+} from '../controllers/especialistaController.js'
 
 export const especialistaRouter = Router();
 
-especialistaRouter.get('/especialista', especialistaIndex);
-especialistaRouter.post('/especialista', especialistaPost);
+especialistaRouter.get('/', especialistaIndex);
+especialistaRouter.post('/', especialistaPost);
 especialistaRouter.get('/:especialista_id', mostrarEspecialista);
 especialistaRouter.delete('/:especialista_id', apagarEspecialista);
