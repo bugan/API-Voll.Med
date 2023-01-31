@@ -1,12 +1,11 @@
 {
-  "compilerOptions": {
-    "rootDirs": ["./src"],
-    "outDir": "./build",
-    "allowJs": true,
-    "target": "ES6",
-    "esModuleInterop": true,
-  },
-  "include": ["./src/**/*"],
-  "exclude": ["node_modules"],
-  
+	"compilerOptions": {
+		"rootDirs": ["./src"],
+		"outDir": "./build",
+		"allowJs": true,
+		"target": "ES6",
+		"esModuleInterop": true
+	},
+	"include": ["./src/**/*"],
+	"exclude": ["node_modules"]
 }

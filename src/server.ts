@@ -1,6 +1,7 @@
 import express from "express";
 
 import { Router, Request, Response } from "express";
+
 import { especialistaRouter } from './routes/especialistaRoutes.js';
 
 const app = express();
