@@ -1,6 +1,6 @@
 import express from "express";
 import { pacienteRouter } from "./routes/pacienteRoutes.js";
-
+import "reflect-metadata"
 import { Router, Request, Response } from "express";
 
 const app = express();
