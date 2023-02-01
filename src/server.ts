@@ -17,3 +17,5 @@ route.use(pacienteRouter);
 
 app.use(route);
 app.listen(3000, () => "server running on port 3000");
+
+export default app;
