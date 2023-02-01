@@ -1,56 +1,85 @@
 import { Request, Response } from 'express';
-import { randomUUID } from 'crypto';
-
-interface IPaciente {
-    id: string;
-    nome: string;
-    email: string;
-    senha: string; // Criptografia?
-    endereco: {
-        cep: number,
-        rua: string,
-        numero: number,
-        complemento: string
-    };
-    telefone: number;
-    possuiPlanoSaude: boolean;
-    planoSaude: string; // Tipo certo?
-}
-
-const pacienteMemoria: IPaciente[] = [];
+import { Paciente } from '../entity/pacienteEntity.js';
+import { AppDataSource } from '../data-source.js';
 
 export const pacientes = async (req: Request, res: Response) => {
-    res.json(pacienteMemoria);
+    const allPacientes = await AppDataSource.manager.find(Paciente)
+    res.json(allPacientes)
 }
 
 export const pacientePost = async(req: Request, res: Response) => {
-    const {nome, email, senha, endereco, telefone, possuiPlanoSaude, planoSaude} = req.body;
-    const id = randomUUID();
+    const {nome,
+           email, 
+           senha, 
+           cep, 
+           rua, 
+           numero,
+           complemento,
+           telefone, 
+           possuiPlanoSaude,
+           planoSaude} = req.body;
 
-    const paciente: IPaciente = {
-        id, 
-        nome, 
-        email, 
-        senha, 
-        endereco, 
-        telefone, 
-        possuiPlanoSaude,
-        planoSaude
-    };
-    pacienteMemoria.push(paciente);
+    const paciente = new Paciente()
+    paciente.nome = nome
+    paciente.email = email
+    paciente.senha = senha
+    paciente.cep = cep
+    paciente.rua = rua
+    paciente.numero = numero
+    paciente.complemento = complemento
+    paciente.telefone = telefone
+    paciente.possuiPlanoSaude = possuiPlanoSaude
+    paciente.planoSaude = planoSaude
+
+    await AppDataSource.manager.save(paciente)
     res.json(paciente);
 }
 
 export const pacienteGet = async(req: Request, res: Response) => {
     const {id} = req.params;
-    const paciente = pacienteMemoria.find((paciente) => paciente.id === id);
+    const paciente = await AppDataSource.manager.findOneBy(Paciente, {
+        id: id
+    })
+    res.json(paciente);
+}
+
+export const pacienteUpdate = async(req: Request, res: Response) => {
+    const {id,
+        nome,
+        email, 
+        senha, 
+        cep, 
+        rua, 
+        numero,
+        complemento,
+        telefone, 
+        possuiPlanoSaude,
+        planoSaude} = req.body;
+
+    const paciente = await AppDataSource.manager.findOneBy(Paciente, {
+        id:id
+    })
+
+    paciente.nome = nome
+    paciente.email = email
+    paciente.senha = senha
+    paciente.cep = cep
+    paciente.rua = rua
+    paciente.numero = numero
+    paciente.complemento = complemento
+    paciente.telefone = telefone
+    paciente.possuiPlanoSaude = possuiPlanoSaude
+    paciente.planoSaude = planoSaude
+
+    await AppDataSource.manager.save(Paciente, paciente)
     res.json(paciente);
 }
 
 export const pacienteDelete = async(req: Request, res: Response) => {
     const {id} = req.params;
-    const pacienteIndex = pacienteMemoria.findIndex((paciente) => paciente.id === id);
-    pacienteMemoria.splice(pacienteIndex, 1);
+    const pacienteIndex = await AppDataSource.manager.findOneBy(Paciente, {
+        id: id
+    })
+    await AppDataSource.manager.remove(Paciente, pacienteIndex)
     res.json({message: 'Paciente apagado!'});
 }
-
