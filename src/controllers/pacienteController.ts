@@ -13,6 +13,7 @@ interface IPaciente {
         complemento: string
     };
     telefone: number;
+    possuiPlanoSaude: boolean;
     planoSaude: string; // Tipo certo?
 }
 
@@ -23,7 +24,7 @@ export const pacientes = async (req: Request, res: Response) => {
 }
 
 export const pacientePost = async(req: Request, res: Response) => {
-    const {nome, email, senha, endereco, telefone, planoSaude} = req.body;
+    const {nome, email, senha, endereco, telefone, possuiPlanoSaude, planoSaude} = req.body;
     const id = randomUUID();
 
     const paciente: IPaciente = {
@@ -33,6 +34,7 @@ export const pacientePost = async(req: Request, res: Response) => {
         senha, 
         endereco, 
         telefone, 
+        possuiPlanoSaude,
         planoSaude
     };
     pacienteMemoria.push(paciente);
@@ -42,6 +44,13 @@ export const pacientePost = async(req: Request, res: Response) => {
 export const pacienteGet = async(req: Request, res: Response) => {
     const {id} = req.params;
     const paciente = pacienteMemoria.find((paciente) => paciente.id === id);
-    return res.json(paciente);
+    res.json(paciente);
+}
+
+export const pacienteDelete = async(req: Request, res: Response) => {
+    const {id} = req.params;
+    const pacienteIndex = pacienteMemoria.findIndex((paciente) => paciente.id === id);
+    pacienteMemoria.splice(pacienteIndex, 1);
+    res.json({message: 'Paciente apagado!'});
 }
 
