@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, Relation } from "typeorm"
+import { Endereco } from "./enderecoEntity.js"
 
 enum planosSaude {
     Sulamerica,
@@ -24,19 +25,11 @@ export class Paciente {
     @Column("varchar", {length: 100})
     senha: string // Criptografia?
 
-    // Endereço
-    @Column({type: "int"})
-    cep: number
-
-    @Column("varchar", {length: 50})
-    rua: string
-
-    @Column({type: "int"})
-    numero: number
-
-    @Column("varchar", {length: 100})
-    complemento: string
-
+    @OneToOne(() => Endereco, (endereco) => endereco.paciente, {
+        cascade: ["update"]
+    })
+    @JoinColumn({ referencedColumnName: 'id' })
+    endereco: Relation<Endereco>
 
     @Column({type: "int"})
     telefone: number
