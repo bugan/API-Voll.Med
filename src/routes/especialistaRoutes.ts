@@ -1,14 +1,16 @@
 import { Router } from 'express';
 import {
-  especialistaIndex,
+  especialistas,
+  //especialistaIndex,
   especialistaPost,
-  mostrarEspecialista,
-  apagarEspecialista,
+  //mostrarEspecialista,
+  //apagarEspecialista,
 } from '../controllers/especialistaController.js'
 
 export const especialistaRouter = Router();
 
-especialistaRouter.get('/', especialistaIndex);
+//especialistaRouter.get('/', especialistaIndex);
+especialistaRouter.get('/', especialistas)
 especialistaRouter.post('/', especialistaPost);
-especialistaRouter.get('/:especialista_id', mostrarEspecialista);
-especialistaRouter.delete('/:especialista_id', apagarEspecialista);
+// especialistaRouter.get('/:especialista_id', mostrarEspecialista);
+// especialistaRouter.delete('/:especialista_id', apagarEspecialista);

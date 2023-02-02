@@ -1,6 +1,6 @@
 import { DataSource } from "typeorm";
 import "reflect-metadata"
-import { Especialista } from "./entities/EspecialistaEntidade";
+import { Especialista } from "./entities/EspecialistaEntidade.js";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
