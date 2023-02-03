@@ -1,17 +1,16 @@
 {
-   "compilerOptions": {
-      "lib": [
-         "es6"
-      ],
-     "rootDirs": ["./src"],
-     "outDir": "./build",
-     "allowJs": true,
-     "target": "ES6",
-     "esModuleInterop": true,
-     "emitDecoratorMetadata": true,
-     "experimentalDecorators": true,
-     "moduleResolution": "node",
-   },
-   "include": ["./src/**/*"],
-   "exclude": ["node_modules"],
+	"compilerOptions": {
+		"lib":["ES6"],
+		"rootDirs": ["./src"],
+		"outDir": "./build",
+		"allowJs": true,
+		"target": "ES6",
+		"esModuleInterop": true,
+		"emitDecoratorMetadata": true,
+"experimentalDecorators": true,
+"moduleResolution": "node",
+	},
+	"include": ["./src/**/*"],
+	"exclude": ["node_modules"],
+	
 }

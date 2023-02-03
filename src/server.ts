@@ -1,17 +1,25 @@
+import * as dotenv from "dotenv";
+dotenv.config({ path: ".env" });
 import express from "express";
-
 import { pacienteRouter } from "./routes/pacienteRoutes.js";
-
-import "reflect-metadata"
+import "reflect-metadata";
 import { Router, Request, Response } from "express";
 import { especialistaRouter } from "./routes/especialistaRoutes.js";
-//import { pacient } from "./controllers/pacienteController";
+
+import { AppDataSource } from "./data-source.js";
 
 const app = express();
-
 const router = Router();
 
 app.use(express.json());
+
+AppDataSource.initialize()
+  .then(() => {
+    console.log("App Data Source inicializado");
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 
 router.get("/", (req: Request, res: Response) => {
   res.json({ message: "oi" });
@@ -21,4 +29,6 @@ router.use(especialistaRouter);
 app.use("/especialista", especialistaRouter);
 
 app.use(router);
-app.listen(3000, () => console.log("server running on port 3000"));
+app.listen(process.env.SERVER_PORT, () =>
+  console.log(`server running on port ${process.env.SERVER_PORT}`)
+);
