@@ -1,20 +1,22 @@
-import { randomUUID } from 'crypto';
-import { Request, Response } from 'express';
-import { AppDataSource } from '../data-source.js';
-import { Especialista } from '../entities/EspecialistaEntidade.js';
+// import { randomUUID } from 'crypto'
+import { type Request, type Response } from 'express'
+import { AppDataSource } from '../data-source.js'
+import { Especialista } from '../entities/EspecialistaEntidade.js'
 
-export const especialistas = async(req: Request, res: Response) => {
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const especialistas = async (req: Request, res: Response) => {
   const allEspecialistas = await AppDataSource.manager.find(Especialista)
   res.json(allEspecialistas)
 }
 
-export const especialistaPost =async (req: Request, res: Response) => {
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const especialistaPost = async (req: Request, res: Response) => {
   const {
-    nome, crm, imagem, especialidade, email, telefone, nota, planosSaude,
-  } = req.body;
+    nome, crm, imagem, especialidade, email, telefone, nota, planosSaude
+  } = req.body
 
   const especialista = new Especialista()
-  especialista.nome =nome
+  especialista.nome = nome
   especialista.crm = crm
   especialista.imagem = imagem
   especialista.especialidade = especialidade
@@ -25,7 +27,6 @@ export const especialistaPost =async (req: Request, res: Response) => {
 
   await AppDataSource.manager.save(especialista)
   res.json(especialista)
-  
 }
 
 //  nome, crm, imagem, especialidade, email, telefone, nota, planosSaude,

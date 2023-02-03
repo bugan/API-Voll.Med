@@ -1,17 +1,18 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { Router } from 'express'
 
 import {
-    pacientes,
-    pacientePost,
-    pacienteGet,
-    pacienteUpdate,
-    pacienteDelete,
+  pacientes,
+  pacientePost,
+  pacienteGet,
+  pacienteUpdate,
+  pacienteDelete
 } from '../controllers/pacienteController.js'
 
 export const pacienteRouter = Router()
 
 pacienteRouter.get('/pacientes', pacientes)
-pacienteRouter.post('/paciente', pacientePost)
-pacienteRouter.get('/paciente/:id', pacienteGet)
-pacienteRouter.put('/paciente/:id', pacienteUpdate)
-pacienteRouter.delete('/paciente/:id', pacienteDelete)
+pacienteRouter.post('/', pacientePost)
+pacienteRouter.get('/:id', pacienteGet)
+pacienteRouter.put('/:id', pacienteUpdate)
+pacienteRouter.delete('/:id', pacienteDelete)

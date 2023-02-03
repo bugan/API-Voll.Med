@@ -14,5 +14,6 @@
         ]
     },
     "rules": {
+        "@typescript-eslint/await-thenable": "error"
     }
 }
