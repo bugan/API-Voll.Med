@@ -1,9 +1,9 @@
 import { Router } from 'express'
 
 import {
-    pacientes,
-    pacientePost,
-    pacienteGet,
+  pacientes,
+  pacientePost,
+  pacienteGet
 } from '../controllers/pacienteController.js'
 
 export const pacienteRouter = Router()
