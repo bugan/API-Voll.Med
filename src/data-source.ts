@@ -1,20 +1,22 @@
-import { DataSource } from "typeorm";
+import { DataSource } from "typeorm"
 import "reflect-metadata"
+import { Paciente } from "./entity/pacienteEntity.js"
+import { Endereco } from "./entity/enderecoEntity.js"
 import { Especialista } from "./entities/EspecialistaEntidade.js";
 
 export const AppDataSource = new DataSource({
-  type: "mysql",
-  host: "localhost",
-  port: 3306,
-  username: "root",
-  password: "12345",
-  database: "localmed",
-  synchronize: true,
-  logging: true,
-  entities: [ Especialista],
-  subscribers: [],
-  migrations: [],
+    type: "mysql",
+    host: "127.0.0.1",
+    port: 3306,
+    username: "root",
+    password: "root",
+    database: "vollmed",
+    synchronize: true,
+    logging: false,
+    entities: [Paciente, Endereco,Especialista],
+    migrations: [],
+    subscribers: [],
 })
 
 AppDataSource.initialize().then(()=>{
-console.log("App Data Source inicializado");}).catch((error)=>console.error("Erro durante a inicialização Data Source", error));
+console.log("App Data Source inicializado");}).catch((error)=>console.error("Erro durante a inicialização Data Source", error))
