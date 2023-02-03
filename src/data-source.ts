@@ -1,6 +1,8 @@
 import { DataSource } from "typeorm"
+import "reflect-metadata"
 import { Paciente } from "./entity/pacienteEntity.js"
 import { Endereco } from "./entity/enderecoEntity.js"
+import { Especialista } from "./entities/EspecialistaEntidade.js";
 
 export const AppDataSource = new DataSource({
     type: "mysql",
@@ -11,9 +13,10 @@ export const AppDataSource = new DataSource({
     database: "vollmed",
     synchronize: true,
     logging: false,
-    entities: [Paciente, Endereco],
+    entities: [Paciente, Endereco,Especialista],
     migrations: [],
     subscribers: [],
 })
 
-AppDataSource.initialize()
+AppDataSource.initialize().then(()=>{
+console.log("App Data Source inicializado");}).catch((error)=>console.error("Erro durante a inicialização Data Source", error))
