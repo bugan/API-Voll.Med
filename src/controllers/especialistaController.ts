@@ -1,16 +1,14 @@
-// import { randomUUID } from 'crypto'
+
 import { type Request, type Response } from 'express'
 import { AppDataSource } from '../data-source.js'
 import { Especialista } from '../entities/EspecialistaEntidade.js'
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const especialistas = async (req: Request, res: Response) => {
+export const especialistas = async (req: Request, res: Response): Promise<void> => {
   const allEspecialistas = await AppDataSource.manager.find(Especialista)
   res.json(allEspecialistas)
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const especialistaPost = async (req: Request, res: Response) => {
+export const especialistaPost = async (req: Request, res: Response): Promise<void> => {
   const {
     nome, crm, imagem, especialidade, email, telefone, nota, planosSaude
   } = req.body
