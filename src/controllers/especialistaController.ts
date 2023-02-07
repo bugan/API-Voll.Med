@@ -1,23 +1,20 @@
-import { log } from 'console';
+
 import { Request, Response } from 'express';
 import { AppDataSource } from '../data-source.js';
 import { Especialista } from '../entities/EspecialistaEntidade.js';
 
-//getAll
-export const especialistas = async(req: Request, res: Response) => {
+export const especialistas = async (req: Request, res: Response): Promise<void> => {
   const allEspecialistas = await AppDataSource.manager.find(Especialista)
   res.json(allEspecialistas)
 }
 
-//Post
-
-export const especialistaPost =async (req: Request, res: Response) => {
+export const especialistaPost = async (req: Request, res: Response): Promise<void> => {
   const {
-    nome, crm, imagem, especialidade, email, telefone, nota, 
+    nome, crm, imagem, especialidade, email, telefone, nota, planosSaude
   } = req.body;
 
   const especialista = new Especialista()
-  especialista.nome =nome
+  especialista.nome = nome
   especialista.crm = crm
   especialista.imagem = imagem
   especialista.especialidade = especialidade
@@ -27,7 +24,6 @@ export const especialistaPost =async (req: Request, res: Response) => {
  
   await AppDataSource.manager.save(Especialista, especialista)
   res.json(especialista)
-  
 }
 
 //Get By Id
@@ -70,4 +66,9 @@ especialistaUpdate.nota = nota
 
 //  nome, crm, imagem, especialidade, email, telefone, nota, planosSaude,
 
+//   const { especialista_id } = req.params;
+//   const especialistaIndex = especialistaMemoria.findIndex((especialista) => especialista.id === especialista_id);
+//   especialistaMemoria.splice(especialistaIndex, 1);
+//   res.json({ message: 'Especialista apagado' })
+// }
 
