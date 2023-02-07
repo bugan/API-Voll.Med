@@ -7,8 +7,9 @@
 		"target": "ES6",
 		"esModuleInterop": true,
 		"emitDecoratorMetadata": true,
-"experimentalDecorators": true,
-"moduleResolution": "node",
+		"experimentalDecorators": true,
+		"moduleResolution": "node",
+		"strictNullChecks": true
 	},
 	"include": ["./src/**/*"],
 	"exclude": ["node_modules"],

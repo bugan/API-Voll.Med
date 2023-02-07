@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { Router } from 'express'
 
 import {
-    pacientes,
-    pacientePost,
-    pacienteGet,
-    pacienteUpdate,
-    pacienteDelete,
+  pacientes,
+  pacientePost,
+  pacienteGet,
+  pacienteUpdate,
+  pacienteDelete
 } from '../controllers/pacienteController.js'
 
 export const pacienteRouter = Router()
