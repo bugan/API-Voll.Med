@@ -2,15 +2,6 @@ import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 
 //falta endereço, objeto?
 
-enum planosSaude {
-  Sulamerica,
-  Unimed,
-  Bradesco,
-  Amil,
-  Biosaúde,
-  Biovida,
-  Outro
-}
 
 @Entity()
 export class Especialista{
@@ -37,8 +28,5 @@ export class Especialista{
 
   @Column({type: "int"})
   nota: number
-
-  @Column({type: 'enum', enum:planosSaude})
-  planosSaude: planosSaude
 
 }
