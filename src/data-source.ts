@@ -1,3 +1,4 @@
+
 import { DataSource } from 'typeorm'
 import 'reflect-metadata'
 import { Paciente } from './entity/pacienteEntity.js'
@@ -16,5 +17,5 @@ export const AppDataSource = new DataSource({
   logging: false,
   entities: [Paciente, Endereco, Especialista],
   migrations: [],
-  subscribers: []
+  subscribers: [],
 })

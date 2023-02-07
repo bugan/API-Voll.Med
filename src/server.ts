@@ -1,12 +1,13 @@
+
 import * as dotenv from 'dotenv'
-import express, { Router, type Request, type Response } from 'express'
-import { pacienteRouter } from './routes/pacienteRoutes.js'
-import 'reflect-metadata'
-
+import express, { Router,  Request, Response } from 'express'
+import "reflect-metadata"
+import { pacienteRouter } from "./routes/pacienteRoutes.js";
 import { especialistaRouter } from './routes/especialistaRoutes.js'
-
+import { Router, Request, Response } from "express";import { especialistaRouter } from "./routes/especialistaRoutes.js";
 import { AppDataSource } from './data-source.js'
 dotenv.config({ path: '.env' })
+
 
 const app = express()
 const router = Router()
