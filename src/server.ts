@@ -1,34 +1,38 @@
-import * as dotenv from "dotenv";
-dotenv.config({ path: ".env" });
-import express from "express";
-import { pacienteRouter } from "./routes/pacienteRoutes.js";
-import "reflect-metadata";
-import { Router, Request, Response } from "express";
-import { especialistaRouter } from "./routes/especialistaRoutes.js";
+import * as dotenv from 'dotenv'
+import express, { Router, type Request, type Response } from 'express'
+import { pacienteRouter } from './routes/pacienteRoutes.js'
+import 'reflect-metadata'
 
-import { AppDataSource } from "./data-source.js";
+import { especialistaRouter } from './routes/especialistaRoutes.js'
 
-const app = express();
-const router = Router();
+import { AppDataSource } from './data-source.js'
+dotenv.config({ path: '.env' })
 
-app.use(express.json());
+const app = express()
+const router = Router()
+
+app.use(express.json())
 
 AppDataSource.initialize()
   .then(() => {
-    console.log("App Data Source inicializado");
+    console.log('App Data Source inicializado')
   })
   .catch((error) => {
-    console.error(error);
-  });
+    console.error(error)
+  })
 
-router.get("/", (req: Request, res: Response) => {
-  res.json({ message: "oi" });
-});
+router.get('/', (req: Request, res: Response) => {
+  res.json({ message: 'oi' })
+})
 
-router.use(especialistaRouter);
-app.use("/especialista", especialistaRouter);
+router.use(especialistaRouter)
+app.use('/especialista', especialistaRouter)
 
-app.use(router);
-app.listen(process.env.SERVER_PORT, () =>
-  console.log(`server running on port ${process.env.SERVER_PORT}`)
-);
+router.use(pacienteRouter)
+app.use('/paciente', pacienteRouter)
+
+app.use(router)
+app.listen(process.env.SERVER_PORT, () => { console.log(`server running on port ${process.env.SERVER_PORT}`) }
+)
+
+export default app
