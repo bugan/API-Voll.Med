@@ -1,13 +1,13 @@
 
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, Relation } from 'typeorm'
-import { Endereco } from './enderecoEntity.js'
+import { Endereco } from '../enderecos/enderecoEntity.js'
 
 enum planosSaude {
   Sulamerica,
   Unimed,
   Bradesco,
   Amil,
-  Biosaúde,
+  Biosaude,
   Biovida,
   Outro
 }
@@ -26,7 +26,7 @@ export class Paciente {
   @Column('varchar', { length: 100 })
     senha: string // Criptografia?
 
-  @OneToOne(() => Endereco, (endereco) => endereco.paciente, {
+  @OneToOne(() => Endereco, {
     cascade: ['update']
   })
   @JoinColumn({ referencedColumnName: 'id' })
@@ -40,4 +40,11 @@ export class Paciente {
 
   @Column({ type: 'enum', enum: planosSaude })
     planoSaude: planosSaude
+
+    constructor(nome, email, endereco){
+      this.nome = nome;
+      this.email = email;
+      this.endereco = endereco;
+      console.log(endereco);
+    }
 }

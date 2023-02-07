@@ -1,7 +1,15 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
 
-// falta endereço, objeto?
 
+enum PlanosSaude{
+  Sulamerica,
+  Unimed,
+  Bradesco,
+  Amil,
+  Biosaúde,
+  Biovida,
+  Outro
+}
 
 @Entity()
 export class Especialista {
@@ -24,12 +32,22 @@ export class Especialista {
     email: string
 
   @Column('varchar', { length: 50 })
-    telefone: string
+    telefone: string;
 
   @Column({ type: 'int' })
-    nota: number
+    nota: number;
 
-  @Column({ type: 'enum', enum: planosSaude })
-    planosSaude: planosSaude
+  @Column({ type: 'enum', enum: PlanosSaude })
+    planosSaude: PlanosSaude;
+
+    constructor(nome, crm, imagem, especialidade,email, telefone, nota){
+      this.nome = nome;
+      this.crm = crm;
+      this.imagem = imagem
+      this.especialidade =especialidade
+      this.email = email
+      this.telefone = telefone
+      this.nota = nota
+    }
 }
 

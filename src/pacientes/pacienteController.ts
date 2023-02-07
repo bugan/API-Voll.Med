@@ -1,8 +1,8 @@
 
 import { type Request, type Response } from 'express'
-import { Paciente } from '../entity/pacienteEntity.js'
+import { Paciente } from './pacienteEntity.js'
 import { AppDataSource } from '../data-source.js'
-import { Endereco } from '../entity/enderecoEntity.js'
+import { Endereco } from '../enderecos/enderecoEntity.js'
 
 export const pacientes = async (req: Request, res: Response): Promise<void> => {
   const tabelaPaciente = AppDataSource.getRepository(Paciente)
@@ -31,11 +31,8 @@ export const pacientePost = async (req: Request, res: Response): Promise<void> =
   enderecoPaciente.numero = endereco.numero
   enderecoPaciente.complemento = endereco.complemento
 
-  const paciente = new Paciente()
-  paciente.nome = nome
-  paciente.email = email
+  const paciente = new Paciente(nome, email, enderecoPaciente)
   paciente.senha = senha
-  paciente.endereco = enderecoPaciente
   paciente.telefone = telefone
   paciente.possuiPlanoSaude = possuiPlanoSaude
   paciente.planoSaude = planoSaude

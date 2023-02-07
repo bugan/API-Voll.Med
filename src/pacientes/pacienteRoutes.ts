@@ -7,12 +7,16 @@ import {
   pacienteGet,
   pacienteUpdate,
   pacienteDelete
-} from '../controllers/pacienteController.js'
+} from './pacienteController.js'
 
 export const pacienteRouter = Router()
 
-pacienteRouter.get('/pacientes', pacientes)
+pacienteRouter.get('/', pacientes)
 pacienteRouter.post('/', pacientePost)
 pacienteRouter.get('/:id', pacienteGet)
 pacienteRouter.put('/:id', pacienteUpdate)
 pacienteRouter.delete('/:id', pacienteDelete)
+
+export default (app)=> {
+  app.use('/paciente', pacienteRouter)
+}

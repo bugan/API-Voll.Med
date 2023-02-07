@@ -1,5 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, Relation } from 'typeorm'
-import { Paciente } from './pacienteEntity.js'
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity()
 export class Endereco {
@@ -18,6 +17,4 @@ export class Endereco {
   @Column('varchar', { length: 100 })
     complemento: string
 
-  @OneToOne(() => Paciente, (paciente) => paciente.endereco)
-    paciente: Relation<Paciente>
 }
