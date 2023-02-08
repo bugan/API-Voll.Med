@@ -41,10 +41,10 @@ export class Paciente {
   @Column({ type: 'enum', enum: planosSaude })
     planoSaude: planosSaude
 
-    constructor(nome, email, endereco){
-      this.nome = nome;
-      this.email = email;
-      this.endereco = endereco;
-      console.log(endereco);
-    }
+  constructor (nome, email, endereco) {
+    this.nome = nome
+    this.email = email
+    this.endereco = endereco
+    console.log(endereco)
+  }
 }

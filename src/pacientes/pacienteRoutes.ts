@@ -17,6 +17,6 @@ pacienteRouter.get('/:id', pacienteGet)
 pacienteRouter.put('/:id', pacienteUpdate)
 pacienteRouter.delete('/:id', pacienteDelete)
 
-export default (app)=> {
+export default (app) => {
   app.use('/paciente', pacienteRouter)
 }

@@ -1,7 +1,7 @@
 
-import { Request, Response } from 'express';
-import { AppDataSource } from '../data-source.js';
-import { Especialista } from './EspecialistaEntidade.js';
+import { type Request, type Response } from 'express'
+import { AppDataSource } from '../data-source.js'
+import { Especialista } from './EspecialistaEntidade.js'
 
 export const especialistas = async (req: Request, res: Response): Promise<void> => {
   const allEspecialistas = await AppDataSource.manager.find(Especialista)
@@ -11,51 +11,48 @@ export const especialistas = async (req: Request, res: Response): Promise<void> 
 export const especialistaPost = async (req: Request, res: Response): Promise<void> => {
   const {
     nome, crm, imagem, especialidade, email, telefone, nota, planosSaude
-  } = req.body;
-  
-  const especialista = new Especialista( nome, crm, imagem, especialidade, email, telefone, nota)
+  } = req.body
+
+  const especialista = new Especialista(nome, crm, imagem, especialidade, email, telefone, nota)
 
   await AppDataSource.manager.save(Especialista, especialista)
   res.json(especialista)
 }
 
-//Get By Id
+// Get By Id
 
-export const especialistaById = async(req:Request, res: Response) => {
-  const {id} = req.params;
+export const especialistaById = async (req: Request, res: Response) => {
+  const { id } = req.params
   const especialista = await AppDataSource.manager.findOneBy(Especialista, {
-   id: id, 
-   }) 
-   console.log(especialista);
-     res.json(especialista)
+    id
+  })
+  console.log(especialista)
+  res.json(especialista)
 }
 
-//Put
-//especialista/:id
-export const especialistaPut =async (req:Request, res:Response) => {
-  const {nome, crm, imagem, especialidade, email, telefone, nota} = req.body;
-  const {id} = req.params
+// Put
+// especialista/:id
+export const especialistaPut = async (req: Request, res: Response) => {
+  const { nome, crm, imagem, especialidade, email, telefone, nota } = req.body
+  const { id } = req.params
 
-  const especialistaUpdate = await AppDataSource.manager.findOneBy(Especialista,{
-    id:id,
+  const especialistaUpdate = await AppDataSource.manager.findOneBy(Especialista, {
+    id
   })
-  
-  if(especialistaUpdate !== null){
+
+  if (especialistaUpdate !== null) {
     especialistaUpdate.nome = nome
     especialistaUpdate.crm = crm
     especialistaUpdate.imagem = imagem
-    especialistaUpdate.especialidade =especialidade
+    especialistaUpdate.especialidade = especialidade
     especialistaUpdate.email = email
     especialistaUpdate.telefone = telefone
     especialistaUpdate.nota = nota
     await AppDataSource.manager.save(Especialista, especialistaUpdate)
     res.json(especialistaUpdate)
-  }else{
-    res.status(404).json({mensagem:"Não encontrado"});
+  } else {
+    res.status(404).json({ mensagem: 'Não encontrado' })
   }
-
- 
-    
 }
 
 //  nome, crm, imagem, especialidade, email, telefone, nota, planosSaude,
@@ -65,4 +62,3 @@ export const especialistaPut =async (req:Request, res:Response) => {
 //   especialistaMemoria.splice(especialistaIndex, 1);
 //   res.json({ message: 'Especialista apagado' })
 // }
-
