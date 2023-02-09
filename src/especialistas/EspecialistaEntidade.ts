@@ -1,4 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
+
+enum PlanosSaude {
+  Sulamerica,
+  Unimed,
+  Bradesco,
+  Amil,
+  Biosaúde,
+  Biovida,
+  Outro
+}
 
 @Entity("especialista")
 export class Especialista {
@@ -23,14 +33,22 @@ export class Especialista {
   @Column('varchar', {length: 50, nullable: true })
     telefone: string;
 
- 
-   constructor(nome, crm, imagem, especialidade,email, telefone, ){
-      this.nome = nome;
-      this.crm = crm;
+    @OneToMany(() => Avaliacoes, (avaliacoes) => avaliacoes.especialista, {
+      eager: true
+    })
+      avaliacoes: Relation<Avaliacoes>
+  
+    @Column({ type: 'enum', enum: PlanosSaude })
+      planosSaude: PlanosSaude
+  
+    constructor (nome, crm, imagem, especialidade, email, telefone) {
+      this.nome = nome
+      this.crm = crm
       this.imagem = imagem
-      this.especialidade =especialidade
+      this.especialidade = especialidade
       this.email = email
       this.telefone = telefone
     }
-}
+  }
 
+ 
