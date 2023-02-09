@@ -10,7 +10,8 @@ enum planosSaude {
   Amil,
   Biosaude,
   Biovida,
-  Outro
+  Outro,
+  Nenhum
 }
 
 @Entity()
@@ -36,9 +37,6 @@ export class Paciente {
   @Column({ type: 'int' })
     telefone: number
 
-  @Column({ type: 'boolean' })
-    possuiPlanoSaude: boolean
-
   @Column({ type: 'enum', enum: planosSaude })
     planoSaude: planosSaude
 
@@ -49,6 +47,5 @@ export class Paciente {
     this.nome = nome
     this.email = email
     this.endereco = endereco
-    console.log(endereco)
   }
 }
