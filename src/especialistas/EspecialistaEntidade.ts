@@ -1,16 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
 
-
-enum PlanosSaude{
-  Sulamerica,
-  Unimed,
-  Bradesco,
-  Amil,
-  Biosaúde,
-  Biovida,
-  Outro
-}
-
 @Entity()
 export class Especialista {
   @PrimaryGeneratedColumn('uuid')
@@ -37,10 +26,7 @@ export class Especialista {
   @Column({ type: 'int' })
     nota: number;
 
-  @Column({ type: 'enum', enum: PlanosSaude })
-    planosSaude: PlanosSaude;
-
-    constructor(nome, crm, imagem, especialidade,email, telefone, nota){
+   constructor(nome, crm, imagem, especialidade,email, telefone, nota){
       this.nome = nome;
       this.crm = crm;
       this.imagem = imagem

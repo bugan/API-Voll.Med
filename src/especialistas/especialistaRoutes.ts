@@ -4,6 +4,7 @@ import {
    especialistaPost,
    especialistaById,
    especialistaPut,
+   especialistaDelete
 
 } from './especialistaController.js'
 
@@ -13,7 +14,9 @@ especialistaRouter.get('/', especialistas)
 especialistaRouter.post('/', especialistaPost);
 especialistaRouter.get('/:id', especialistaById);
 especialistaRouter.put('/:id',especialistaPut);
-especialistaRouter.delete("/:id",(res:Response)=>res.status(404).send())
+especialistaRouter.delete("/:id", especialistaDelete)
+
+//(res:Response)=>res.status(404).send())
 
 export default (app)=>{
 
