@@ -1,15 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, Relation } from 'typeorm'
-import { Avaliacoes } from '../avaliacoes/avaliacoesEntity.js'
-
-enum PlanosSaude {
-  Sulamerica,
-  Unimed,
-  Bradesco,
-  Amil,
-  Biosaúde,
-  Biovida,
-  Outro
-}
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity("especialista")
 export class Especialista {
@@ -31,19 +20,9 @@ export class Especialista {
   @Column('varchar', { length: 100, nullable:true })
     email: string
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-  @Column('varchar', { length: 50 })
-    telefone: string
-=======
-  @Column('varchar', {nullable: true })
-=======
   @Column('varchar', {length: 50, nullable: true })
->>>>>>> dc032a5 (feat: erro post crm duplicado)
     telefone: string;
->>>>>>> 7950a80 (fix: update)
 
-<<<<<<< HEAD
   @OneToMany(() => Avaliacoes, (avaliacoes) => avaliacoes.especialista, {
     eager: true
   })
@@ -52,23 +31,14 @@ export class Especialista {
   @Column({ type: 'enum', enum: PlanosSaude })
     planosSaude: PlanosSaude
 
-  constructor (nome, crm, imagem, especialidade, email, telefone) {
-    this.nome = nome
-    this.crm = crm
-    this.imagem = imagem
-    this.especialidade = especialidade
-    this.email = email
-    this.telefone = telefone
-  }
-=======
  
    constructor(nome, crm, imagem, especialidade,email, telefone, ){
       this.nome = nome;
       this.crm = crm;
       this.imagem = imagem
-      this.especialidade =especialidade
+      this.especialidade = especialidade
       this.email = email
       this.telefone = telefone
     }
->>>>>>> 81ea340 (update: middleware de erro)
 }
+
