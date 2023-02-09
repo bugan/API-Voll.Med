@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> 878ab2b (update)
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, Relation, OneToMany } from 'typeorm'
 import { Endereco } from '../enderecos/enderecoEntity.js'
 import { Avaliacoes } from '../avaliacoes/avaliacoesEntity.js'
@@ -54,8 +50,4 @@ export class Paciente {
     this.endereco = endereco
     console.log(endereco)
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 878ab2b (update)

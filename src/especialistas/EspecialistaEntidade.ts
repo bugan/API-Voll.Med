@@ -34,23 +34,15 @@ export class Especialista {
   @Column('varchar', { length: 50 })
     telefone: string
 
-  @OneToMany(() => Avaliacoes, (avaliacoes) => avaliacoes.especialista, {
-    eager: true
-  })
-    avaliacoes: Relation<Avaliacoes>
-
   @Column({ type: 'enum', enum: PlanosSaude })
     planosSaude: PlanosSaude
-
-    @OneToMany(() => Avaliacoes, (avaliacoes) => avaliacoes.especialista, {
+ 
+  @OneToMany(() => Avaliacoes, (avaliacoes) => avaliacoes.especialista, {
       eager: true
     })
       avaliacoes: Relation<Avaliacoes>
-  
-    @Column({ type: 'enum', enum: PlanosSaude })
-      planosSaude: PlanosSaude
-  
-   constructor(nome, crm, imagem, especialidade,email, telefone, ){
+
+ constructor(nome, crm, imagem, especialidade,email, telefone){
       this.nome = nome;
       this.crm = crm;
       this.imagem = imagem
