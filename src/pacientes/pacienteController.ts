@@ -7,10 +7,15 @@ import { Endereco } from '../enderecos/enderecoEntity.js'
 export const pacientes = async (req: Request, res: Response): Promise<void> => {
   const tabelaPaciente = AppDataSource.getRepository(Paciente)
   const allPacientes = await tabelaPaciente.find({
-    relations: {
-      endereco: true
+    select: {
+      id: true,
+      nome: true,
+      email: true,
+      telefone: true,
+      planoSaude: true
     }
   })
+
   res.json(allPacientes)
 }
 
@@ -21,7 +26,6 @@ export const pacientePost = async (req: Request, res: Response): Promise<void> =
     senha,
     endereco,
     telefone,
-    possuiPlanoSaude,
     planoSaude
   } = req.body
 
@@ -34,7 +38,6 @@ export const pacientePost = async (req: Request, res: Response): Promise<void> =
   const paciente = new Paciente(nome, email, enderecoPaciente)
   paciente.senha = senha
   paciente.telefone = telefone
-  paciente.possuiPlanoSaude = possuiPlanoSaude
   paciente.planoSaude = planoSaude
 
   await AppDataSource.manager.save(Endereco, enderecoPaciente)
@@ -47,7 +50,16 @@ export const pacienteGet = async (req: Request, res: Response): Promise<void> =>
   const { id } = req.params
   const paciente = await AppDataSource.manager.findOne(Paciente, {
     where: { id },
-    relations: ['endereco']
+    select: {
+      id: true,
+      nome: true,
+      email: true,
+      telefone: true,
+      planoSaude: true
+    },
+    relations: {
+      endereco: true
+    }
   })
   res.json(paciente)
 }
@@ -59,7 +71,6 @@ export const pacienteUpdate = async (req: Request, res: Response): Promise<void>
     senha,
     endereco,
     telefone,
-    possuiPlanoSaude,
     planoSaude
   } = req.body
 
@@ -74,7 +85,6 @@ export const pacienteUpdate = async (req: Request, res: Response): Promise<void>
     paciente.email = email
     paciente.senha = senha
     paciente.telefone = telefone
-    paciente.possuiPlanoSaude = possuiPlanoSaude
     paciente.planoSaude = planoSaude
     paciente.endereco.cep = endereco.cep
     paciente.endereco.rua = endereco.rua
