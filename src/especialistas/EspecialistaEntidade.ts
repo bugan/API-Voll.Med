@@ -1,7 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, Relation } from 'typeorm'
-import { Avaliacoes } from '../avaliacoes/avaliacoesEntity.js'
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
 
-enum PlanosSaude {
+
+enum PlanosSaude{
   Sulamerica,
   Unimed,
   Bradesco,
@@ -40,14 +40,15 @@ export class Especialista {
     avaliacoes: Relation<Avaliacoes>
 
   @Column({ type: 'enum', enum: PlanosSaude })
-    planosSaude: PlanosSaude
+    planosSaude: PlanosSaude;
 
-  constructor (nome, crm, imagem, especialidade, email, telefone) {
-    this.nome = nome
-    this.crm = crm
-    this.imagem = imagem
-    this.especialidade = especialidade
-    this.email = email
-    this.telefone = telefone
-  }
+    constructor(nome, crm, imagem, especialidade,email, telefone, nota){
+      this.nome = nome;
+      this.crm = crm;
+      this.imagem = imagem
+      this.especialidade =especialidade
+      this.email = email
+      this.telefone = telefone
+      this.nota = nota
+    }
 }
