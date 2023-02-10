@@ -4,20 +4,23 @@ import { Endereco } from '../enderecos/enderecoEntity.js'
 import { Avaliacoes } from '../avaliacoes/avaliacoesEntity.js'
 
 enum planosSaude {
+  Nenhum,
   Sulamerica,
   Unimed,
   Bradesco,
   Amil,
   Biosaude,
   Biovida,
-  Outro,
-  Nenhum
+  Outro
 }
 
 @Entity()
 export class Paciente {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
     id: string
+
+  @Column('varchar', { length: 11 })
+    cpf: string
 
   @Column('varchar', { length: 100 })
     nome: string
@@ -43,9 +46,9 @@ export class Paciente {
   @OneToMany(() => Avaliacoes, (avaliacoes) => avaliacoes.paciente)
     avaliacoes: Relation<Avaliacoes>
 
-  constructor (nome, email, endereco) {
+  constructor (nome, email, cpf) {
     this.nome = nome
     this.email = email
-    this.endereco = endereco
+    this.cpf = cpf
   }
 }
