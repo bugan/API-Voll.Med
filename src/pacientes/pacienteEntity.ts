@@ -3,20 +3,23 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, Relation 
 import { Endereco } from '../enderecos/enderecoEntity.js'
 
 enum planosSaude {
+  Nenhum,
   Sulamerica,
   Unimed,
   Bradesco,
   Amil,
   Biosaude,
   Biovida,
-  Outro,
-  Nenhum
+  Outro
 }
 
 @Entity()
 export class Paciente {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
     id: string
+
+  @Column('varchar', { length: 11 })
+    cpf: string
 
   @Column('varchar', { length: 100 })
     nome: string
@@ -39,9 +42,9 @@ export class Paciente {
   @Column({ type: 'enum', enum: planosSaude })
     planoSaude: planosSaude
 
-  constructor (nome, email, endereco) {
+  constructor (nome, email, cpf) {
     this.nome = nome
     this.email = email
-    this.endereco = endereco
+    this.cpf = cpf
   }
 }
