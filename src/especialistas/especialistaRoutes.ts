@@ -19,6 +19,7 @@ especialistaRouter.put('/:id',resolver(atualizarEspecialista));
 especialistaRouter.delete("/:id", resolver(apagarEspecialista));
 especialistaRouter.patch("/:id", resolver(atualizaContato));
 
+
 //(res:Response)=>res.status(404).send())
 
 export default (app)=>{
