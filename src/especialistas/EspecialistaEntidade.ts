@@ -17,6 +17,7 @@ export class Especialista {
   @Column('varchar', { length: 100 })
     especialidade: string
 
+
   @Column('varchar', { length: 100, nullable:true })
     email: string
 
