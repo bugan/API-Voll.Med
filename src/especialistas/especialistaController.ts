@@ -30,7 +30,7 @@ export const criarEspecialista = async (
     imagem,
     especialidade,
     email,
-    telefone,
+    telefone
     
   );
 

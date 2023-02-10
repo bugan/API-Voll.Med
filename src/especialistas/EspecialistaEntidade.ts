@@ -19,10 +19,10 @@ export class Especialista {
   @Column('varchar', { length: 100 })
     nome: string
 
-  @Column('varchar', { length: 100 })
+  @Column('varchar', { nullable: true })
     crm: string
 
-  @Column('varchar')
+  @Column('varchar', { nullable: true})
     imagem: string
 
   @Column('varchar', { length: 100 })
@@ -42,13 +42,13 @@ export class Especialista {
   @Column({ type: 'enum', enum: PlanosSaude })
     planosSaude: PlanosSaude;
 
-    constructor(nome, crm, imagem, especialidade,email, telefone, nota){
+    constructor(nome, crm, imagem, especialidade,email, telefone){
       this.nome = nome;
       this.crm = crm;
       this.imagem = imagem
       this.especialidade =especialidade
       this.email = email
       this.telefone = telefone
-      this.nota = nota
+      
     }
 }
