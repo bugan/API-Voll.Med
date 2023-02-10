@@ -8,19 +8,19 @@ export class Especialista {
   @Column('varchar', { length: 100 })
     nome: string
 
-  @Column('varchar', { length: 100 })
+  @Column('varchar', { nullable: true })
     crm: string
 
-  @Column('varchar')
+  @Column('varchar', { nullable: true})
     imagem: string
 
   @Column('varchar', { length: 100 })
     especialidade: string
 
-  @Column('varchar', { length: 100 })
+  @Column('varchar', { nullable:true })
     email: string
 
-  @Column('varchar', { length: 50 })
+  @Column('varchar', {nullable: true })
     telefone: string;
 
   @Column({ type: 'int' })

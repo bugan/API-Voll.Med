@@ -13,9 +13,10 @@ export const especialistas = async (req: Request, res: Response): Promise<void> 
     res.status(404).send("Não encontramos especialistas");
   }
 }
+
 //Post 
 //verificar se o crm já existe
-export const especialistaPost = async (req: Request, res: Response): Promise<void> => {
+export const criarEspecialista = async (req: Request, res: Response): Promise<void> => {
   const {
     nome, crm, imagem, especialidade, email, telefone, nota
   } = req.body;
@@ -25,8 +26,7 @@ export const especialistaPost = async (req: Request, res: Response): Promise<voi
   await AppDataSource.manager.save(Especialista, especialista)
   res.status(200).json(especialista)
   } catch (error) {
-    !especialista 
-    res.status(400).send('Especialista não criado')
+       res.status(502).send('Especialista não foi criado')
   }
 }
 //Get By Id
@@ -46,7 +46,7 @@ export const especialistaById = async(req:Request, res: Response) => {
 }
 
 //Put especialista/:id
-export const especialistaPut =async (req:Request, res:Response) => {
+export const atualizarEspecialista =async (req:Request, res:Response) => {
   const {nome, crm, imagem, especialidade, email, telefone, nota} = req.body;
   const {id} = req.params
 
@@ -73,15 +73,12 @@ export const especialistaPut =async (req:Request, res:Response) => {
 export const especialistaDelete = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params
   const especialistaDel = await AppDataSource.manager.findOneBy(Especialista, {
-     id:id ,
+     id:id,
     })
-    try {
-      await AppDataSource.manager.remove(Especialista, especialistaDel)
+   if(especialistaDel !== null){
+       await AppDataSource.manager.remove(Especialista, especialistaDel)
      res.json({ message: 'Especialista apagado!' })
-    } catch (error) {
-      especialistaDel === null
-      res.status(404).send("Id não encontrado");
+    } else{
+      res.status(400).send("Id não encontrado");
     }
-}
-
-//  nome, crm, imagem, especialidade, email, telefone, nota, planosSaude,
+  }
