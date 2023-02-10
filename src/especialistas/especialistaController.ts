@@ -35,17 +35,13 @@ export const criarEspecialista = async (
   );
 
   try {
-    await AppDataSource.manager.save(Especialista, especialista);
-    res.status(200).json(especialista);
-  } catch (Error) {
-    if (await AppDataSource.manager.findOne(Especialista, { where: { crm } })) {
-      res.status(422).json({ message: "Crm já cadastrado" });
-    } else {
-      throw new BadRequestError("Especialista não foi criado");
-    }
+  await AppDataSource.manager.save(Especialista, especialista)
+  res.status(200).json(especialista)
+  } catch (error) {
+    !especialista 
+    res.status(400).send('Especialista não criado')
   }
-};
-
+}
 //Get By Id
 
 export const especialistaById = async (req: Request, res: Response) => {
@@ -81,13 +77,13 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
     especialistaUpdate.especialidade = especialidade;
     especialistaUpdate.email = email;
     especialistaUpdate.telefone = telefone;
-
     await AppDataSource.manager.save(Especialista, especialistaUpdate);
     res.json(especialistaUpdate);
   } else {
     throw new BadRequestError("Id não encontrado ");
   }
 };
+
 
 //Delete por id especialista/:id
 export const apagarEspecialista = async (
