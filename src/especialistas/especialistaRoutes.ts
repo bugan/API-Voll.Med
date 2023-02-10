@@ -1,19 +1,22 @@
 import { Router ,Response} from 'express';
 import {
   especialistas,
-   especialistaPost,
+   criarEspecialista,
    especialistaById,
-   especialistaPut,
+   atualizarEspecialista,
+   especialistaDelete
 
 } from './especialistaController.js'
 
 export const especialistaRouter = Router();
 
 especialistaRouter.get('/', especialistas)
-especialistaRouter.post('/', especialistaPost);
+especialistaRouter.post('/', criarEspecialista);
 especialistaRouter.get('/:id', especialistaById);
-especialistaRouter.put('/:id',especialistaPut);
-especialistaRouter.delete("/:id",(res:Response)=>res.status(404).send())
+especialistaRouter.put('/:id',atualizarEspecialista);
+especialistaRouter.delete("/:id", especialistaDelete)
+
+//(res:Response)=>res.status(404).send())
 
 export default (app)=>{
 
