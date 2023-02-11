@@ -86,11 +86,8 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
 
 
 //Delete por id especialista/:id
-export const apagarEspecialista = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const { id } = req.params;
+export const apagarEspecialista = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params
   const especialistaDel = await AppDataSource.manager.findOneBy(Especialista, {
     id: id,
   });
