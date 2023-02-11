@@ -4,7 +4,8 @@ import {
    criarEspecialista,
    especialistaById,
    atualizarEspecialista,
-   especialistaDelete
+   apagarEspecialista,
+   atualizaContato
 
 } from './especialistaController.js'
 
@@ -14,7 +15,8 @@ especialistaRouter.get('/', especialistas)
 especialistaRouter.post('/', criarEspecialista);
 especialistaRouter.get('/:id', especialistaById);
 especialistaRouter.put('/:id',atualizarEspecialista);
-especialistaRouter.delete("/:id", especialistaDelete)
+especialistaRouter.delete("/:id", apagarEspecialista);
+especialistaRouter.patch("/:id", atualizaContato);
 
 //(res:Response)=>res.status(404).send())
 
