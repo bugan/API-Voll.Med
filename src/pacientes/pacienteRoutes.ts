@@ -6,7 +6,8 @@ import {
   pacientePost,
   pacienteGet,
   pacienteUpdate,
-  pacienteDelete
+  pacienteDelete,
+  pacienteEnderecoPatch,
 } from './pacienteController.js'
 
 export const pacienteRouter = Router()
@@ -16,6 +17,7 @@ pacienteRouter.post('/', pacientePost)
 pacienteRouter.get('/:id', pacienteGet)
 pacienteRouter.put('/:id', pacienteUpdate)
 pacienteRouter.delete('/:id', pacienteDelete)
+pacienteRouter.patch('/:id', pacienteEnderecoPatch)
 
 export default (app) => {
   app.use('/paciente', pacienteRouter)
