@@ -11,7 +11,7 @@ enum PlanosSaude{
   Outro
 }
 
-@Entity()
+@Entity("especialista")
 export class Especialista {
   @PrimaryGeneratedColumn('uuid')
     id: string
@@ -19,10 +19,10 @@ export class Especialista {
   @Column('varchar', { length: 100 })
     nome: string
 
-  @Column('varchar', { nullable: true })
+  @Column('varchar',{ length:50, unique:true })
     crm: string
 
-  @Column('varchar', { nullable: true})
+  @Column('varchar', { length: 100, nullable: true})
     imagem: string
 
   @Column('varchar', { length: 100 })
@@ -31,13 +31,8 @@ export class Especialista {
   @Column('varchar', { length: 100, nullable:true })
     email: string
 
-  @Column('varchar', { length: 50 })
-    telefone: string
-
-  @OneToMany(() => Avaliacoes, (avaliacoes) => avaliacoes.especialista, {
-    eager: true
-  })
-    avaliacoes: Relation<Avaliacoes>
+  @Column('varchar', {nullable: true })
+    telefone: string;
 
   @Column({ type: 'enum', enum: PlanosSaude })
     planosSaude: PlanosSaude;
