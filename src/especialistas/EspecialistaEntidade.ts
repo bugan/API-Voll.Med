@@ -1,4 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
+enum PlanosSaude {
+  Sulamerica,
+  Unimed,
+  Bradesco,
+  Amil,
+  Biosaúde,
+  Biovida,
+  Outro
+}
 
 @Entity("especialista")
 export class Especialista {
@@ -16,7 +25,6 @@ export class Especialista {
 
   @Column('varchar', { length: 100 })
     especialidade: string
-
 
   @Column('varchar', { length: 100, nullable:true })
     email: string
