@@ -1,6 +1,7 @@
 
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, Relation } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, Relation, OneToMany } from 'typeorm'
 import { Endereco } from '../enderecos/enderecoEntity.js'
+import { Avaliacoes } from '../avaliacoes/avaliacoesEntity.js'
 
 enum planosSaude {
   Sulamerica,
@@ -40,6 +41,9 @@ export class Paciente {
 
   @Column({ type: 'enum', enum: planosSaude })
     planoSaude: planosSaude
+
+  @OneToMany(() => Avaliacoes, (avaliacoes) => avaliacoes.paciente)
+    avaliacoes: Relation<Avaliacoes>
 
   constructor (nome, email, endereco) {
     this.nome = nome

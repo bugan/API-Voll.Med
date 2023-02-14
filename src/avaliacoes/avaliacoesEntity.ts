@@ -15,36 +15,32 @@
 //     },
 //     "nota": 4.5
 // }
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, Relation } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, Relation } from 'typeorm'
 import { Paciente } from '../pacientes/pacienteEntity.js'
 import { Especialista } from '../especialistas/EspecialistaEntidade.js'
 
 @Entity()
 export class Avaliacoes {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
     id: string
 
-  @Column('varchar', { length: 100 })
-    data: string
-
-  @Column('varchar', { length: 100 })
-    horario: string
-
-  @Column('varchar', { length: 100 })
-    senha: string // Criptografia?
-
-  @OneToOne(() => Especialista, {
-    cascade: ['update']
+  @CreateDateColumn({
+    type: 'timestamp'
   })
-  @JoinColumn({ referencedColumnName: 'id' })
+    createdAt!: Date // Gerar automaticamente e puxar no GET o horário no CRUD
+
+  @ManyToOne(() => Especialista, (especialista) => especialista.avaliacoes)
     especialista: Relation<Especialista>
 
-  @OneToOne(() => Paciente, {
-    cascade: ['update']
-  })
-  @JoinColumn({ referencedColumnName: 'id' })
+  @ManyToOne(() => Paciente, (paciente) => paciente.avaliacoes)
     paciente: Relation<Paciente>
 
   @Column({ type: 'int' })
     nota: number
+
+  @Column({ nullable: true })
+    especialistaId: string
+
+  @Column({ nullable: true })
+    pacienteId: number
 }
