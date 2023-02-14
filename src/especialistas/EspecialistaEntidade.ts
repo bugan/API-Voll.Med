@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
 
+<<<<<<< HEAD
 enum PlanosSaude {
   Sulamerica,
   Unimed,
@@ -10,6 +11,8 @@ enum PlanosSaude {
   Outro
 }
 
+=======
+>>>>>>> dc032a5 (feat: erro post crm duplicado)
 @Entity("especialista")
 export class Especialista {
   @PrimaryGeneratedColumn('uuid')
@@ -27,7 +30,10 @@ export class Especialista {
   @Column('varchar', { length: 100 })
     especialidade: string
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> dc032a5 (feat: erro post crm duplicado)
   @Column('varchar', { length: 100, nullable:true })
     email: string
 
