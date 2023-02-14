@@ -15,25 +15,37 @@ export const especialistas = async (
   } else {
     throw new NotFoundError("Não encontramos especialistas");
   }
+
 }
-//Post 
-//verificar se o crm já existe
+//Post
 //Se o especialista for criado apenas com os atributos opcionais, enviar mensagem avisando quais campos faltam
-export const criarEspecialista = async (req: Request, res: Response): Promise<void> => {
-  const {
-    nome, crm, imagem, especialidade, email, telefone, nota
-  } = req.body;
-  
-  const especialista = new Especialista( nome, crm, imagem, especialidade, email, telefone, nota)
+export const criarEspecialista = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { nome, crm, imagem, especialidade, email, telefone } = req.body;
+
+  const especialista = new Especialista(
+    nome,
+    crm,
+    imagem,
+    especialidade,
+    email,
+    telefone,
+    
+  );
+
   try {
-  await AppDataSource.manager.save(Especialista, especialista)
-  res.status(200).json(especialista)
-  } catch (error) {
-    !especialista 
-    res.status(400).send('Especialista não criado')
+    await AppDataSource.manager.save(Especialista, especialista);
+    res.status(200).json(especialista);
+  } catch (Error) {
+    if (await AppDataSource.manager.findOne(Especialista, { where: { crm } })) {
+      res.status(422).json({ message: "Crm já cadastrado" });
+    } else {
+      res.status(502).send("Especialista não foi criado");
+    }
   }
-}
-//Get By Id
+};
 export const especialistaById = async (req: Request, res: Response) => {
   const { id } = req.params;
   const especialista = await AppDataSource.manager.findOneBy(Especialista, {
@@ -45,13 +57,14 @@ export const especialistaById = async (req: Request, res: Response) => {
     res.status(200).json(especialista);
   } else {
     throw new NotFoundError("Id não encontrado ");
-  }
 };
-
+}
 //Put especialista/:id
-export const especialistaUpdate =async (req:Request, res:Response) => {
-  const {nome, crm, imagem, especialidade, email, telefone} = req.body;
-  const {id} = req.params
+
+export const atualizarEspecialista = async (req: Request, res: Response) => {
+  const { nome, crm, imagem, especialidade, email, telefone } = req.body;
+  const { id } = req.params;
+
   const especialistaUpdate = await AppDataSource.manager.findOneBy(
     Especialista,
     {
@@ -59,7 +72,6 @@ export const especialistaUpdate =async (req:Request, res:Response) => {
     }
   );
 
-//validar crm do especialista (front? clínica com role de adm)
   if (especialistaUpdate !== null) {
     especialistaUpdate.nome = nome;
     especialistaUpdate.crm = crm;
@@ -67,7 +79,7 @@ export const especialistaUpdate =async (req:Request, res:Response) => {
     especialistaUpdate.especialidade = especialidade;
     especialistaUpdate.email = email;
     especialistaUpdate.telefone = telefone;
-    
+
     await AppDataSource.manager.save(Especialista, especialistaUpdate);
     res.json(especialistaUpdate);
   } else {
@@ -76,9 +88,13 @@ export const especialistaUpdate =async (req:Request, res:Response) => {
 };
 
 //Delete por id especialista/:id
-export const apagarEspecialista = async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.params
+export const apagarEspecialista = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
   const especialistaDel = await AppDataSource.manager.findOneBy(Especialista, {
+
      id:id ,
     })
     try {
@@ -100,6 +116,7 @@ export const atualizaContato = async (
     Especialista,
     { id: id }
   );
+
   const telefone = req.body.telefone;
 
   if (buscaEspecialista !== null) {
