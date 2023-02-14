@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
 
-@Entity()
+@Entity("especialista")
 export class Especialista {
   @PrimaryGeneratedColumn('uuid')
     id: string
@@ -8,19 +8,19 @@ export class Especialista {
   @Column('varchar', { length: 100 })
     nome: string
 
-  @Column('varchar', { nullable: true })
+  @Column('varchar',{ length:50, unique:true })
     crm: string
 
-  @Column('varchar', { nullable: true})
+  @Column('varchar', { length: 100, nullable: true})
     imagem: string
 
   @Column('varchar', { length: 100 })
     especialidade: string
 
-  @Column('varchar', { nullable:true })
+  @Column('varchar', { length: 100, nullable:true })
     email: string
 
-  @Column('varchar', {nullable: true })
+  @Column('varchar', {length: 50, nullable: true })
     telefone: string;
 
   @Column({ type: 'int' })
