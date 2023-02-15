@@ -43,6 +43,7 @@ export class Especialista {
     telefone: string;
 >>>>>>> 7950a80 (fix: update)
 
+<<<<<<< HEAD
   @OneToMany(() => Avaliacoes, (avaliacoes) => avaliacoes.especialista, {
     eager: true
   })
@@ -59,4 +60,15 @@ export class Especialista {
     this.email = email
     this.telefone = telefone
   }
+=======
+ 
+   constructor(nome, crm, imagem, especialidade,email, telefone, ){
+      this.nome = nome;
+      this.crm = crm;
+      this.imagem = imagem
+      this.especialidade =especialidade
+      this.email = email
+      this.telefone = telefone
+    }
+>>>>>>> 81ea340 (update: middleware de erro)
 }
