@@ -1,3 +1,4 @@
+import { resolver } from '../middlewareError/error.js';
 import { Router ,Response} from 'express';
 import {
   especialistas,
@@ -11,7 +12,7 @@ import {
 
 export const especialistaRouter = Router();
 
-especialistaRouter.get('/', especialistas)
+especialistaRouter.get('/', resolver(especialistas))
 especialistaRouter.post('/', criarEspecialista);
 especialistaRouter.get('/:id', especialistaById);
 especialistaRouter.put('/:id',atualizarEspecialista);

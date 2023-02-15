@@ -5,6 +5,7 @@ import "reflect-metadata"
 import rotaPaciente from "./pacientes/pacienteRoutes.js"
 import rotaEspecialista from "./especialistas/especialistaRoutes.js"
 import { AppDataSource } from './data-source.js'
+import { erro } from './middlewareError/error.js'
 
 dotenv.config({ path: '.env' })
 
@@ -22,6 +23,8 @@ AppDataSource.initialize()
   })
   rotaPaciente(app);
   rotaEspecialista(app);
+
+  app.use(erro) //do middleware, precisa ser inserido antes do app listen
 
 app.listen(process.env.SERVER_PORT, () => { console.log(`server running on port ${process.env.SERVER_PORT}`) }
 )
