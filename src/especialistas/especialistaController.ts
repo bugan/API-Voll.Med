@@ -7,13 +7,15 @@ export const especialistas = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  if (especialistas !== null) {
-    const allEspecialistas = await AppDataSource.manager.find(Especialista);
+  const allEspecialistas = await AppDataSource.manager.find(Especialista);
+  if (Object.keys(allEspecialistas).length) {
     res.status(200).json(allEspecialistas);
   } else {
     res.status(404).send("Não encontramos especialistas");
   }
 };
+
+//
 
 //Post
 //Se o especialista for criado apenas com os atributos opcionais, enviar mensagem avisando quais campos faltam
@@ -70,7 +72,7 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
       id: id,
     }
   );
-
+//validar crm do especialista (front? clínica com role de adm)
   if (especialistaUpdate !== null) {
     especialistaUpdate.nome = nome;
     especialistaUpdate.crm = crm;
