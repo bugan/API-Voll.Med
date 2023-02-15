@@ -3,12 +3,16 @@ import { AppDataSource } from "../data-source.js";
 import { Especialista } from "./EspecialistaEntidade.js";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { BadRequestError, NotFoundError } from "../apiError/api-error.js";
 =======
 >>>>>>> dc032a5 (feat: erro post crm duplicado)
 =======
 import {BadRequestError} from '../helper/api-error.js'
 >>>>>>> d3534e0 (feat: middleware de erro)
+=======
+import {BadRequestError, NotFoundError} from '../apiError/api-error.js'
+>>>>>>> 81ea340 (update: middleware de erro)
 
 //Get All
 export const especialistas = async (
@@ -25,6 +29,7 @@ export const especialistas = async (
 >>>>>>> dc032a5 (feat: erro post crm duplicado)
 =======
   const allEspecialistas = await AppDataSource.manager.find(Especialista);
+<<<<<<< HEAD
   if (Object.keys(allEspecialistas).length) {
 >>>>>>> 6c76314 (controller com casos de uso)
     res.status(200).json(allEspecialistas);
@@ -35,6 +40,12 @@ export const especialistas = async (
     //res.status(400).send({message: "Não encontramos especialistas"})
     throw new BadRequestError('Não encontramos especialistas') //verificar se funciona
 >>>>>>> d3534e0 (feat: middleware de erro)
+=======
+  if (allEspecialistas.length) {
+    res.status(200).json(allEspecialistas);
+  } else {
+      throw new BadRequestError() //verificar se funciona 'Não encontramos especialistas'
+>>>>>>> 81ea340 (update: middleware de erro)
   }
 <<<<<<< HEAD
 }
@@ -76,7 +87,7 @@ export const criarEspecialista = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { nome, crm, imagem, especialidade, email, telefone, nota } = req.body;
+  const { nome, crm, imagem, especialidade, email, telefone } = req.body;
 
   const especialista = new Especialista(
     nome,
@@ -84,21 +95,23 @@ export const criarEspecialista = async (
     imagem,
     especialidade,
     email,
-    telefone,
-    nota
+    telefone
   );
 
-  try {
-    await AppDataSource.manager.save(Especialista, especialista);
-    res.status(200).json(especialista);
-  } catch (Error) {
-    if (await AppDataSource.manager.findOne(Especialista, { where: { crm } })) {
-      res.status(422).json({ message: "Crm já cadastrado" });
-    } else {
-      res.status(502).send("Especialista não foi criado");
-    }
+try {
+  await AppDataSource.manager.save(Especialista, especialista);
+  res.status(200).json(especialista);
+} catch (Error) {
+
+  if(await AppDataSource.manager.findOne(Especialista, { where: { crm } }))
+  {
+     res.status(422).json({ message: "Crm já cadastrado" })
+  }else{
+    throw new BadRequestError('Especialista não foi criado')}
   }
-};
+}
+
+
 //Get By Id
 export const especialistaById = async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -106,12 +119,20 @@ export const especialistaById = async (req: Request, res: Response) => {
     id: id,
   });
 
+<<<<<<< HEAD
   if (especialista !== null) {
     console.log(especialista);
     res.status(200).json(especialista);
   } else {
     res.status(404).send("Id não encontrado");
 >>>>>>> dc032a5 (feat: erro post crm duplicado)
+=======
+  if(especialista !== null){
+    console.log('especialista',especialista);
+    res.status(200).json(especialista)
+  }else{
+    throw new NotFoundError('Id não encontrado ')
+>>>>>>> 81ea340 (update: middleware de erro)
   }
 };
 
@@ -124,19 +145,24 @@ export const especialistaPut =async (req:Request, res:Response) => {
   //validar crm do especialista (front? clínica com role de adm)
 =======
 export const atualizarEspecialista = async (req: Request, res: Response) => {
-  const { nome, crm, imagem, especialidade, email, telefone, nota } = req.body;
+  const { nome, crm, imagem, especialidade, email, telefone } = req.body;
   const { id } = req.params;
 
   const especialistaUpdate = await AppDataSource.manager.findOneBy(
     Especialista,
     {
       id: id,
+<<<<<<< HEAD
     }
   );
 <<<<<<< HEAD
 
 >>>>>>> dc032a5 (feat: erro post crm duplicado)
 =======
+=======
+    });
+  
+>>>>>>> 81ea340 (update: middleware de erro)
 //validar crm do especialista (front? clínica com role de adm)
 >>>>>>> 6c76314 (controller com casos de uso)
   if (especialistaUpdate !== null) {
@@ -146,6 +172,7 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
     especialistaUpdate.especialidade = especialidade;
     especialistaUpdate.email = email;
     especialistaUpdate.telefone = telefone;
+<<<<<<< HEAD
 <<<<<<< HEAD
 
     await AppDataSource.manager.save(Especialista, especialistaUpdate);
@@ -157,13 +184,20 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
 
 =======
     especialistaUpdate.nota = nota;
+=======
+    
+>>>>>>> 81ea340 (update: middleware de erro)
     await AppDataSource.manager.save(Especialista, especialistaUpdate);
     res.json(especialistaUpdate);
   } else {
-    res.status(404).send("Não encontrado");
+    throw new BadRequestError('Id não encontrado ');
   }
 };
+<<<<<<< HEAD
 >>>>>>> dc032a5 (feat: erro post crm duplicado)
+=======
+
+>>>>>>> 81ea340 (update: middleware de erro)
 //Delete por id especialista/:id
 export const apagarEspecialista = async (
   req: Request,
@@ -188,8 +222,12 @@ export const apagarEspecialista = async (
     await AppDataSource.manager.remove(Especialista, especialistaDel);
     res.json({ message: "Especialista apagado!" });
   } else {
+<<<<<<< HEAD
     res.status(400).send("Id não encontrado");
 >>>>>>> dc032a5 (feat: erro post crm duplicado)
+=======
+    throw new BadRequestError("Id não encontrado");
+>>>>>>> 81ea340 (update: middleware de erro)
   }
 };
 
@@ -203,9 +241,7 @@ export const atualizaContato = async (
     Especialista,
     { id: id }
   );
-  console.log("Id encontrado");
-  // res.send('Id encontrado')
-
+  
   const telefone = req.body.telefone;
 
 <<<<<<< HEAD
@@ -229,7 +265,7 @@ export const atualizaContato = async (
       .execute();
     res.status(200).json(buscaEspecialista);
   } else {
-    res.status(400).send({ message: "Contato não atualizado" });
+    throw new BadRequestError("Telefone não atualizado");
   }
 };
 >>>>>>> dc032a5 (feat: erro post crm duplicado)

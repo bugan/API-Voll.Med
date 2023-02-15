@@ -40,6 +40,7 @@ export class Especialista {
   @Column('varchar', {length: 50, nullable: true })
     telefone: string;
 
+<<<<<<< HEAD
     @OneToMany(() => Avaliacoes, (avaliacoes) => avaliacoes.especialista, {
       eager: true
     })
@@ -51,6 +52,12 @@ export class Especialista {
     constructor (nome, crm, imagem, especialidade, email, telefone) {
       this.nome = nome
       this.crm = crm
+=======
+ 
+   constructor(nome, crm, imagem, especialidade,email, telefone, ){
+      this.nome = nome;
+      this.crm = crm;
+>>>>>>> 81ea340 (update: middleware de erro)
       this.imagem = imagem
       this.especialidade = especialidade
       this.email = email
