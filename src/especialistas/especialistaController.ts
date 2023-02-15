@@ -12,12 +12,17 @@ export const especialistas = async (
   res: Response
 ): Promise<void> => {
 <<<<<<< HEAD
+<<<<<<< HEAD
   const allEspecialistas = await AppDataSource.manager.find(Especialista);
   if (allEspecialistas.length) {
 =======
   if (especialistas !== null) {
     const allEspecialistas = await AppDataSource.manager.find(Especialista);
 >>>>>>> dc032a5 (feat: erro post crm duplicado)
+=======
+  const allEspecialistas = await AppDataSource.manager.find(Especialista);
+  if (Object.keys(allEspecialistas).length) {
+>>>>>>> 6c76314 (controller com casos de uso)
     res.status(200).json(allEspecialistas);
   } else {
     throw new NotFoundError("Não encontramos especialistas");
@@ -55,6 +60,8 @@ export const especialistaById = async (req: Request, res: Response) => {
     throw new NotFoundError("Id não encontrado ");
 =======
 };
+
+//
 
 //Post
 //Se o especialista for criado apenas com os atributos opcionais, enviar mensagem avisando quais campos faltam
@@ -119,8 +126,12 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
       id: id,
     }
   );
+<<<<<<< HEAD
 
 >>>>>>> dc032a5 (feat: erro post crm duplicado)
+=======
+//validar crm do especialista (front? clínica com role de adm)
+>>>>>>> 6c76314 (controller com casos de uso)
   if (especialistaUpdate !== null) {
     especialistaUpdate.nome = nome;
     especialistaUpdate.crm = crm;
