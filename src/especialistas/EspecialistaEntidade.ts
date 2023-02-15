@@ -44,6 +44,5 @@ export class Especialista {
       this.especialidade =especialidade
       this.email = email
       this.telefone = telefone
-      
     }
 }

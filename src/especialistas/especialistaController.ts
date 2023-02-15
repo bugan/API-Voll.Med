@@ -117,7 +117,6 @@ export const atualizaContato = async (
     Especialista,
     { id: id }
   );
-
   const telefone = req.body.telefone;
 
   if (buscaEspecialista !== null) {
