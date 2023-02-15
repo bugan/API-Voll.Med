@@ -4,10 +4,18 @@ import { avaliacoes } from '../avaliacoes/avaliacoesController.js'
 import { AppDataSource } from '../data-source.js'
 import { Especialista } from './EspecialistaEntidade.js'
 
-export const especialistas = async (req: Request, res: Response): Promise<void> => {
-  const allEspecialistas = await AppDataSource.manager.find(Especialista)
-  res.json(allEspecialistas)
-}
+//Get All
+export const especialistas = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  if (especialistas !== null) {
+    const allEspecialistas = await AppDataSource.manager.find(Especialista);
+    res.status(200).json(allEspecialistas);
+  } else {
+    res.status(404).send("Não encontramos especialistas");
+  }
+};
 
 //Post
 //Se o especialista for criado apenas com os atributos opcionais, enviar mensagem avisando quais campos faltam
@@ -30,22 +38,29 @@ export const criarEspecialista = async (req: Request, res: Response): Promise<vo
 export const especialistaById = async (req: Request, res: Response) => {
   const { id } = req.params
   const especialista = await AppDataSource.manager.findOneBy(Especialista, {
-    id
-  })
-  console.log(especialista)
-  res.json(especialista)
-}
+    id: id,
+  });
 
-// Put
-// especialista/:id
-export const especialistaPut = async (req: Request, res: Response) => {
-  const { nome, crm, imagem, especialidade, email, telefone} = req.body
-  const { id } = req.params
+  if (especialista !== null) {
+    console.log(especialista);
+    res.status(200).json(especialista);
+  } else {
+    res.status(404).send("Id não encontrado");
+  }
+};
 
-  const especialistaUpdate = await AppDataSource.manager.findOneBy(Especialista, {
-    id
-  })
+//Put especialista/:id
+export const atualizarEspecialista = async (req: Request, res: Response) => {
+  const { nome, crm, imagem, especialidade, email, telefone, nota } = req.body;
+  const { id } = req.params;
 
+  const especialistaUpdate = await AppDataSource.manager.findOneBy(
+    Especialista,
+    {
+      id: id,
+    }
+  );
+//validar crm do especialista (front? clínica com role de adm)
   if (especialistaUpdate !== null) {
     especialistaUpdate.nome = nome
     especialistaUpdate.crm = crm
