@@ -23,17 +23,14 @@ export class Especialista {
   @Column('varchar', {length: 50, nullable: true })
     telefone: string;
 
-  @Column({ type: 'int' })
-    nota: number;
-
-   constructor(nome, crm, imagem, especialidade,email, telefone, nota){
+ 
+   constructor(nome, crm, imagem, especialidade,email, telefone, ){
       this.nome = nome;
       this.crm = crm;
       this.imagem = imagem
       this.especialidade =especialidade
       this.email = email
       this.telefone = telefone
-      this.nota = nota
     }
 }
 
