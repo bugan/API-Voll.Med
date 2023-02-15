@@ -6,7 +6,8 @@ import rotaPaciente from './pacientes/pacienteRoutes.js'
 import rotaEspecialista from './especialistas/especialistaRoutes.js'
 import { AppDataSource } from './data-source.js'
 import rotaAvaliacoes from './avaliacoes/avaliacoesRoutes.js'
-import { erro } from './middlewareError/error.js'
+import { erro } from './apiError/ErrorHandler.js'
+
 
 
 dotenv.config({ path: '.env' })
