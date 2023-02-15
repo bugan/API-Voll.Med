@@ -17,8 +17,6 @@ export const especialistas = async (
   }
 };
 
-//
-
 //Post
 //Se o especialista for criado apenas com os atributos opcionais, enviar mensagem avisando quais campos faltam
 export const criarEspecialista = async (

@@ -1,4 +1,4 @@
-import { resolver } from '../apiError/ErrorHandler.js';
+import { resolver } from '../middlewareError/error.js';
 import { Router ,Response} from 'express';
 import {
   especialistas,
