@@ -17,7 +17,11 @@ export const pacientes = async (req: Request, res: Response): Promise<void> => {
     }
   })
 
-  res.json(allPacientes)
+  if (allPacientes.length) {
+    res.status(200).json(allPacientes)
+  } else {
+    res.status(404).json('Não encontramos pacientes!')
+  }
 }
 
 export const pacientePost = async (req: Request, res: Response): Promise<void> => {
@@ -35,27 +39,31 @@ export const pacientePost = async (req: Request, res: Response): Promise<void> =
     throw new Error('CPF Inválido!')
   }
 
-  const paciente = new Paciente(nome, email, cpf)
-  paciente.senha = senha
-  paciente.telefone = telefone
-  paciente.planoSaude = planoSaude
-
-  const enderecoPaciente = new Endereco()
-
-  if(endereco !== undefined) {
-    enderecoPaciente.cep = endereco.cep
-    enderecoPaciente.rua = endereco.rua
-    enderecoPaciente.numero = endereco.numero
-    enderecoPaciente.complemento = endereco.complemento
-
-    paciente.endereco = enderecoPaciente
-
-    await AppDataSource.manager.save(Endereco, enderecoPaciente)
+  try {
+    const paciente = new Paciente(nome, email, cpf)
+    paciente.senha = senha
+    paciente.telefone = telefone
+    paciente.planoSaude = planoSaude
+  
+    const enderecoPaciente = new Endereco()
+  
+    if(endereco !== undefined) {
+      enderecoPaciente.cep = endereco.cep
+      enderecoPaciente.rua = endereco.rua
+      enderecoPaciente.numero = endereco.numero
+      enderecoPaciente.complemento = endereco.complemento
+  
+      paciente.endereco = enderecoPaciente
+  
+      await AppDataSource.manager.save(Endereco, enderecoPaciente)
+    }
+  
+    await AppDataSource.manager.save(Paciente, paciente)
+  
+    res.status(202).json(paciente)
+  } catch (error) {
+    res.status(502).send('Paciente não foi criado')
   }
-
-  await AppDataSource.manager.save(Paciente, paciente)
-
-  res.json(paciente)
 }
 
 export const pacienteGet = async (req: Request, res: Response): Promise<void> => {
@@ -76,10 +84,10 @@ export const pacienteGet = async (req: Request, res: Response): Promise<void> =>
   })
 
   if (paciente === null) {
-    throw new Error('Paciente não encontrado!')
+    res.status(404).json('Paciente não encontrado!')
+  } else {
+    res.status(200).json(paciente)
   }
-
-  res.json(paciente)
 }
 
 export const pacienteUpdate = async (req: Request, res: Response): Promise<void> => {
@@ -99,42 +107,46 @@ export const pacienteUpdate = async (req: Request, res: Response): Promise<void>
     throw new Error('CPF Inválido!')
   }
 
-  const paciente = await AppDataSource.manager.findOne(Paciente, {
-    where: { id },
-    relations: ['endereco']
-  })
-  if (paciente !== null) {
-    paciente.cpf = cpf
-    paciente.nome = nome
-    paciente.email = email
-    paciente.senha = senha
-    paciente.telefone = telefone
-    paciente.planoSaude = planoSaude
-
-    if (paciente.endereco === null) {
-      const enderecoPaciente = new Endereco()
-      enderecoPaciente.cep = endereco.cep
-      enderecoPaciente.rua = endereco.rua
-      enderecoPaciente.numero = endereco.numero
-      enderecoPaciente.complemento = endereco.complemento
-
-      paciente.endereco = enderecoPaciente
-
-      await AppDataSource.manager.save(Endereco, enderecoPaciente)
-      
+  try {
+    const paciente = await AppDataSource.manager.findOne(Paciente, {
+      where: { id },
+      relations: ['endereco']
+    })
+    
+    if (paciente !== null) {
+      paciente.cpf = cpf
+      paciente.nome = nome
+      paciente.email = email
+      paciente.senha = senha
+      paciente.telefone = telefone
+      paciente.planoSaude = planoSaude
+  
+      if (paciente.endereco === null) {
+        const enderecoPaciente = new Endereco()
+        enderecoPaciente.cep = endereco.cep
+        enderecoPaciente.rua = endereco.rua
+        enderecoPaciente.numero = endereco.numero
+        enderecoPaciente.complemento = endereco.complemento
+  
+        paciente.endereco = enderecoPaciente
+  
+        await AppDataSource.manager.save(Endereco, enderecoPaciente)
+        
+      } else {
+        paciente.endereco.cep = endereco.cep
+        paciente.endereco.rua = endereco.rua
+        paciente.endereco.numero = endereco.numero
+        paciente.endereco.complemento = endereco.complemento
+      }
+  
+      await AppDataSource.manager.save(Paciente, paciente)
+      res.status(200).json(paciente)
     } else {
-      paciente.endereco.cep = endereco.cep
-      paciente.endereco.rua = endereco.rua
-      paciente.endereco.numero = endereco.numero
-      paciente.endereco.complemento = endereco.complemento
+      res.status(404).json('Paciente não encontrado!')
     }
-
-    await AppDataSource.manager.save(Paciente, paciente)
-  } else {
-    throw new Error('Paciente não encontrado!')
+  } catch (error) {
+    res.status(502).send('Paciente não foi atualizado!')
   }
-
-  res.json(paciente)
 }
 
 export const pacienteDelete = async (req: Request, res: Response): Promise<void> => {
@@ -144,13 +156,17 @@ export const pacienteDelete = async (req: Request, res: Response): Promise<void>
     relations: ['endereco']
   })
   if (paciente !== null) {
-    const endereco = paciente.endereco
-    // Como fazer com o cascade?
-    await AppDataSource.manager.remove(Paciente, paciente)
-    await AppDataSource.manager.remove(Endereco, endereco)
-    res.json({ message: 'Paciente apagado!' })
+    try {
+      const endereco = paciente.endereco
+      // Como fazer com o cascade?
+      await AppDataSource.manager.remove(Paciente, paciente)
+      await AppDataSource.manager.remove(Endereco, endereco)
+      res.status(200).json({ message: 'Paciente apagado!' })
+    } catch (error) {
+      res.status(502).send('Paciente não foi apagado!')
+    }
   } else {
-    throw new Error('Paciente não encontrado!')
+    res.status(404).json('Paciente não encontrado!')
   }
 }
 
@@ -182,10 +198,10 @@ export const pacienteEnderecoPatch = async (req: Request, res: Response): Promis
 
     await AppDataSource.manager.save(Paciente, paciente)
   } else {
-    throw new Error('Paciente não encontrado!')
+    res.status(404).json('Paciente não encontrado!')
   }
 
-  res.json(paciente)
+  res.status(200).json(paciente)
 }
 
 const cpfsInvalidos = ['00000000000',
