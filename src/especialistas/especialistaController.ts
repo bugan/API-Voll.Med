@@ -9,10 +9,12 @@ export const especialistas = async (
   res: Response
 ): Promise<void> => {
   const allEspecialistas = await AppDataSource.manager.find(Especialista);
+
   if (allEspecialistas.length) {
     res.status(200).json(allEspecialistas);
   } else {
-    throw new NotFoundError("Não encontramos especialistas");
+      throw new BadRequestError() //verificar se funciona 'Não encontramos especialistas'
+
   }
 
 }
@@ -34,17 +36,19 @@ export const criarEspecialista = async (
     
   );
 
-  try {
-    await AppDataSource.manager.save(Especialista, especialista);
-    res.status(200).json(especialista);
-  } catch (Error) {
-    if (await AppDataSource.manager.findOne(Especialista, { where: { crm } })) {
-      res.status(422).json({ message: "Crm já cadastrado" });
-    } else {
-      res.status(502).send("Especialista não foi criado");
-    }
+try {
+  await AppDataSource.manager.save(Especialista, especialista);
+  res.status(200).json(especialista);
+} catch (Error) {
+
+  if(await AppDataSource.manager.findOne(Especialista, { where: { crm } }))
+  {
+     res.status(422).json({ message: "Crm já cadastrado" })
+  }else{
+    throw new BadRequestError('Especialista não foi criado')}
   }
 };
+
 export const especialistaById = async (req: Request, res: Response) => {
   const { id } = req.params;
   const especialista = await AppDataSource.manager.findOneBy(Especialista, {
@@ -56,6 +60,7 @@ export const especialistaById = async (req: Request, res: Response) => {
     res.status(200).json(especialista);
   } else {
     throw new NotFoundError("Id não encontrado ");
+
 };
 }
 //Put especialista/:id
@@ -88,6 +93,7 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
   }
 };
 
+
 //Delete por id especialista/:id
 export const apagarEspecialista = async (
   req: Request,
@@ -103,9 +109,10 @@ export const apagarEspecialista = async (
      res.json({ message: 'Especialista apagado!' })
     } catch (error) {
      
-      res.status(404).send("Id não encontrado");
+      throw new BadRequestError("Id não encontrado");
     }
   }
+
 
 //patch
 export const atualizaContato = async (
@@ -117,7 +124,6 @@ export const atualizaContato = async (
     Especialista,
     { id: id }
   );
-
   const telefone = req.body.telefone;
 
   if (buscaEspecialista !== null) {
