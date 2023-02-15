@@ -8,7 +8,6 @@ export const especialistas = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-
   const allEspecialistas = await AppDataSource.manager.find(Especialista);
   if (allEspecialistas.length) {
     res.status(200).json(allEspecialistas);
@@ -71,6 +70,8 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
       id: id,
     }
   );
+
+//validar crm do especialista (front? clínica com role de adm)
 
   if (especialistaUpdate !== null) {
     especialistaUpdate.nome = nome;
