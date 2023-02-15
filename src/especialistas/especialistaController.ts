@@ -8,8 +8,10 @@ export const especialistas = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+
   const allEspecialistas = await AppDataSource.manager.find(Especialista);
   if (allEspecialistas.length) {
+    const allEspecialistas = await AppDataSource.manager.find(Especialista);
     res.status(200).json(allEspecialistas);
   } else {
     throw new NotFoundError("Não encontramos especialistas");
@@ -44,6 +46,50 @@ export const especialistaById = async (req: Request, res: Response) => {
     res.status(200).json(especialista);
   } else {
     throw new NotFoundError("Id não encontrado ");
+
+};
+
+//Post
+//Se o especialista for criado apenas com os atributos opcionais, enviar mensagem avisando quais campos faltam
+export const criarEspecialista = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { nome, crm, imagem, especialidade, email, telefone, nota } = req.body;
+
+  const especialista = new Especialista(
+    nome,
+    crm,
+    imagem,
+    especialidade,
+    email,
+    telefone
+     );
+
+  try {
+    await AppDataSource.manager.save(Especialista, especialista);
+    res.status(200).json(especialista);
+  } catch (Error) {
+    if (await AppDataSource.manager.findOne(Especialista, { where: { crm } })) {
+      res.status(422).json({ message: "Crm já cadastrado" });
+    } else {
+      res.status(502).send("Especialista não foi criado");
+    }
+  }
+};
+//Get By Id
+export const especialistaById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const especialista = await AppDataSource.manager.findOneBy(Especialista, {
+    id: id,
+  });
+
+  if (especialista !== null) {
+    console.log(especialista);
+    res.status(200).json(especialista);
+  } else {
+    res.status(404).send("Id não encontrado");
+
   }
 };
 
@@ -58,6 +104,7 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
       id: id,
     }
   );
+
 
   if (especialistaUpdate !== null) {
     especialistaUpdate.nome = nome;
@@ -118,4 +165,4 @@ export const atualizaContato = async (
   } else {
     res.status(400).send({ message: "Contato não atualizado" });
   }
-};
+}};
