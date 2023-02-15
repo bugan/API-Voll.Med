@@ -3,6 +3,7 @@ import { type Request, type Response } from 'express'
 import { avaliacoes } from '../avaliacoes/avaliacoesController.js'
 import { AppDataSource } from '../data-source.js'
 import { Especialista } from './EspecialistaEntidade.js'
+import {BadRequestError} from '../helper/api-error.js'
 
 //Get All
 export const especialistas = async (
@@ -13,7 +14,8 @@ export const especialistas = async (
     const allEspecialistas = await AppDataSource.manager.find(Especialista);
     res.status(200).json(allEspecialistas);
   } else {
-    res.status(404).send("Não encontramos especialistas");
+    //res.status(400).send({message: "Não encontramos especialistas"})
+    throw new BadRequestError('Não encontramos especialistas') //verificar se funciona
   }
 };
 
