@@ -3,6 +3,7 @@ import { AppDataSource } from "../data-source.js";
 import { Especialista } from "./EspecialistaEntidade.js";
 import { BadRequestError, NotFoundError } from "../apiError/api-error.js";
 
+
 //Get All
 export const especialistas = async (
   req: Request,
@@ -17,7 +18,34 @@ export const especialistas = async (
   }
 };
 
+//Post
+//Se o especialista for criado apenas com os atributos opcionais, enviar mensagem avisando quais campos faltam
+export const criarEspecialista = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { nome, crm, imagem, especialidade, email, telefone } = req.body;
 
+  const especialista = new Especialista(
+    nome,
+    crm,
+    imagem,
+    especialidade,
+    email,
+    telefone
+  );
+
+  try {
+    await AppDataSource.manager.save(Especialista, especialista);
+    res.status(200).json(especialista);
+  } catch (Error) {
+    if (await AppDataSource.manager.findOne(Especialista, { where: { crm } })) {
+      res.status(422).json({ message: "Crm já cadastrado" });
+    } else {
+      res.status(502).send("Especialista não foi criado");
+    }
+  }
+};
 //Get By Id
 export const especialistaById = async (req: Request, res: Response) => {
   const { id } = req.params;
