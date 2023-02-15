@@ -2,9 +2,13 @@ import { Request, Response } from "express";
 import { AppDataSource } from "../data-source.js";
 import { Especialista } from "./EspecialistaEntidade.js";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { BadRequestError, NotFoundError } from "../apiError/api-error.js";
 =======
 >>>>>>> dc032a5 (feat: erro post crm duplicado)
+=======
+import {BadRequestError} from '../helper/api-error.js'
+>>>>>>> d3534e0 (feat: middleware de erro)
 
 //Get All
 export const especialistas = async (
@@ -25,7 +29,12 @@ export const especialistas = async (
 >>>>>>> 6c76314 (controller com casos de uso)
     res.status(200).json(allEspecialistas);
   } else {
+<<<<<<< HEAD
     throw new NotFoundError("Não encontramos especialistas");
+=======
+    //res.status(400).send({message: "Não encontramos especialistas"})
+    throw new BadRequestError('Não encontramos especialistas') //verificar se funciona
+>>>>>>> d3534e0 (feat: middleware de erro)
   }
 <<<<<<< HEAD
 }
@@ -60,8 +69,6 @@ export const especialistaById = async (req: Request, res: Response) => {
     throw new NotFoundError("Id não encontrado ");
 =======
 };
-
-//
 
 //Post
 //Se o especialista for criado apenas com os atributos opcionais, enviar mensagem avisando quais campos faltam
