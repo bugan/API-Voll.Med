@@ -9,7 +9,6 @@ import rotaAvaliacoes from './avaliacoes/avaliacoesRoutes.js'
 import { erro } from './apiError/ErrorHandler.js'
 
 
-
 dotenv.config({ path: '.env' })
 
 const app = express()
