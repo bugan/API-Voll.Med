@@ -8,6 +8,7 @@ export const especialistas = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+
   const allEspecialistas = await AppDataSource.manager.find(Especialista);
   if (allEspecialistas.length) {
     res.status(200).json(allEspecialistas);
@@ -15,24 +16,6 @@ export const especialistas = async (
     throw new NotFoundError("Não encontramos especialistas");
   }
 };
-
-
-//Get By Id
-
-export const especialistaById = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const especialista = await AppDataSource.manager.findOneBy(Especialista, {
-    id: id,
-  });
-
-  if (especialista !== null) {
-    console.log("especialista", especialista);
-    res.status(200).json(especialista);
-  } else {
-    throw new NotFoundError("Id não encontrado ");
-
-};
-
 
 
 //Get By Id
