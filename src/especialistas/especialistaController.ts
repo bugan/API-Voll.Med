@@ -46,7 +46,6 @@ export const criarEspecialista = async (
   }
 };
 
-
 //Get By Id
 
 export const especialistaById = async (req: Request, res: Response) => {
