@@ -13,7 +13,7 @@ export class ApiError extends Error {
 
 export class BadRequestError extends ApiError {
   constructor(message = 'Bad request: Requisição inválida' ) {
-    super(message, 400);
+   super(message, 400);
    }
 }
 
