@@ -3,6 +3,7 @@ import { type Request, type Response } from 'express'
 import { Paciente } from './pacienteEntity.js'
 import { AppDataSource } from '../data-source.js'
 import { Endereco } from '../enderecos/enderecoEntity.js'
+import { CPFValido } from './validacaoCPF.js'
 
 export const pacientes = async (req: Request, res: Response): Promise<void> => {
   const tabelaPaciente = AppDataSource.getRepository(Paciente)
@@ -26,7 +27,7 @@ export const pacientePost = async (req: Request, res: Response): Promise<void> =
     planoSaude
   } = req.body
 
-  if (!validaCpf(cpf)) {
+  if (!CPFValido(cpf)) {
     throw new Error('CPF Inválido!')
   }
 
@@ -86,7 +87,7 @@ export const pacienteUpdate = async (req: Request, res: Response): Promise<void>
 
   const { id } = req.params
 
-  if (!validaCpf(cpf)) {
+  if (!CPFValido(cpf)) {
     throw new Error('CPF Inválido!')
   }
 
@@ -185,60 +186,4 @@ export const pacienteEnderecoPatch = async (req: Request, res: Response): Promis
   }
 
   res.status(200).json(paciente)
-}
-
-const cpfsInvalidos = ['00000000000',
-  '11111111111',
-  '22222222222',
-  '33333333333',
-  '44444444444',
-  '55555555555',
-  '66666666666',
-  '77777777777',
-  '88888888888',
-  '99999999999']
-
-function validaCpf (cpf: string): boolean {
-  let soma: number = 0
-  let resto: number = 0
-
-  if (cpf.length !== 11) {
-    console.log('tamanho')
-    return false
-  }
-
-  if (cpf in cpfsInvalidos) {
-    return false
-  }
-
-  // Validação dos últimos dígitos
-  for (let i = 1; i <= 9; i++) {
-    soma = soma + parseInt(cpf.substring(i - 1, i)) * (11 - i)
-  }
-
-  resto = (soma * 10) % 11
-
-  if ((resto === 10) || (resto === 11)) {
-    resto = 0
-  }
-
-  if (resto !== parseInt(cpf.substring(9, 10))) {
-    return false
-  }
-
-  soma = 0
-  for (let i = 1; i <= 10; i++) {
-    soma = soma + parseInt(cpf.substring(i - 1, i)) * (12 - i)
-  }
-
-  resto = (soma * 10) % 11
-
-  if ((resto === 10) || (resto === 11)) {
-    resto = 0
-  }
-
-  if (resto !== parseInt(cpf.substring(10, 11))) {
-    return false
-  }
-  return true
 }
