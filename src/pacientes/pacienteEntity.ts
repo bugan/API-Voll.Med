@@ -28,7 +28,7 @@ export class Paciente {
   @Column('varchar', { length: 100 })
     email: string
 
-  @Column('varchar', { length: 100 })
+  @Column('varchar', { length: 100, select: false })
     senha: string // Criptografia?
 
   @OneToOne(() => Endereco, {

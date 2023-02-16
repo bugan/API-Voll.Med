@@ -6,21 +6,12 @@ import { Endereco } from '../enderecos/enderecoEntity.js'
 
 export const pacientes = async (req: Request, res: Response): Promise<void> => {
   const tabelaPaciente = AppDataSource.getRepository(Paciente)
-  const allPacientes = await tabelaPaciente.find({
-    select: {
-      id: true,
-      cpf: true,
-      nome: true,
-      email: true,
-      telefone: true,
-      planoSaude: true
-    }
-  })
+  const allPacientes = await tabelaPaciente.find()
 
-  if (allPacientes.length) {
-    res.status(200).json(allPacientes)
-  } else {
+  if (allPacientes.length == 0) {
     res.status(404).json('Não encontramos pacientes!')
+  } else {
+    res.status(200).json(allPacientes)
   }
 }
 
@@ -70,14 +61,6 @@ export const pacienteGet = async (req: Request, res: Response): Promise<void> =>
   const { id } = req.params
   const paciente = await AppDataSource.manager.findOne(Paciente, {
     where: { id },
-    select: {
-      id: true,
-      cpf: true,
-      nome: true,
-      email: true,
-      telefone: true,
-      planoSaude: true
-    },
     relations: {
       endereco: true
     }
