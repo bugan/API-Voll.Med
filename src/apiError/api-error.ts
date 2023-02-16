@@ -16,10 +16,14 @@ export class ApiError extends Error {
 export class BadRequestError extends ApiError {
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   constructor(message = 'Bad request: Requisição inválida' ) {
 =======
   constructor(message = 'Servidor Não funciona' ) {
 >>>>>>> 81ea340 (update: middleware de erro)
+=======
+  constructor(message = 'Bad request' ) {
+>>>>>>> 82c89a8 (update: message bad request)
     super(message, 400);
    }
 }
