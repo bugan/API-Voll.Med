@@ -15,40 +15,9 @@ export const especialistas = async (
     res.status(200).json(allEspecialistas);
   } else {
     throw new NotFoundError("Não encontramos especialistas");
-}
-}
-//Post 
-//verificar se o crm já existe
-//Se o especialista for criado apenas com os atributos opcionais, enviar mensagem avisando quais campos faltam
-export const criarEspecialista = async (req: Request, res: Response): Promise<void> => {
-  const {
-    nome, crm, imagem, especialidade, email, telefone, nota
-  } = req.body;
-  
-  const especialista = new Especialista( nome, crm, imagem, especialidade, email, telefone, nota)
-  try {
-  await AppDataSource.manager.save(Especialista, especialista)
-  res.status(200).json(especialista)
-  } catch (error) {
-    !especialista 
-    res.status(400).send('Especialista não criado')
-  }
-}
-//Get By Id
-export const especialistaById = async (req: Request, res: Response) => {
-  const { id } = req.params
-  const especialista = await AppDataSource.manager.findOneBy(Especialista, {
-    id: id,
-  });
-
-  if (especialista !== null) {
-    console.log("especialista", especialista);
-    res.status(200).json(especialista);
-  } else {
-    throw new NotFoundError("Id não encontrado ");
 
 }
-};
+}
 
 //Post
 //Se o especialista for criado apenas com os atributos opcionais, enviar mensagem avisando quais campos faltam
@@ -67,19 +36,17 @@ export const criarEspecialista = async (
     telefone
   );
 
-try {
-  await AppDataSource.manager.save(Especialista, especialista);
-  res.status(200).json(especialista);
-} catch (Error) {
-
-  if(await AppDataSource.manager.findOne(Especialista, { where: { crm } }))
-  {
-     res.status(422).json({ message: "Crm já cadastrado" })
-  }else{
-    throw new BadRequestError('Especialista não foi criado')}
+  try {
+    await AppDataSource.manager.save(Especialista, especialista);
+    res.status(200).json(especialista);
+  } catch (Error) {
+    if (await AppDataSource.manager.findOne(Especialista, { where: { crm } })) {
+      res.status(422).json({ message: "Crm já cadastrado" });
+    } else {
+      throw new BadRequestError("Especialista não foi criado");
+    }
   }
-}
-
+};
 
 //Get By Id
 export const especialistaById = async (req: Request, res: Response) => {
@@ -92,9 +59,8 @@ export const especialistaById = async (req: Request, res: Response) => {
     console.log(especialista);
     res.status(200).json(especialista);
   } else {
-    res.status(404).send("Id não encontrado");
-
-  }
+    throw new NotFoundError('Id não encontrado ')
+}
 };
 
 //Put especialista/:id
@@ -106,10 +72,8 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
     Especialista,
     {
       id: id,
-    }
-  );
+    })
 
-//validar crm do especialista (front? clínica com role de adm)
   if (especialistaUpdate !== null) {
     especialistaUpdate.nome = nome;
     especialistaUpdate.crm = crm;
@@ -117,7 +81,7 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
     especialistaUpdate.especialidade = especialidade;
     especialistaUpdate.email = email;
     especialistaUpdate.telefone = telefone;
-
+    
     await AppDataSource.manager.save(Especialista, especialistaUpdate);
     res.json(especialistaUpdate);
   } else {
@@ -153,7 +117,7 @@ export const atualizaContato = async (
     Especialista,
     { id: id }
   );
-  
+
   const telefone = req.body.telefone;
 
   if (buscaEspecialista !== null) {

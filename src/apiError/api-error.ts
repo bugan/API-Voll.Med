@@ -17,6 +17,7 @@ export class BadRequestError extends ApiError {
   
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   constructor(message = 'Bad request: Requisição inválida' ) {
 =======
   constructor(message = 'Servidor Não funciona' ) {
@@ -24,6 +25,9 @@ export class BadRequestError extends ApiError {
 =======
   constructor(message = 'Bad request' ) {
 >>>>>>> 82c89a8 (update: message bad request)
+=======
+  constructor(message = 'Bad request: Requisição inválida' ) {
+>>>>>>> 27bad80 (update)
     super(message, 400);
    }
 }
