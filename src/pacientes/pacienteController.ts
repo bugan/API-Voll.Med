@@ -32,10 +32,7 @@ export const pacientePost = async (req: Request, res: Response): Promise<void> =
   }
 
   try {
-    const paciente = new Paciente(nome, email, cpf)
-    paciente.senha = senha
-    paciente.telefone = telefone
-    paciente.planoSaude = planoSaude
+    const paciente = new Paciente(cpf, nome, email, senha, telefone, planoSaude)
   
     const enderecoPaciente = new Endereco()
   

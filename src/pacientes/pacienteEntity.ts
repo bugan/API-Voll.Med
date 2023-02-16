@@ -46,9 +46,12 @@ export class Paciente {
   @OneToMany(() => Avaliacoes, (avaliacoes) => avaliacoes.paciente)
     avaliacoes: Relation<Avaliacoes>
 
-  constructor (nome, email, cpf) {
+  constructor (cpf, nome, email, senha, telefone, planoSaude) {
+    this.cpf = cpf
     this.nome = nome
     this.email = email
-    this.cpf = cpf
+    this.senha = senha
+    this.telefone = telefone
+    this.planoSaude = planoSaude
   }
 }
