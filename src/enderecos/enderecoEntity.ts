@@ -16,5 +16,4 @@ export class Endereco {
 
   @Column('varchar', { length: 100 })
     complemento: string
-
 }

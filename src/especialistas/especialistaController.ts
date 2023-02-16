@@ -1,6 +1,5 @@
 
 import { type Request, type Response } from 'express'
-import { avaliacoes } from '../avaliacoes/avaliacoesController.js'
 import { AppDataSource } from '../data-source.js'
 import { Especialista } from './EspecialistaEntidade.js'
 
@@ -11,7 +10,7 @@ export const especialistas = async (req: Request, res: Response): Promise<void> 
 
 export const especialistaPost = async (req: Request, res: Response): Promise<void> => {
   const {
-    nome, crm, imagem, especialidade, email, telefone, planosSaude
+    nome, crm, imagem, especialidade, email, telefone
   } = req.body
 
   const especialista = new Especialista(nome, crm, imagem, especialidade, email, telefone)
@@ -34,7 +33,7 @@ export const especialistaById = async (req: Request, res: Response) => {
 // Put
 // especialista/:id
 export const especialistaPut = async (req: Request, res: Response) => {
-  const { nome, crm, imagem, especialidade, email, telefone} = req.body
+  const { nome, crm, imagem, especialidade, email, telefone } = req.body
   const { id } = req.params
 
   const especialistaUpdate = await AppDataSource.manager.findOneBy(Especialista, {

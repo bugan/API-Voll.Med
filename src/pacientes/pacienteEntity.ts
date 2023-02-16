@@ -49,6 +49,5 @@ export class Paciente {
     this.nome = nome
     this.email = email
     this.endereco = endereco
-    console.log(endereco)
   }
 }

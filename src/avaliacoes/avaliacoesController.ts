@@ -17,7 +17,6 @@ export const avaliacoesById = async (req: Request, res: Response): Promise<void>
   const avaliacoes = await AppDataSource.manager.findOneBy(Avaliacoes, {
     id
   })
-  console.log(avaliacoes)
   res.json(avaliacoes)
 }
 
@@ -41,7 +40,6 @@ export const avaliacoesPost = async (req: Request, res: Response): Promise<void>
     avaliacao.especialista = especialista
     avaliacao.paciente = paciente
     avaliacao.nota = nota
-    console.log(avaliacao)
   }
   await AppDataSource.manager.save(avaliacao)
   res.json(avaliacao)
