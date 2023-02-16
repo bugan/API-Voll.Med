@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../data-source.js";
 import { Especialista } from "./EspecialistaEntidade.js";
-import { BadRequestError, NotFoundError } from "../apiError/api-error.js";
+import {BadRequestError, NotFoundError} from '../apiError/api-error.js'
+
 
 //Get All
 export const especialistas = async (
@@ -13,12 +14,12 @@ export const especialistas = async (
   if (allEspecialistas.length) {
     res.status(200).json(allEspecialistas);
   } else {
-      throw new BadRequestError() //verificar se funciona 'Não encontramos especialistas'
-
+   throw new NotFoundError("Não encontramos especialistas");
   }
 
 }
-//Post
+//Post 
+//verificar se o crm já existe
 //Se o especialista for criado apenas com os atributos opcionais, enviar mensagem avisando quais campos faltam
 export const criarEspecialista = async (
   req: Request,
@@ -36,18 +37,20 @@ export const criarEspecialista = async (
     
   );
 
-try {
-  await AppDataSource.manager.save(Especialista, especialista);
-  res.status(200).json(especialista);
-} catch (Error) {
-
-  if(await AppDataSource.manager.findOne(Especialista, { where: { crm } }))
-  {
-     res.status(422).json({ message: "Crm já cadastrado" })
-  }else{
-    throw new BadRequestError('Especialista não foi criado')}
+  try {
+    await AppDataSource.manager.save(Especialista, especialista);
+    res.status(200).json(especialista);
+  } catch (Error) {
+    if (await AppDataSource.manager.findOne(Especialista, { where: { crm } })) {
+      res.status(422).json({ message: "Crm já cadastrado" });
+    } else {
+      throw new BadRequestError("Especialista não foi criado");
+    }
   }
 };
+
+
+//Get By Id
 
 export const especialistaById = async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -60,8 +63,7 @@ export const especialistaById = async (req: Request, res: Response) => {
     res.status(200).json(especialista);
   } else {
     throw new NotFoundError("Id não encontrado ");
-
-};
+  }
 }
 //Put especialista/:id
 
@@ -76,7 +78,7 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
     }
   );
 
-//validar crm do especialista (front? clínica com role de adm)
+  //validar crm do especialista (front? clínica com role de adm)
 
   if (especialistaUpdate !== null) {
     especialistaUpdate.nome = nome;
@@ -124,6 +126,7 @@ export const atualizaContato = async (
     Especialista,
     { id: id }
   );
+  
   const telefone = req.body.telefone;
 
   if (buscaEspecialista !== null) {
