@@ -1,6 +1,4 @@
 //import { STATUS_CODES } from "http"
-
-
 export class ApiError extends Error {
   public readonly statusCode: number;
    
@@ -14,20 +12,7 @@ export class ApiError extends Error {
 //bad request herda apierror
 
 export class BadRequestError extends ApiError {
-  
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
   constructor(message = 'Bad request: Requisição inválida' ) {
-=======
-  constructor(message = 'Servidor Não funciona' ) {
->>>>>>> 81ea340 (update: middleware de erro)
-=======
-  constructor(message = 'Bad request' ) {
->>>>>>> 82c89a8 (update: message bad request)
-=======
-  constructor(message = 'Bad request: Requisição inválida' ) {
->>>>>>> 27bad80 (update)
     super(message, 400);
    }
 }

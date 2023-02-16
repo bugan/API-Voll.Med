@@ -1,6 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, Relation } from 'typeorm'
+import { Avaliacoes } from '../avaliacoes/avaliacoesEntity.js'
 
-<<<<<<< HEAD
 enum PlanosSaude {
   Sulamerica,
   Unimed,
@@ -11,9 +11,7 @@ enum PlanosSaude {
   Outro
 }
 
-=======
->>>>>>> dc032a5 (feat: erro post crm duplicado)
-@Entity("especialista")
+@Entity()
 export class Especialista {
   @PrimaryGeneratedColumn('uuid')
     id: string
@@ -21,48 +19,35 @@ export class Especialista {
   @Column('varchar', { length: 100 })
     nome: string
 
-  @Column('varchar',{ length:50, unique:true })
+  @Column('varchar', { length: 100 })
     crm: string
 
-  @Column('varchar', { length: 100, nullable: true})
+  @Column('varchar')
     imagem: string
 
   @Column('varchar', { length: 100 })
     especialidade: string
 
-<<<<<<< HEAD
-
-=======
->>>>>>> dc032a5 (feat: erro post crm duplicado)
-  @Column('varchar', { length: 100, nullable:true })
+  @Column('varchar', { length: 100 })
     email: string
 
-  @Column('varchar', {length: 50, nullable: true })
-    telefone: string;
+  @Column('varchar', { length: 50 })
+    telefone: string
 
-<<<<<<< HEAD
-    @OneToMany(() => Avaliacoes, (avaliacoes) => avaliacoes.especialista, {
-      eager: true
-    })
-      avaliacoes: Relation<Avaliacoes>
-  
-    @Column({ type: 'enum', enum: PlanosSaude })
-      planosSaude: PlanosSaude
-  
-    constructor (nome, crm, imagem, especialidade, email, telefone) {
-      this.nome = nome
-      this.crm = crm
-=======
- 
-   constructor(nome, crm, imagem, especialidade,email, telefone, ){
-      this.nome = nome;
-      this.crm = crm;
->>>>>>> 81ea340 (update: middleware de erro)
-      this.imagem = imagem
-      this.especialidade = especialidade
-      this.email = email
-      this.telefone = telefone
-    }
+  @OneToMany(() => Avaliacoes, (avaliacoes) => avaliacoes.especialista, {
+    eager: true
+  })
+    avaliacoes: Relation<Avaliacoes>
+
+  @Column({ type: 'enum', enum: PlanosSaude })
+    planosSaude: PlanosSaude
+
+  constructor (nome, crm, imagem, especialidade, email, telefone) {
+    this.nome = nome
+    this.crm = crm
+    this.imagem = imagem
+    this.especialidade = especialidade
+    this.email = email
+    this.telefone = telefone
   }
-
- 
+}

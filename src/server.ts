@@ -1,19 +1,10 @@
-
 import * as dotenv from 'dotenv'
 import express, { Router,  Request, Response } from 'express'
 import "reflect-metadata"
 import rotaPaciente from "./pacientes/pacienteRoutes.js"
 import rotaEspecialista from "./especialistas/especialistaRoutes.js"
 import { AppDataSource } from './data-source.js'
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { erro } from './apiError/ErrorHandler.js'
-=======
-import { erro } from './middlewareError/error.js'
->>>>>>> d3534e0 (feat: middleware de erro)
-=======
-import { erro } from './apiError/ErrorHandler.js'
->>>>>>> 81ea340 (update: middleware de erro)
 
 dotenv.config({ path: '.env' })
 
