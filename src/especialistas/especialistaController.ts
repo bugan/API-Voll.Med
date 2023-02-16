@@ -4,6 +4,7 @@ import { Especialista } from "./EspecialistaEntidade.js";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { BadRequestError, NotFoundError } from "../apiError/api-error.js";
 =======
 >>>>>>> dc032a5 (feat: erro post crm duplicado)
@@ -13,6 +14,9 @@ import {BadRequestError} from '../helper/api-error.js'
 =======
 import {BadRequestError, NotFoundError} from '../apiError/api-error.js'
 >>>>>>> 81ea340 (update: middleware de erro)
+=======
+import { BadRequestError, NotFoundError } from "../apiError/api-error.js";
+>>>>>>> 27bad80 (update)
 
 //Get All
 export const especialistas = async (
@@ -44,8 +48,12 @@ export const especialistas = async (
   if (allEspecialistas.length) {
     res.status(200).json(allEspecialistas);
   } else {
+<<<<<<< HEAD
       throw new BadRequestError() //verificar se funciona 'Não encontramos especialistas'
 >>>>>>> 81ea340 (update: middleware de erro)
+=======
+    throw new NotFoundError("Não encontramos especialistas");
+>>>>>>> 27bad80 (update)
   }
 <<<<<<< HEAD
 }
@@ -98,19 +106,17 @@ export const criarEspecialista = async (
     telefone
   );
 
-try {
-  await AppDataSource.manager.save(Especialista, especialista);
-  res.status(200).json(especialista);
-} catch (Error) {
-
-  if(await AppDataSource.manager.findOne(Especialista, { where: { crm } }))
-  {
-     res.status(422).json({ message: "Crm já cadastrado" })
-  }else{
-    throw new BadRequestError('Especialista não foi criado')}
+  try {
+    await AppDataSource.manager.save(Especialista, especialista);
+    res.status(200).json(especialista);
+  } catch (Error) {
+    if (await AppDataSource.manager.findOne(Especialista, { where: { crm } })) {
+      res.status(422).json({ message: "Crm já cadastrado" });
+    } else {
+      throw new BadRequestError("Especialista não foi criado");
+    }
   }
-}
-
+};
 
 //Get By Id
 export const especialistaById = async (req: Request, res: Response) => {
@@ -119,6 +125,7 @@ export const especialistaById = async (req: Request, res: Response) => {
     id: id,
   });
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   if (especialista !== null) {
     console.log(especialista);
@@ -133,6 +140,13 @@ export const especialistaById = async (req: Request, res: Response) => {
   }else{
     throw new NotFoundError('Id não encontrado ')
 >>>>>>> 81ea340 (update: middleware de erro)
+=======
+  if (especialista !== null) {
+    console.log("especialista", especialista);
+    res.status(200).json(especialista);
+  } else {
+    throw new NotFoundError("Id não encontrado ");
+>>>>>>> 27bad80 (update)
   }
 };
 
@@ -153,6 +167,7 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
     {
       id: id,
 <<<<<<< HEAD
+<<<<<<< HEAD
     }
   );
 <<<<<<< HEAD
@@ -165,6 +180,12 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
 >>>>>>> 81ea340 (update: middleware de erro)
 //validar crm do especialista (front? clínica com role de adm)
 >>>>>>> 6c76314 (controller com casos de uso)
+=======
+    }
+  );
+
+  //validar crm do especialista (front? clínica com role de adm)
+>>>>>>> 27bad80 (update)
   if (especialistaUpdate !== null) {
     especialistaUpdate.nome = nome;
     especialistaUpdate.crm = crm;
@@ -172,6 +193,7 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
     especialistaUpdate.especialidade = especialidade;
     especialistaUpdate.email = email;
     especialistaUpdate.telefone = telefone;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 
@@ -187,10 +209,13 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
 =======
     
 >>>>>>> 81ea340 (update: middleware de erro)
+=======
+
+>>>>>>> 27bad80 (update)
     await AppDataSource.manager.save(Especialista, especialistaUpdate);
     res.json(especialistaUpdate);
   } else {
-    throw new BadRequestError('Id não encontrado ');
+    throw new BadRequestError("Id não encontrado ");
   }
 };
 <<<<<<< HEAD
@@ -241,7 +266,7 @@ export const atualizaContato = async (
     Especialista,
     { id: id }
   );
-  
+
   const telefone = req.body.telefone;
 
 <<<<<<< HEAD
