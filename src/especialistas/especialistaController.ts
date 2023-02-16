@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../data-source.js";
 import { Especialista } from "./EspecialistaEntidade.js";
+
 import { BadRequestError, NotFoundError } from "../apiError/api-error.js";
 
 
@@ -9,16 +10,15 @@ export const especialistas = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-
   const allEspecialistas = await AppDataSource.manager.find(Especialista);
   if (allEspecialistas.length) {
     res.status(200).json(allEspecialistas);
   } else {
+
     throw new NotFoundError("Não encontramos especialistas");
 
-  }  
-};
-
+ }
+}
 //Post
 //Se o especialista for criado apenas com os atributos opcionais, enviar mensagem avisando quais campos faltam
 export const criarEspecialista = async (
@@ -36,35 +36,34 @@ export const criarEspecialista = async (
     telefone
   );
 
-try {
-  await AppDataSource.manager.save(Especialista, especialista);
-  res.status(200).json(especialista);
-} catch (Error) {
-
-  if(await AppDataSource.manager.findOne(Especialista, { where: { crm } }))
-  {
-     res.status(422).json({ message: "Crm já cadastrado" })
-  }else{
-    throw new BadRequestError('Especialista não foi criado')}
+  try {
+    await AppDataSource.manager.save(Especialista, especialista);
+    res.status(200).json(especialista);
+  } catch (Error) {
+    if (await AppDataSource.manager.findOne(Especialista, { where: { crm } })) {
+      res.status(422).json({ message: "Crm já cadastrado" });
+    } else {
+      throw new BadRequestError("Especialista não foi criado");
+    }
   }
-}
-
-
+};
 //Get By Id
 export const especialistaById = async (req: Request, res: Response) => {
   const { id } = req.params;
   const especialista = await AppDataSource.manager.findOneBy(Especialista, {
     id: id,
   });
+>>>>>>> 34de75a (update)
 
-  if(especialista !== null){
-    console.log('especialista',especialista);
-    res.status(200).json(especialista)
-  }else{
-    throw new NotFoundError('Id não encontrado ')
+  const allEspecialistas = await AppDataSource.manager.find(Especialista);
+  if (allEspecialistas.length) {
+    res.status(200).json(allEspecialistas);
+  } else {
+    throw new NotFoundError("Não encontramos especialistas");
 
-}
+  }  
 };
+
 //Put especialista/:id
 
 export const atualizarEspecialista = async (req: Request, res: Response) => {
@@ -75,10 +74,9 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
     Especialista,
     {
       id: id,
-
     }
   );
-
+   
   if (especialistaUpdate !== null) {
     especialistaUpdate.nome = nome;
     especialistaUpdate.crm = crm;
@@ -94,7 +92,7 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
   }
 };
 
-  
+
 //Delete por id especialista/:id
 export const apagarEspecialista = async (
   req: Request,
