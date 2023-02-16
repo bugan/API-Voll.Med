@@ -1,4 +1,3 @@
-
 import { type Request, type Response } from 'express'
 import { AppDataSource } from '../data-source.js'
 import { Avaliacoes } from './avaliacoesEntity.js'
@@ -45,4 +44,6 @@ export const avaliacoesPost = async (req: Request, res: Response): Promise<void>
   }
   await AppDataSource.manager.save(avaliacao)
   res.json(avaliacao)
+
 }
+

@@ -1,4 +1,3 @@
-
 import { type Request, type Response } from 'express'
 import { Paciente } from './pacienteEntity.js'
 import { AppDataSource } from '../data-source.js'

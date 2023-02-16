@@ -8,16 +8,13 @@ export const especialistas = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-
   const allEspecialistas = await AppDataSource.manager.find(Especialista);
   if (allEspecialistas.length) {
-    const allEspecialistas = await AppDataSource.manager.find(Especialista);
     res.status(200).json(allEspecialistas);
   } else {
     throw new NotFoundError("Não encontramos especialistas");
-
-}
-}
+  }
+};
 
 //Post
 //Se o especialista for criado apenas com os atributos opcionais, enviar mensagem avisando quais campos faltam
@@ -56,11 +53,11 @@ export const especialistaById = async (req: Request, res: Response) => {
   });
 
   if (especialista !== null) {
-    console.log(especialista);
+    console.log("especialista", especialista);
     res.status(200).json(especialista);
   } else {
-    throw new NotFoundError('Id não encontrado ')
-}
+    throw new NotFoundError("Id não encontrado ");
+  }
 };
 
 //Put especialista/:id
@@ -72,8 +69,10 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
     Especialista,
     {
       id: id,
-    })
+    }
+  );
 
+  //validar crm do especialista (front? clínica com role de adm)
   if (especialistaUpdate !== null) {
     especialistaUpdate.nome = nome;
     especialistaUpdate.crm = crm;
@@ -81,7 +80,6 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
     especialistaUpdate.especialidade = especialidade;
     especialistaUpdate.email = email;
     especialistaUpdate.telefone = telefone;
-    
     await AppDataSource.manager.save(Especialista, especialistaUpdate);
     res.json(especialistaUpdate);
   } else {
@@ -96,15 +94,14 @@ export const apagarEspecialista = async (
 ): Promise<void> => {
   const { id } = req.params;
   const especialistaDel = await AppDataSource.manager.findOneBy(Especialista, {
-     id:id ,
-    })
-    try {
-      await AppDataSource.manager.remove(Especialista, especialistaDel)
-     res.json({ message: 'Especialista apagado!' })
-    } catch (error) {
-     
-      res.status(404).send("Id não encontrado");
-    }
+    id: id,
+  });
+  if (especialistaDel !== null) {
+    await AppDataSource.manager.remove(Especialista, especialistaDel);
+    res.json({ message: "Especialista apagado!" });
+  } else {
+    throw new BadRequestError("Id não encontrado");
+  }
 };
 
 //patch
@@ -131,4 +128,4 @@ export const atualizaContato = async (
   } else {
     throw new BadRequestError("Telefone não atualizado");
   }
-}
+};

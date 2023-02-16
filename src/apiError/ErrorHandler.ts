@@ -11,15 +11,6 @@ export const erro = (
   console.log(error.statusCode);
   const message = error.statusCode ? error.message : 'Erro interno do Servidor'
   return res.status(statusCode).json({message});
- 
-// if (error.statusCode){
-//   const message = error.statusCode
-//   error.message
-//   return res.status(statusCode).json({message})
-//   }else{
-//   res.json({'Erro interno do Servidor': error.message})
-// }next();
-
 };
 
 //adaptador da rota
