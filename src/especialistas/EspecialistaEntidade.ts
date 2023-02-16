@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
-
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, Relation } from 'typeorm'
+import { Avaliacoes } from '../avaliacoes/avaliacoesEntity.js'
 
 enum PlanosSaude {
   Sulamerica,
@@ -11,7 +11,7 @@ enum PlanosSaude {
   Outro
 }
 
-@Entity("especialista")
+@Entity()
 export class Especialista {
   @PrimaryGeneratedColumn('uuid')
     id: string
@@ -19,10 +19,10 @@ export class Especialista {
   @Column('varchar', { length: 100 })
     nome: string
 
-  @Column('varchar',{ length:50, unique:true })
+  @Column('varchar', { length: 100 })
     crm: string
 
-  @Column('varchar', { length: 100, nullable: true})
+  @Column('varchar')
     imagem: string
 
   @Column('varchar', { length: 100 })
@@ -34,7 +34,6 @@ export class Especialista {
   @Column('varchar', {nullable: true })
     telefone: string;
 
-<<<<<<< HEAD
     @OneToMany(() => Avaliacoes, (avaliacoes) => avaliacoes.especialista, {
       eager: true
     })
@@ -46,12 +45,6 @@ export class Especialista {
     constructor (nome, crm, imagem, especialidade, email, telefone) {
       this.nome = nome
       this.crm = crm
-=======
- 
-   constructor(nome, crm, imagem, especialidade,email, telefone, ){
-      this.nome = nome;
-      this.crm = crm;
->>>>>>> 81ea340 (update: middleware de erro)
       this.imagem = imagem
       this.especialidade = especialidade
       this.email = email

@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../data-source.js";
 import { Especialista } from "./EspecialistaEntidade.js";
-
 import { BadRequestError, NotFoundError } from "../apiError/api-error.js";
 
 
@@ -53,19 +52,16 @@ export const especialistaById = async (req: Request, res: Response) => {
   const especialista = await AppDataSource.manager.findOneBy(Especialista, {
     id: id,
   });
->>>>>>> 34de75a (update)
 
-  const allEspecialistas = await AppDataSource.manager.find(Especialista);
-  if (allEspecialistas.length) {
-    res.status(200).json(allEspecialistas);
+  if (especialista !== null) {
+    console.log("especialista", especialista);
+    res.status(200).json(especialista);
   } else {
-    throw new NotFoundError("Não encontramos especialistas");
-
-  }  
+    throw new NotFoundError("Id não encontrado ");
+  }
 };
 
 //Put especialista/:id
-
 export const atualizarEspecialista = async (req: Request, res: Response) => {
   const { nome, crm, imagem, especialidade, email, telefone } = req.body;
   const { id } = req.params;
@@ -76,7 +72,6 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
       id: id,
     }
   );
-   
   if (especialistaUpdate !== null) {
     especialistaUpdate.nome = nome;
     especialistaUpdate.crm = crm;
@@ -92,7 +87,6 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
   }
 };
 
-
 //Delete por id especialista/:id
 export const apagarEspecialista = async (
   req: Request,
@@ -100,10 +94,8 @@ export const apagarEspecialista = async (
 ): Promise<void> => {
   const { id } = req.params;
   const especialistaDel = await AppDataSource.manager.findOneBy(Especialista, {
-
      id:id ,
     })
-  
   if (especialistaDel !== null) {
     await AppDataSource.manager.remove(Especialista, especialistaDel);
     res.json({ message: "Especialista apagado!" });
