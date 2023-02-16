@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../data-source.js";
 import { Especialista } from "./EspecialistaEntidade.js";
-import {BadRequestError, NotFoundError} from '../apiError/api-error.js'
+import { BadRequestError, NotFoundError } from "../apiError/api-error.js";
 
 //Get All
 export const especialistas = async (
@@ -12,7 +12,7 @@ export const especialistas = async (
   if (allEspecialistas.length) {
     res.status(200).json(allEspecialistas);
   } else {
-      throw new BadRequestError() //verificar se funciona 'Não encontramos especialistas'
+    throw new NotFoundError("Não encontramos especialistas");
   }
 };
 
@@ -33,19 +33,17 @@ export const criarEspecialista = async (
     telefone
   );
 
-try {
-  await AppDataSource.manager.save(Especialista, especialista);
-  res.status(200).json(especialista);
-} catch (Error) {
-
-  if(await AppDataSource.manager.findOne(Especialista, { where: { crm } }))
-  {
-     res.status(422).json({ message: "Crm já cadastrado" })
-  }else{
-    throw new BadRequestError('Especialista não foi criado')}
+  try {
+    await AppDataSource.manager.save(Especialista, especialista);
+    res.status(200).json(especialista);
+  } catch (Error) {
+    if (await AppDataSource.manager.findOne(Especialista, { where: { crm } })) {
+      res.status(422).json({ message: "Crm já cadastrado" });
+    } else {
+      throw new BadRequestError("Especialista não foi criado");
+    }
   }
-}
-
+};
 
 //Get By Id
 export const especialistaById = async (req: Request, res: Response) => {
@@ -54,11 +52,11 @@ export const especialistaById = async (req: Request, res: Response) => {
     id: id,
   });
 
-  if(especialista !== null){
-    console.log('especialista',especialista);
-    res.status(200).json(especialista)
-  }else{
-    throw new NotFoundError('Id não encontrado ')
+  if (especialista !== null) {
+    console.log("especialista", especialista);
+    res.status(200).json(especialista);
+  } else {
+    throw new NotFoundError("Id não encontrado ");
   }
 };
 
@@ -71,9 +69,10 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
     Especialista,
     {
       id: id,
-    });
-  
-//validar crm do especialista (front? clínica com role de adm)
+    }
+  );
+
+  //validar crm do especialista (front? clínica com role de adm)
   if (especialistaUpdate !== null) {
     especialistaUpdate.nome = nome;
     especialistaUpdate.crm = crm;
@@ -81,11 +80,11 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
     especialistaUpdate.especialidade = especialidade;
     especialistaUpdate.email = email;
     especialistaUpdate.telefone = telefone;
-    
+
     await AppDataSource.manager.save(Especialista, especialistaUpdate);
     res.json(especialistaUpdate);
   } else {
-    throw new BadRequestError('Id não encontrado ');
+    throw new BadRequestError("Id não encontrado ");
   }
 };
 
@@ -116,7 +115,7 @@ export const atualizaContato = async (
     Especialista,
     { id: id }
   );
-  
+
   const telefone = req.body.telefone;
 
   if (buscaEspecialista !== null) {
