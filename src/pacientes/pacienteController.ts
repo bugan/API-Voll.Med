@@ -5,7 +5,7 @@ import { AppDataSource } from '../data-source.js'
 import { Endereco } from '../enderecos/enderecoEntity.js'
 import { CPFValido } from './validacaoCPF.js'
 
-export const pacientes = async (req: Request, res: Response): Promise<void> => {
+export const lerPacientes = async (req: Request, res: Response): Promise<void> => {
   const tabelaPaciente = AppDataSource.getRepository(Paciente)
   const allPacientes = await tabelaPaciente.find()
 
@@ -16,7 +16,7 @@ export const pacientes = async (req: Request, res: Response): Promise<void> => {
   }
 }
 
-export const pacientePost = async (req: Request, res: Response): Promise<void> => {
+export const criarPaciente= async (req: Request, res: Response): Promise<void> => {
   const {
     cpf,
     nome,
@@ -55,7 +55,7 @@ export const pacientePost = async (req: Request, res: Response): Promise<void> =
   }
 }
 
-export const pacienteGet = async (req: Request, res: Response): Promise<void> => {
+export const lerPaciente = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params
   const paciente = await AppDataSource.manager.findOne(Paciente, {
     where: { id },
@@ -71,7 +71,7 @@ export const pacienteGet = async (req: Request, res: Response): Promise<void> =>
   }
 }
 
-export const pacienteUpdate = async (req: Request, res: Response): Promise<void> => {
+export const atualizarPaciente = async (req: Request, res: Response): Promise<void> => {
   const {
     cpf,
     nome,
@@ -131,7 +131,7 @@ export const pacienteUpdate = async (req: Request, res: Response): Promise<void>
   }
 }
 
-export const pacienteDelete = async (req: Request, res: Response): Promise<void> => {
+export const deletarPaciente = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params
   const paciente = await AppDataSource.manager.findOne(Paciente, {
     where: { id },
@@ -153,7 +153,7 @@ export const pacienteDelete = async (req: Request, res: Response): Promise<void>
   }
 }
 
-export const pacienteEnderecoPatch = async (req: Request, res: Response): Promise<void> => {
+export const atualizarEnderecoPaciente = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params
   const { cep, rua, numero, complemento} = req.body
   const paciente = await AppDataSource.manager.findOne(Paciente, {
