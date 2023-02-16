@@ -93,8 +93,10 @@ export const pacienteUpdate = async (req: Request, res: Response): Promise<void>
       where: { id },
       relations: ['endereco']
     })
-    
-    if (paciente !== null) {
+
+    if (paciente === null) {
+      res.status(404).json('Paciente não encontrado!')
+    } else {
       paciente.cpf = cpf
       paciente.nome = nome
       paciente.email = email
@@ -122,9 +124,8 @@ export const pacienteUpdate = async (req: Request, res: Response): Promise<void>
   
       await AppDataSource.manager.save(Paciente, paciente)
       res.status(200).json(paciente)
-    } else {
-      res.status(404).json('Paciente não encontrado!')
     }
+
   } catch (error) {
     res.status(502).send('Paciente não foi atualizado!')
   }
@@ -136,7 +137,10 @@ export const pacienteDelete = async (req: Request, res: Response): Promise<void>
     where: { id },
     relations: ['endereco']
   })
-  if (paciente !== null) {
+
+  if (paciente === null) {
+    res.status(404).json('Paciente não encontrado!')
+  } else {
     try {
       const endereco = paciente.endereco
       // Como fazer com o cascade?
@@ -146,8 +150,6 @@ export const pacienteDelete = async (req: Request, res: Response): Promise<void>
     } catch (error) {
       res.status(502).send('Paciente não foi apagado!')
     }
-  } else {
-    res.status(404).json('Paciente não encontrado!')
   }
 }
 
@@ -158,8 +160,10 @@ export const pacienteEnderecoPatch = async (req: Request, res: Response): Promis
     where: { id },
     relations: ['endereco']
   })
-
-  if (paciente !== null) {
+  
+  if (paciente === null) {
+    res.status(404).json('Paciente não encontrado!')
+  } else {
     if (paciente.endereco === null) {
       const endereco = new Endereco()
       endereco.cep = cep
@@ -178,9 +182,7 @@ export const pacienteEnderecoPatch = async (req: Request, res: Response): Promis
     }
 
     await AppDataSource.manager.save(Paciente, paciente)
-  } else {
-    res.status(404).json('Paciente não encontrado!')
-  }
 
-  res.status(200).json(paciente)
+    res.status(200).json(paciente)
+  }  
 }
