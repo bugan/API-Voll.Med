@@ -15,7 +15,7 @@ export class ApiError extends Error {
 
 export class BadRequestError extends ApiError {
   
-  constructor(message = 'Servidor Não funciona' ) {
+  constructor(message = 'Bad request' ) {
     super(message, 400);
    }
 }
