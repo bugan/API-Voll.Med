@@ -42,14 +42,6 @@ export class Especialista {
   @Column({ type: 'enum', enum: PlanosSaude })
     planosSaude: PlanosSaude
 
-    @OneToMany(() => Avaliacoes, (avaliacoes) => avaliacoes.especialista, {
-      eager: true
-    })
-      avaliacoes: Relation<Avaliacoes>
-  
-    @Column({ type: 'enum', enum: PlanosSaude })
-      planosSaude: PlanosSaude
-  
    constructor(nome, crm, imagem, especialidade,email, telefone, ){
       this.nome = nome;
       this.crm = crm;
