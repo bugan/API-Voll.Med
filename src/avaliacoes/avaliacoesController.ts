@@ -46,4 +46,3 @@ export const avaliacoesPost = async (req: Request, res: Response): Promise<void>
   res.json(avaliacao)
 
 }
-
