@@ -44,4 +44,5 @@ export const avaliacoesPost = async (req: Request, res: Response): Promise<void>
   }
   await AppDataSource.manager.save(avaliacao)
   res.json(avaliacao)
+
 }
