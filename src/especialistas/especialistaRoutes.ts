@@ -1,10 +1,6 @@
 import { Router, type Response } from 'express'
 import {
-  especialistas,
-  especialistaPost,
-  especialistaById,
-  especialistaPut
-
+  especialistaById, especialistaPost, especialistaPut, especialistas
 } from './especialistaController.js'
 
 export const especialistaRouter = Router()

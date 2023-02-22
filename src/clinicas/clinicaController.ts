@@ -2,6 +2,7 @@
 import { type Request, type Response } from 'express'
 import { AppDataSource } from '../data-source.js'
 import { Endereco } from '../enderecos/enderecoEntity.js'
+import { Especialista } from '../especialistas/EspecialistaEntidade.js'
 import { Clinica } from './clinicaEntity.js'
 
 export const criarClinica = async (req: Request, res: Response): Promise<void> => {
@@ -65,6 +66,44 @@ export const atualizarClinica = async (req: Request, res: Response): Promise<voi
   }
 
   res.json(clinica)
+}
+
+export const listaEspecialistasPorClinica = async (req: Request, res: Response): Promise<Response> => {
+  const { id } = req.params
+  const clinica = await AppDataSource.manager.findOne(Clinica, {
+    where: { id },
+    relations: ['especialistas']
+  })
+  if (clinica == null) return res.status(404).json({ message: 'Clinica não encontrada' })
+
+  const especialistasDaClinica = clinica.especialistas
+  return res.json(especialistasDaClinica)
+}
+
+export const atualizaEspecialistaPeloIdDaClinica = async (req: Request, res: Response): Promise<Response> => {
+  //! Não consegui pegar o especialistaId pelo req.params
+  // const { id, especialistaId } = req.params
+  const { id } = req.params
+  const { especialistaId } = req.body
+
+  // buscando especialista do id especificado
+  const especialista = await AppDataSource.manager.findOne(Especialista, {
+    where: { id: especialistaId }
+  })
+  console.log(especialista)
+  if (especialista == null) { return res.status(404).json({ message: 'Especialista não encontrado' }) }
+
+  // buscando clinica do id especificado
+  const clinica = await AppDataSource.manager.findOne(Clinica, {
+    where: { id }
+  })
+  console.log(clinica)
+  if (clinica == null) { return res.status(404).json({ message: 'Clinica não encontrada' }) }
+
+  // atualizando clinica do especialista e salvando
+  especialista.clinica = clinica
+  await AppDataSource.manager.save(especialista)
+  return res.json(especialista)
 }
 
 export const deletarClinica = async (req: Request, res: Response): Promise<void> => {
