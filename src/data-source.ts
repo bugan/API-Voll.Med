@@ -4,8 +4,8 @@ import 'reflect-metadata'
 import { Paciente } from './pacientes/pacienteEntity.js'
 import { Endereco } from './enderecos/enderecoEntity.js'
 import { Especialista } from './especialistas/EspecialistaEntidade.js'
-import * as dotenv from 'dotenv'
 import { Avaliacoes } from './avaliacoes/avaliacoesEntity.js'
+import * as dotenv from 'dotenv'
 import { Clinica } from './clinicas/clinicaEntity.js'
 dotenv.config({ path: '.env' })
 

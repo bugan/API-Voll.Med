@@ -7,6 +7,7 @@ import rotaEspecialista from './especialistas/especialistaRoutes.js'
 import rotaClinica from './clinicas/clinicaRoutes.js'
 import { AppDataSource } from './data-source.js'
 import rotaAvaliacoes from './avaliacoes/avaliacoesRoutes.js'
+import { erro } from './apiError/ErrorHandler.js'
 
 dotenv.config({ path: '.env' })
 
@@ -27,7 +28,8 @@ rotaEspecialista(app)
 rotaAvaliacoes(app)
 rotaClinica(app)
 
-app.listen(process.env.SERVER_PORT, () => {
-  console.log(`server running on port ${process.env.SERVER_PORT}`)
-})
+app.use(erro) // do middleware, precisa ser inserido antes do app listen
+
+app.listen(process.env.SERVER_PORT, () => { console.log(`server running on port ${process.env.SERVER_PORT}`) }
+)
 export default app

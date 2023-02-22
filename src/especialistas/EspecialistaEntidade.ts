@@ -36,10 +36,10 @@ export class Especialista {
   @Column('varchar', { length: 100 })
     especialidade: string
 
-  @Column('varchar', { length: 100 })
+  @Column('varchar', { length: 100, nullable: true })
     email: string
 
-  @Column('varchar', { length: 50 })
+  @Column('varchar', { nullable: true })
     telefone: string
 
   @ManyToOne(() => Clinica, (clinica) => clinica.especialistas)

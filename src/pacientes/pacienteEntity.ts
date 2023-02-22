@@ -1,4 +1,3 @@
-
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, Relation, OneToMany } from 'typeorm'
 import { Endereco } from '../enderecos/enderecoEntity.js'
 import { Avaliacoes } from '../avaliacoes/avaliacoesEntity.js'

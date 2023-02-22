@@ -1,4 +1,3 @@
-
 import { type Request, type Response } from 'express'
 import { AppDataSource } from '../data-source.js'
 import { Avaliacoes } from './avaliacoesEntity.js'
