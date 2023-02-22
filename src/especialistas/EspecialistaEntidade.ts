@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, Relation, ManyToMany, TableForeignKey, JoinColumn, ManyToOne } from 'typeorm'
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Relation
+} from 'typeorm'
 import { Avaliacoes } from '../avaliacoes/avaliacoesEntity.js'
 import { Clinica } from '../clinicas/clinicaEntity.js'
 
@@ -9,7 +16,7 @@ enum PlanosSaude {
   Amil,
   Biosaúde,
   Biovida,
-  Outro
+  Outro,
 }
 
 @Entity()
@@ -35,7 +42,7 @@ export class Especialista {
   @Column('varchar', { length: 50 })
     telefone: string
 
-  @ManyToOne(() => Clinica, (clinica) => clinica.especialista)
+  @ManyToOne(() => Clinica, (clinica) => clinica.especialistas)
     clinica: Relation<Clinica>
 
   @OneToMany(() => Avaliacoes, (avaliacoes) => avaliacoes.especialista, {
