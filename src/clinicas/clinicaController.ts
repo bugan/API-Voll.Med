@@ -29,9 +29,9 @@ export const criarClinica = async (req: Request, res: Response): Promise<void> =
 }
 
 export const listarClinicas = async (req: Request, res: Response): Promise<void> => {
-  const tabelaClinica = AppDataSource.getRepository(Clinica)
-  const allClinicas = await tabelaClinica.find()
-  res.json(allClinicas)
+  const clinicaRepositorio = AppDataSource.getRepository(Clinica)
+  const clinicas = await clinicaRepositorio.find()
+  res.json(clinicas)
 }
 
 export const buscarClinica = async (req: Request, res: Response): Promise<void> => {
