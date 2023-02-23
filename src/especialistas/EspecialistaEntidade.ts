@@ -1,5 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, Relation } from 'typeorm'
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Relation
+} from 'typeorm'
 import { Avaliacoes } from '../avaliacoes/avaliacoesEntity.js'
+import { Clinica } from '../clinicas/clinicaEntity.js'
 
 enum PlanosSaude {
   Sulamerica,
@@ -8,7 +16,7 @@ enum PlanosSaude {
   Amil,
   Biosaúde,
   Biovida,
-  Outro
+  Outro,
 }
 
 @Entity()
@@ -28,11 +36,14 @@ export class Especialista {
   @Column('varchar', { length: 100 })
     especialidade: string
 
-  @Column('varchar', { length: 100 })
+  @Column('varchar', { length: 100, nullable: true })
     email: string
 
-  @Column('varchar', { length: 50 })
+  @Column('varchar', { nullable: true })
     telefone: string
+
+  @ManyToOne(() => Clinica, (clinica) => clinica.especialistas)
+    clinica: Relation<Clinica>
 
   @OneToMany(() => Avaliacoes, (avaliacoes) => avaliacoes.especialista, {
     eager: true

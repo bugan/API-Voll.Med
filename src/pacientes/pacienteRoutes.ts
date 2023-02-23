@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import { Router } from 'express'
-
 import {
   lerPacientes,
   criarPaciente,

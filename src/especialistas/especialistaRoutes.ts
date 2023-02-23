@@ -1,21 +1,26 @@
-import { Router ,Response} from 'express';
+import { resolver } from '../apiError/ErrorHandler.js'
+import { Router, Response } from 'express'
 import {
   especialistas,
-   especialistaPost,
-   especialistaById,
-   especialistaPut,
+  criarEspecialista,
+  especialistaById,
+  atualizarEspecialista,
+  apagarEspecialista,
+  atualizaContato
 
 } from './especialistaController.js'
 
-export const especialistaRouter = Router();
+export const especialistaRouter = Router()
 
-especialistaRouter.get('/', especialistas)
-especialistaRouter.post('/', especialistaPost);
-especialistaRouter.get('/:id', especialistaById);
-especialistaRouter.put('/:id',especialistaPut);
-especialistaRouter.delete("/:id",(res:Response)=>res.status(404).send())
+especialistaRouter.get('/', resolver(especialistas))
+especialistaRouter.post('/', resolver(criarEspecialista))
+especialistaRouter.get('/:id', resolver(especialistaById))
+especialistaRouter.put('/:id', resolver(atualizarEspecialista))
+especialistaRouter.delete('/:id', resolver(apagarEspecialista))
+especialistaRouter.patch('/:id', resolver(atualizaContato))
 
-export default (app)=>{
+// (res:Response)=>res.status(404).send())
 
-  app.use('/especialista', especialistaRouter);
+export default (app) => {
+  app.use('/especialista', especialistaRouter)
 }

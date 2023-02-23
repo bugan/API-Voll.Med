@@ -1,4 +1,3 @@
-
 import { type Request, type Response } from 'express'
 import { Paciente } from './pacienteEntity.js'
 import { AppDataSource } from '../data-source.js'
@@ -186,3 +185,4 @@ export const atualizarEnderecoPaciente = async (req: Request, res: Response): Pr
     res.status(200).json(paciente)
   }  
 }
+
