@@ -33,6 +33,9 @@ export class Especialista {
   @Column('varchar')
     imagem: string
 
+  @Column({ type: 'boolean', default: true })
+    estaAtivo: boolean
+
   @Column('varchar', { length: 100 })
     especialidade: string
 

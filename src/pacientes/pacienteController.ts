@@ -86,17 +86,15 @@ export const pacienteUpdate = async (req: Request, res: Response): Promise<void>
   res.json(paciente)
 }
 
-export const pacienteDelete = async (req: Request, res: Response): Promise<void> => {
+// TODO nao deletar o paciente, mas torna-lo inativo
+export const desativaPaciente = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params
   const paciente = await AppDataSource.manager.findOne(Paciente, {
-    where: { id },
-    relations: ['endereco']
+    where: { id }
   })
   if (paciente !== null) {
-    const endereco = paciente.endereco
-    // Como fazer com o cascade?
-    await AppDataSource.manager.remove(Paciente, paciente)
-    await AppDataSource.manager.remove(Endereco, endereco)
-    res.json({ message: 'Paciente apagado!' })
+    // await AppDataSource.manager.remove(Paciente, paciente)
+    paciente.estaAtivo = false
+    res.json({ message: 'Paciente desativado!' })
   }
 }

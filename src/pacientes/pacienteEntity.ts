@@ -11,10 +11,10 @@ enum planosSaude {
   Biovida,
   Outro
 }
-
+// TODO: ALTERAR O ENDEREÇO
 @Entity()
 export class Paciente {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
     id: string
 
   @Column('varchar', { length: 100 })
@@ -34,6 +34,9 @@ export class Paciente {
 
   @Column({ type: 'int' })
     telefone: number
+
+  @Column({ type: 'boolean', default: true })
+    estaAtivo: boolean
 
   @Column({ type: 'boolean' })
     possuiPlanoSaude: boolean
