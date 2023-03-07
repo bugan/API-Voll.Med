@@ -3,6 +3,7 @@ import { Paciente } from './pacienteEntity.js'
 import { AppDataSource } from '../data-source.js'
 import { Endereco } from '../enderecos/enderecoEntity.js'
 import { CPFValido } from './validacaoCPF.js'
+import jwt from 'jsonwebtoken'
 
 export const lerPacientes = async (req: Request, res: Response): Promise<void> => {
   const tabelaPaciente = AppDataSource.getRepository(Paciente)
@@ -15,7 +16,7 @@ export const lerPacientes = async (req: Request, res: Response): Promise<void> =
   }
 }
 
-export const criarPaciente= async (req: Request, res: Response): Promise<void> => {
+export const criarPaciente = async (req: Request, res: Response): Promise<void> => {
   const {
     cpf,
     nome,
@@ -186,3 +187,21 @@ export const atualizarEnderecoPaciente = async (req: Request, res: Response): Pr
   }  
 }
 
+export const loginPaciente = async (req: Request, res: Response): Promise<void> => {
+  const { email, senha } = req.body
+  const paciente = await AppDataSource.manager.findOne(Paciente, {
+    where: { email, senha },
+  })
+
+  if (paciente === null) {
+    res.status(500).json({message: 'Login inválido!'})
+  } else {     
+    const id = paciente.id;
+    const token = jwt.sign({ id }, process.env.SECRET, { expiresIn: 86400 }) // expira em 24 horas
+    res.status(200).json({ auth: true, token: token })
+  }
+}
+
+export const logoutPaciente = async (req: Request, res: Response): Promise<void> => {
+  res.status(200).json({ auth: false, token: null })
+}
