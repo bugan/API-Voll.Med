@@ -1,19 +1,21 @@
 import { Router } from 'express'
 import {
-  pacientes,
-  pacientePost,
-  pacienteGet,
-  pacienteUpdate,
-  pacienteDelete
+  lerPacientes,
+  criarPaciente,
+  lerPaciente,
+  atualizarPaciente,
+  deletarPaciente,
+  atualizarEnderecoPaciente,
 } from './pacienteController.js'
 
 export const pacienteRouter = Router()
 
-pacienteRouter.get('/', pacientes)
-pacienteRouter.post('/', pacientePost)
-pacienteRouter.get('/:id', pacienteGet)
-pacienteRouter.put('/:id', pacienteUpdate)
-pacienteRouter.delete('/:id', pacienteDelete)
+pacienteRouter.get('/', lerPacientes)
+pacienteRouter.post('/', criarPaciente)
+pacienteRouter.get('/:id', lerPaciente)
+pacienteRouter.put('/:id', atualizarPaciente)
+pacienteRouter.delete('/:id', deletarPaciente)
+pacienteRouter.patch('/:id', atualizarEnderecoPaciente)
 
 export default (app) => {
   app.use('/paciente', pacienteRouter)

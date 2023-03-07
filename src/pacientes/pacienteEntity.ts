@@ -3,6 +3,7 @@ import { Endereco } from '../enderecos/enderecoEntity.js'
 import { Avaliacoes } from '../avaliacoes/avaliacoesEntity.js'
 
 enum planosSaude {
+  Nenhum,
   Sulamerica,
   Unimed,
   Bradesco,
@@ -14,8 +15,11 @@ enum planosSaude {
 
 @Entity()
 export class Paciente {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
     id: string
+
+  @Column('varchar', { length: 11 })
+    cpf: string
 
   @Column('varchar', { length: 100 })
     nome: string
@@ -23,7 +27,7 @@ export class Paciente {
   @Column('varchar', { length: 100 })
     email: string
 
-  @Column('varchar', { length: 100 })
+  @Column('varchar', { length: 100, select: false })
     senha: string // Criptografia?
 
   @OneToOne(() => Endereco, {
@@ -35,18 +39,19 @@ export class Paciente {
   @Column({ type: 'int' })
     telefone: number
 
-  @Column({ type: 'boolean' })
-    possuiPlanoSaude: boolean
-
   @Column({ type: 'enum', enum: planosSaude })
     planoSaude: planosSaude
 
   @OneToMany(() => Avaliacoes, (avaliacoes) => avaliacoes.paciente)
     avaliacoes: Relation<Avaliacoes>
 
-  constructor (nome, email, endereco) {
+  constructor (cpf, nome, email, senha, telefone, planoSaude) {
+    this.cpf = cpf
     this.nome = nome
     this.email = email
-    this.endereco = endereco
+    this.senha = senha
+    this.telefone = telefone
+    this.planoSaude = planoSaude
+
   }
 }
