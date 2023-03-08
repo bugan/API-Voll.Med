@@ -1,5 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, Relation } from 'typeorm'
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Relation
+} from 'typeorm'
 import { Avaliacoes } from '../avaliacoes/avaliacoesEntity.js'
+import { Clinica } from '../clinicas/clinicaEntity.js'
 
 enum PlanosSaude {
   Sulamerica,
@@ -8,7 +16,7 @@ enum PlanosSaude {
   Amil,
   Biosaúde,
   Biovida,
-  Outro
+  Outro,
 }
 
 @Entity()
@@ -25,14 +33,20 @@ export class Especialista {
   @Column('varchar')
     imagem: string
 
+  @Column({ type: 'boolean', default: true })
+    estaAtivo: boolean
+
   @Column('varchar', { length: 100 })
     especialidade: string
 
-  @Column('varchar', { length: 100, nullable:true })
+  @Column('varchar', { length: 100, nullable: true })
     email: string
 
-  @Column('varchar', { length: 50 })
+  @Column('varchar', { nullable: true })
     telefone: string
+
+  @ManyToOne(() => Clinica, (clinica) => clinica.especialistas)
+    clinica: Relation<Clinica>
 
   @OneToMany(() => Avaliacoes, (avaliacoes) => avaliacoes.especialista, {
     eager: true
@@ -42,12 +56,14 @@ export class Especialista {
   @Column({ type: 'enum', enum: PlanosSaude })
     planosSaude: PlanosSaude
 
-  constructor (nome, crm, imagem, especialidade, email, telefone) {
+  constructor (nome, crm, imagem,estaAtivo, especialidade, email, telefone) {
     this.nome = nome
     this.crm = crm
     this.imagem = imagem
+    this.estaAtivo=estaAtivo
     this.especialidade = especialidade
     this.email = email
     this.telefone = telefone
+    
   }
 }

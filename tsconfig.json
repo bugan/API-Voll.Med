@@ -1,7 +1,11 @@
 {
 	"compilerOptions": {
-		"lib":["ES6"],
-		"rootDirs": ["./src"],
+		"lib": [
+			"ES6"
+		],
+		"rootDirs": [
+			"./src"
+		],
 		"outDir": "./build",
 		"allowJs": true,
 		"target": "ES6",
@@ -9,9 +13,12 @@
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
 		"moduleResolution": "node",
-		"strictNullChecks": true
+		"strictNullChecks": true,
 	},
-	"include": ["./src/**/*"],
-	"exclude": ["node_modules"],
-	
+	"include": [
+		"./src/**/*"
+	],
+	"exclude": [
+		"node_modules"
+	],
 }

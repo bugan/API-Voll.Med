@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
 
+// TODO Alterar endereço e adicionar estado e cidade
 @Entity()
 export class Endereco {
   @PrimaryGeneratedColumn()
@@ -16,5 +17,4 @@ export class Endereco {
 
   @Column('varchar', { length: 100 })
     complemento: string
-
 }

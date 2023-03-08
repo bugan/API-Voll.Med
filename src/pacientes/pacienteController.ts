@@ -20,6 +20,7 @@ export const pacientePost = async (req: Request, res: Response): Promise<void> =
     senha,
     endereco,
     telefone,
+    estaAtivo,
     possuiPlanoSaude,
     planoSaude
   } = req.body
@@ -35,6 +36,7 @@ export const pacientePost = async (req: Request, res: Response): Promise<void> =
   paciente.telefone = telefone
   paciente.possuiPlanoSaude = possuiPlanoSaude
   paciente.planoSaude = planoSaude
+  paciente.estaAtivo = estaAtivo
 
   await AppDataSource.manager.save(Endereco, enderecoPaciente)
   await AppDataSource.manager.save(Paciente, paciente)
@@ -57,6 +59,7 @@ export const pacienteUpdate = async (req: Request, res: Response): Promise<void>
     email,
     senha,
     endereco,
+    estaAtivo,
     telefone,
     possuiPlanoSaude,
     planoSaude
@@ -72,6 +75,7 @@ export const pacienteUpdate = async (req: Request, res: Response): Promise<void>
     paciente.nome = nome
     paciente.email = email
     paciente.senha = senha
+    paciente.estaAtivo = estaAtivo
     paciente.telefone = telefone
     paciente.possuiPlanoSaude = possuiPlanoSaude
     paciente.planoSaude = planoSaude
@@ -86,17 +90,15 @@ export const pacienteUpdate = async (req: Request, res: Response): Promise<void>
   res.json(paciente)
 }
 
-export const pacienteDelete = async (req: Request, res: Response): Promise<void> => {
+// TODO nao deletar o paciente, mas torna-lo inativo
+export const desativaPaciente = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params
   const paciente = await AppDataSource.manager.findOne(Paciente, {
-    where: { id },
-    relations: ['endereco']
+    where: { id }
   })
   if (paciente !== null) {
-    const endereco = paciente.endereco
-    // Como fazer com o cascade?
-    await AppDataSource.manager.remove(Paciente, paciente)
-    await AppDataSource.manager.remove(Endereco, endereco)
-    res.json({ message: 'Paciente apagado!' })
+    // await AppDataSource.manager.remove(Paciente, paciente)
+    paciente.estaAtivo = false
+    res.json({ message: 'Paciente desativado!' })
   }
 }
