@@ -1,19 +1,27 @@
 import { Router } from 'express'
+import { verificaTokenJWT } from '../auth/verificaTokenJWT.js'
 import {
-  pacientes,
-  pacientePost,
-  pacienteGet,
-  pacienteUpdate,
-  desativaPaciente
+  lerPacientes,
+  criarPaciente,
+  lerPaciente,
+  atualizarPaciente,
+  deletarPaciente,
+  atualizarEnderecoPaciente,
+  loginPaciente,
+  logoutPaciente,
 } from './pacienteController.js'
+
 
 export const pacienteRouter = Router()
 
-pacienteRouter.get('/', pacientes)
-pacienteRouter.post('/', pacientePost)
-pacienteRouter.get('/:id', pacienteGet)
-pacienteRouter.put('/:id', pacienteUpdate)
-pacienteRouter.delete('/:id', desativaPaciente)
+pacienteRouter.get('/', lerPacientes)
+pacienteRouter.post('/', criarPaciente)
+pacienteRouter.get('/:id', lerPaciente)
+pacienteRouter.put('/:id', verificaTokenJWT, atualizarPaciente)
+pacienteRouter.delete('/:id', verificaTokenJWT, deletarPaciente)
+pacienteRouter.patch('/:id', verificaTokenJWT, atualizarEnderecoPaciente)
+pacienteRouter.post('/login', loginPaciente)
+pacienteRouter.post('/logout', verificaTokenJWT, logoutPaciente)
 
 export default (app) => {
   app.use('/paciente', pacienteRouter)
