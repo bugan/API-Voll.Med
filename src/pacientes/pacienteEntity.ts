@@ -41,7 +41,7 @@ export class Paciente {
   @Column({ type: 'boolean', default: true })
     estaAtivo: boolean
 
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', default: true })
     possuiPlanoSaude: boolean
 
   @Column({ type: 'enum', enum: planosSaude })

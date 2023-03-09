@@ -23,6 +23,7 @@ export const criarPaciente = async (req: Request, res: Response): Promise<void> 
     email,
     senha,
     estaAtivo,
+    possuiPlanoSaude,
     endereco,
     telefone,
     planoSaude
@@ -34,7 +35,7 @@ export const criarPaciente = async (req: Request, res: Response): Promise<void> 
 
   try {
     const paciente = new Paciente(cpf, nome, email, senha, telefone, planoSaude,estaAtivo)
-  
+  paciente.possuiPlanoSaude=possuiPlanoSaude
     const enderecoPaciente = new Endereco()
   
     if(endereco !== undefined) {
@@ -52,6 +53,7 @@ export const criarPaciente = async (req: Request, res: Response): Promise<void> 
   
     res.status(202).json(paciente)
   } catch (error) {
+    console.log(error)
     res.status(502).send('Paciente não foi criado')
   }
 }
@@ -160,7 +162,9 @@ export const desativaPaciente = async (req: Request, res: Response): Promise<voi
   })
   if (paciente !== null) {
     paciente.estaAtivo = false
-    res.json({ message: 'Paciente desativado!' })
+    res.json({ message: 
+      
+      'Paciente desativado!' })
   }
 }
 export const loginPaciente = async (req: Request, res: Response): Promise<void> => {
@@ -169,6 +173,7 @@ export const loginPaciente = async (req: Request, res: Response): Promise<void> 
     where: { email, senha },
   })
 
+   console.log(paciente)
   if (!paciente) {
     res.status(500).json({message: 'Login inválido!'})
   } else {     
