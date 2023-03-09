@@ -5,7 +5,7 @@ import {
   criarPaciente,
   lerPaciente,
   atualizarPaciente,
-  deletarPaciente,
+  desativaPaciente,
   atualizarEnderecoPaciente,
   loginPaciente,
   logoutPaciente,
@@ -18,7 +18,7 @@ pacienteRouter.get('/', lerPacientes)
 pacienteRouter.post('/', criarPaciente)
 pacienteRouter.get('/:id', lerPaciente)
 pacienteRouter.put('/:id', verificaTokenJWT, atualizarPaciente)
-pacienteRouter.delete('/:id', verificaTokenJWT, deletarPaciente)
+pacienteRouter.delete('/:id', verificaTokenJWT, desativaPaciente)
 pacienteRouter.patch('/:id', verificaTokenJWT, atualizarEnderecoPaciente)
 pacienteRouter.post('/login', loginPaciente)
 pacienteRouter.post('/logout', verificaTokenJWT, logoutPaciente)
