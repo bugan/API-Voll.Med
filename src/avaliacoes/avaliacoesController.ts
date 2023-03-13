@@ -2,7 +2,7 @@ import { type Request, type Response } from 'express'
 import { AppDataSource } from '../data-source.js'
 import { Avaliacoes } from './avaliacoesEntity.js'
 import { Paciente } from '../pacientes/pacienteEntity.js'
-import { Especialista } from '../especialistas/EspecialistaEntidade.js'
+import { Especialista } from '../especialistas/EspecialistaEntity.js'
 
 export const avaliacoes = async (req: Request, res: Response): Promise<void> => {
   const allAvaliacoes = await AppDataSource.manager.find(Avaliacoes)

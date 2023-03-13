@@ -33,6 +33,9 @@ export class Especialista {
   @Column('varchar')
     imagem: string
 
+  @Column({ type: 'boolean', default: true })
+    estaAtivo: boolean
+
   @Column('varchar', { length: 100 })
     especialidade: string
 
@@ -53,12 +56,14 @@ export class Especialista {
   @Column({ type: 'enum', enum: PlanosSaude })
     planosSaude: PlanosSaude
 
-  constructor (nome, crm, imagem, especialidade, email, telefone) {
+  constructor (nome, crm, imagem,estaAtivo, especialidade, email, telefone) {
     this.nome = nome
     this.crm = crm
     this.imagem = imagem
+    this.estaAtivo=estaAtivo
     this.especialidade = especialidade
     this.email = email
     this.telefone = telefone
+    
   }
 }

@@ -1,6 +1,6 @@
 import { type Request, type Response } from 'express'
 import { AppDataSource } from '../data-source.js'
-import { Especialista } from './EspecialistaEntidade.js'
+import { Especialista } from './EspecialistaEntity.js'
 import { BadRequestError, NotFoundError } from '../apiError/api-error.js'
 
 // Get All
@@ -21,12 +21,13 @@ export const criarEspecialista = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { nome, crm, imagem, especialidade, email, telefone } = req.body
+  const { nome, crm, imagem, especialidade, email, telefone,estaAtivo } = req.body
 
   const especialista = new Especialista(
     nome,
     crm,
     imagem,
+    estaAtivo,
     especialidade,
     email,
     telefone
@@ -60,7 +61,7 @@ export const especialistaById = async (req: Request, res: Response) => {
 
 // Put especialista/:id
 export const atualizarEspecialista = async (req: Request, res: Response) => {
-  const { nome, crm, imagem, especialidade, email, telefone } = req.body
+  const { nome, crm, imagem, estaAtivo,especialidade, email, telefone } = req.body
   const { id } = req.params
 
   const especialistaUpdate = await AppDataSource.manager.findOneBy(
@@ -72,6 +73,7 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
   if (especialistaUpdate !== null) {
     especialistaUpdate.nome = nome
     especialistaUpdate.crm = crm
+    especialistaUpdate.estaAtivo = estaAtivo
     especialistaUpdate.imagem = imagem
     especialistaUpdate.especialidade = especialidade
     especialistaUpdate.email = email

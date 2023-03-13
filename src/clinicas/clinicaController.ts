@@ -2,7 +2,7 @@
 import { type Request, type Response } from 'express'
 import { AppDataSource } from '../data-source.js'
 import { Endereco } from '../enderecos/enderecoEntity.js'
-import { Especialista } from '../especialistas/EspecialistaEntidade.js'
+import { Especialista } from '../especialistas/EspecialistaEntity.js'
 import { Clinica } from './clinicaEntity.js'
 
 export const criarClinica = async (req: Request, res: Response): Promise<void> => {
@@ -90,7 +90,6 @@ export const atualizaEspecialistaPeloIdDaClinica = async (req: Request, res: Res
   const especialista = await AppDataSource.manager.findOne(Especialista, {
     where: { id: especialistaId }
   })
-  console.log(especialista)
   if (especialista == null) { return res.status(404).json({ message: 'Especialista não encontrado' }) }
 
   // buscando clinica do id especificado

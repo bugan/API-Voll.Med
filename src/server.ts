@@ -8,6 +8,7 @@ import rotaPlanoDeSaude from "./planosDeSaude/planosDeSaudeRoutes.js"
 import rotaClinica from './clinicas/clinicaRoutes.js'
 import { AppDataSource } from './data-source.js'
 import rotaAvaliacoes from './avaliacoes/avaliacoesRoutes.js'
+import rotaConsulta from './consultas/consultaRoutes.js'
 import { erro } from './apiError/ErrorHandler.js'
 
 dotenv.config({ path: '.env' })
@@ -27,8 +28,9 @@ AppDataSource.initialize()
 rotaPaciente(app)
 rotaEspecialista(app)
 rotaAvaliacoes(app)
-rotaPlanoDeSaude(app)
 rotaClinica(app)
+rotaConsulta(app)
+rotaPlanoDeSaude(app)
 
 app.use(erro) // do middleware, precisa ser inserido antes do app listen
 

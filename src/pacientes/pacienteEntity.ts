@@ -12,7 +12,6 @@ enum planosSaude {
   Biovida,
   Outro
 }
-
 @Entity()
 export class Paciente {
   @PrimaryGeneratedColumn('uuid')
@@ -39,16 +38,23 @@ export class Paciente {
   @Column({ type: 'int' })
     telefone: number
 
+  @Column({ type: 'boolean', default: true })
+    estaAtivo: boolean
+
+  @Column({ type: 'boolean', default: true })
+    possuiPlanoSaude: boolean
+
   @Column({ type: 'enum', enum: planosSaude })
     planoSaude: planosSaude
 
   @OneToMany(() => Avaliacoes, (avaliacoes) => avaliacoes.paciente)
     avaliacoes: Relation<Avaliacoes>
 
-  constructor (cpf, nome, email, senha, telefone, planoSaude) {
+  constructor (cpf, nome, email, senha, telefone, planoSaude,estaAtivo) {
     this.cpf = cpf
     this.nome = nome
     this.email = email
+    this.estaAtivo = estaAtivo
     this.senha = senha
     this.telefone = telefone
     this.planoSaude = planoSaude

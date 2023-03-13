@@ -1,7 +1,7 @@
 
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, Relation } from 'typeorm'
 import { Endereco } from '../enderecos/enderecoEntity.js'
-import { Especialista } from '../especialistas/EspecialistaEntidade.js'
+import { Especialista } from '../especialistas/EspecialistaEntity.js'
 
 enum planosSaude {
   Sulamerica,
