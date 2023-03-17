@@ -8,7 +8,6 @@ export const erro = (
   next: NextFunction
 ) => {
   const statusCode = error.statusCode ?? 500
-  console.log(error.statusCode)
   const message = error.statusCode ? error.message : 'Erro interno do Servidor'
   return res.status(statusCode).json({ message })
 }

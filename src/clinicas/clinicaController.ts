@@ -96,7 +96,6 @@ export const atualizaEspecialistaPeloIdDaClinica = async (req: Request, res: Res
   const clinica = await AppDataSource.manager.findOne(Clinica, {
     where: { id }
   })
-  console.log(clinica)
   if (clinica == null) { return res.status(404).json({ message: 'Clinica não encontrada' }) }
 
   // atualizando clinica do especialista e salvando

@@ -14,7 +14,6 @@ export function CPFValido (cpf: string): boolean {
   let resto: number = 0
 
   if (cpf.length !== 11) {
-    console.log('tamanho')
     return false
   }
 

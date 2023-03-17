@@ -71,9 +71,7 @@ const especialistaEstaDisponivel = async (especialistaId: string, tempoDaData: D
       )
     }
   })
-  console.log(consultations);
   
-  console.log(consultations.length)
   return consultations.length === 0
 }
 

@@ -52,7 +52,6 @@ export const especialistaById = async (req: Request, res: Response) => {
   })
 
   if (especialista !== null) {
-    console.log('especialista', especialista)
     res.status(200).json(especialista)
   } else {
     throw new NotFoundError('Id não encontrado ')

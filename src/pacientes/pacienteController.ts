@@ -55,7 +55,6 @@ export const criarPaciente = async (req: Request, res: Response): Promise<void> 
 
     res.status(202).json(paciente)
   } catch (error) {
-    console.log(error)
     res.status(502).send('Paciente não foi criado')
   }
 }
@@ -176,7 +175,6 @@ export const loginPaciente = async (req: Request, res: Response): Promise<void> 
     where: { email, senha }
   })
 
-  console.log(paciente)
   if (paciente == null) {
     res.status(500).json({ message: 'Login inválido!' })
   } else {
