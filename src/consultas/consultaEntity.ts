@@ -9,9 +9,9 @@ enum Lembrete {
 }
 
 enum MotivoCancelamento {
-  "paciente desistiu",
-  "médico cancelou",
-  "outros"
+  paciente_desistiu,
+  médico_cancelou,
+  outros
 }
 
 @Entity()
