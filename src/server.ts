@@ -4,7 +4,7 @@ import express from 'express'
 import 'reflect-metadata'
 import rotaPaciente from './pacientes/pacienteRoutes.js'
 import rotaEspecialista from './especialistas/especialistaRoutes.js'
-import rotaPlanoDeSaude from "./planosDeSaude/planosDeSaudeRoutes.js"
+import rotaPlanoDeSaude from './planosDeSaude/planosDeSaudeRoutes.js'
 import rotaClinica from './clinicas/clinicaRoutes.js'
 import { AppDataSource } from './data-source.js'
 import rotaAvaliacoes from './avaliacoes/avaliacoesRoutes.js'
@@ -36,4 +36,5 @@ app.use(erro) // do middleware, precisa ser inserido antes do app listen
 
 app.listen(process.env.SERVER_PORT, () => { console.log(`server running on port ${process.env.SERVER_PORT}`) }
 )
+
 export default app

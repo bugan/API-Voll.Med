@@ -10,3 +10,20 @@ services:
       MYSQL_DATABASE: testemed
     volumes:
       - ./mysql:/var/lib/mysql
+    networks:
+      - my-networks
+
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+    networks:
+      - my-networks
+
+networks:
+  my-networks:
+    driver: bridge

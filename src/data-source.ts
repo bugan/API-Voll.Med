@@ -19,7 +19,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_DATABASE,
   synchronize: true,
   logging: false,
-  entities: [Paciente, Endereco, Especialista, Avaliacoes, Clinica,Consulta],
+  entities: [Paciente, Endereco, Especialista, Avaliacoes, Clinica, Consulta],
   migrations: [],
   subscribers: []
 })
