@@ -21,7 +21,7 @@ export const criarEspecialista = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { nome, crm, imagem, especialidade, email, telefone,estaAtivo } = req.body
+  const { nome, crm, imagem, especialidade, email, telefone, estaAtivo } = req.body
 
   const especialista = new Especialista(
     nome,
@@ -60,7 +60,7 @@ export const especialistaById = async (req: Request, res: Response) => {
 
 // Put especialista/:id
 export const atualizarEspecialista = async (req: Request, res: Response) => {
-  const { nome, crm, imagem, estaAtivo,especialidade, email, telefone } = req.body
+  const { nome, crm, imagem, estaAtivo, especialidade, email, telefone } = req.body
   const { id } = req.params
 
   const especialistaUpdate = await AppDataSource.manager.findOneBy(
