@@ -2,6 +2,7 @@ import { type Request, type Response } from 'express'
 import { AppDataSource } from '../data-source.js'
 import { Especialista } from './EspecialistaEntity.js'
 import { BadRequestError, NotFoundError } from '../apiError/api-error.js'
+import { mapeiaPlano } from '../utils/planoSaudeUtils.js'
 
 // Get All
 export const especialistas = async (
@@ -21,7 +22,12 @@ export const criarEspecialista = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { nome, crm, imagem, especialidade, email, telefone, estaAtivo } = req.body
+  let { nome, crm, imagem, especialidade, email, telefone, estaAtivo, possuiPlanoSaude, planosSaude } = req.body
+
+  if (possuiPlanoSaude === true && planosSaude !== undefined) {
+    // transforma array de numbers em array de strings com os nomes dos planos definidos no enum correspondente
+    planosSaude = mapeiaPlano(planosSaude)
+  }
 
   const especialista = new Especialista(
     nome,
@@ -30,22 +36,23 @@ export const criarEspecialista = async (
     estaAtivo,
     especialidade,
     email,
-    telefone
+    telefone, possuiPlanoSaude, planosSaude
   )
 
   try {
     await AppDataSource.manager.save(Especialista, especialista)
     res.status(200).json(especialista)
-  } catch (Error) {
+  } catch (error) {
     if ((await AppDataSource.manager.findOne(Especialista, { where: { crm } })) != null) {
       res.status(422).json({ message: 'Crm já cadastrado' })
     } else {
+      console.log(error)
       throw new BadRequestError('Especialista não foi criado')
     }
   }
 }
 // Get By Id
-export const especialistaById = async (req: Request, res: Response) => {
+export const especialistaById = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params
   const especialista = await AppDataSource.manager.findOneBy(Especialista, {
     id
@@ -59,9 +66,14 @@ export const especialistaById = async (req: Request, res: Response) => {
 }
 
 // Put especialista/:id
-export const atualizarEspecialista = async (req: Request, res: Response) => {
-  const { nome, crm, imagem, estaAtivo, especialidade, email, telefone } = req.body
+export const atualizarEspecialista = async (req: Request, res: Response): Promise<void> => {
+  let { nome, crm, imagem, especialidade, email, telefone, estaAtivo, possuiPlanoSaude, planosSaude } = req.body
   const { id } = req.params
+
+  if (possuiPlanoSaude === true && planosSaude !== undefined) {
+    // transforma array de numbers em array de strings com os nomes dos planos definidos no enum correspondente
+    planosSaude = mapeiaPlano(planosSaude)
+  }
 
   const especialistaUpdate = await AppDataSource.manager.findOneBy(
     Especialista,
@@ -77,6 +89,8 @@ export const atualizarEspecialista = async (req: Request, res: Response) => {
     especialistaUpdate.especialidade = especialidade
     especialistaUpdate.email = email
     especialistaUpdate.telefone = telefone
+    especialistaUpdate.possuiPlanoSaude = possuiPlanoSaude
+    especialistaUpdate.planosSaude = planosSaude
 
     await AppDataSource.manager.save(Especialista, especialistaUpdate)
     res.json(especialistaUpdate)

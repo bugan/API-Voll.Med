@@ -9,16 +9,6 @@ import {
 import { Avaliacoes } from '../avaliacoes/avaliacoesEntity.js'
 import { Clinica } from '../clinicas/clinicaEntity.js'
 
-enum PlanosSaude {
-  Sulamerica,
-  Unimed,
-  Bradesco,
-  Amil,
-  Biosaúde,
-  Biovida,
-  Outro,
-}
-
 @Entity()
 export class Especialista {
   @PrimaryGeneratedColumn('uuid')
@@ -53,17 +43,21 @@ export class Especialista {
   })
     avaliacoes: Relation<Avaliacoes>
 
-  @Column({ type: 'enum', enum: PlanosSaude })
-    planosSaude: PlanosSaude
+  @Column({ type: 'boolean', default: true })
+    possuiPlanoSaude: boolean
 
-  constructor (nome, crm, imagem,estaAtivo, especialidade, email, telefone) {
+  @Column({ type: 'simple-array', nullable: true })
+    planosSaude: string
+
+  constructor (nome, crm, imagem, estaAtivo, especialidade, email, telefone, possuiPlanoSaude, planosSaude) {
     this.nome = nome
     this.crm = crm
     this.imagem = imagem
-    this.estaAtivo=estaAtivo
+    this.estaAtivo = estaAtivo
     this.especialidade = especialidade
     this.email = email
     this.telefone = telefone
-    
+    this.possuiPlanoSaude = possuiPlanoSaude
+    this.planosSaude = planosSaude
   }
 }

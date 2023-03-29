@@ -3,7 +3,8 @@
 node_modules/
 build/
 tmp/
-temp/
 .env
+temp/
 db_data/
+database/
 mysql

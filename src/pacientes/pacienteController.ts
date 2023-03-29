@@ -5,21 +5,12 @@ import { Endereco } from '../enderecos/enderecoEntity.js'
 import { CPFValido } from './validacaoCPF.js'
 import jwt from 'jsonwebtoken'
 import * as dotenv from 'dotenv'
+import { mapeiaPlano } from '../utils/planoSaudeUtils.js'
+import { BadRequestError } from '../apiError/api-error.js'
 dotenv.config()
 
-export const lerPacientes = async (req: Request, res: Response): Promise<void> => {
-  const tabelaPaciente = AppDataSource.getRepository(Paciente)
-  const allPacientes = await tabelaPaciente.find()
-
-  if (allPacientes.length === 0) {
-    res.status(404).json('Não encontramos pacientes!')
-  } else {
-    res.status(200).json(allPacientes)
-  }
-}
-
 export const criarPaciente = async (req: Request, res: Response): Promise<void> => {
-  const {
+  let {
     cpf,
     nome,
     email,
@@ -28,15 +19,20 @@ export const criarPaciente = async (req: Request, res: Response): Promise<void> 
     possuiPlanoSaude,
     endereco,
     telefone,
-    planoSaude
+    planosSaude
   } = req.body
 
   if (!CPFValido(cpf)) {
-    throw new Error('CPF Inválido!')
+    throw new BadRequestError('CPF Inválido!')
+  }
+
+  if (possuiPlanoSaude === true && planosSaude !== undefined) {
+    // transforma array de numbers em array de strings com os nomes dos planos definidos no enum correspondente
+    planosSaude = mapeiaPlano(planosSaude)
   }
 
   try {
-    const paciente = new Paciente(cpf, nome, email, senha, telefone, planoSaude, estaAtivo)
+    const paciente = new Paciente(cpf, nome, email, senha, telefone, planosSaude, estaAtivo)
     paciente.possuiPlanoSaude = possuiPlanoSaude
     const enderecoPaciente = new Endereco()
 
@@ -55,7 +51,17 @@ export const criarPaciente = async (req: Request, res: Response): Promise<void> 
 
     res.status(202).json(paciente)
   } catch (error) {
-    res.status(502).send('Paciente não foi criado')
+    res.status(502).json({ 'Paciente não foi criado': error })
+  }
+}
+export const lerPacientes = async (req: Request, res: Response): Promise<void> => {
+  const tabelaPaciente = AppDataSource.getRepository(Paciente)
+  const allPacientes = await tabelaPaciente.find()
+
+  if (allPacientes.length === 0) {
+    res.status(404).json('Não encontramos pacientes!')
+  } else {
+    res.status(200).json(allPacientes)
   }
 }
 
@@ -77,14 +83,14 @@ export const lerPaciente = async (req: Request, res: Response): Promise<void> =>
 
 // update
 export const atualizarPaciente = async (req: Request, res: Response): Promise<void> => {
-  const {
+  let {
     nome,
     email,
     senha,
     estaAtivo,
     telefone,
     possuiPlanoSaude,
-    planoSaude,
+    planosSaude,
     cpf
   } = req.body
 
@@ -92,6 +98,11 @@ export const atualizarPaciente = async (req: Request, res: Response): Promise<vo
 
   if (!CPFValido(cpf)) {
     throw new Error('CPF Inválido!')
+  }
+
+  if (possuiPlanoSaude === true && planosSaude !== undefined) {
+    // transforma array de numbers em array de strings com os nomes dos planos definidos no enum correspondente
+    planosSaude = mapeiaPlano(planosSaude)
   }
 
   try {
@@ -109,7 +120,7 @@ export const atualizarPaciente = async (req: Request, res: Response): Promise<vo
       paciente.senha = senha
       paciente.possuiPlanoSaude = possuiPlanoSaude
       paciente.telefone = telefone
-      paciente.planoSaude = planoSaude
+      paciente.planosSaude = planosSaude
       paciente.estaAtivo = estaAtivo
 
       await AppDataSource.manager.save(Paciente, paciente)
@@ -154,7 +165,7 @@ export const atualizarEnderecoPaciente = async (req: Request, res: Response): Pr
   }
 }
 
-// TODO nao deletar o paciente, mas torna-lo inativo
+// Não deleta o paciente, fica inativo
 export const desativaPaciente = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params
   const paciente = await AppDataSource.manager.findOne(Paciente, {

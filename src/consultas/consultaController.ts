@@ -10,6 +10,7 @@ import {
   especialistaEstaDisponivel
 } from './consultaValidacoes.js'
 import { BadRequestError, NotFoundError } from '../apiError/api-error.js'
+import { mapeiaLembretes } from '../utils/consultaUtils.js'
 
 export const criaConsulta = async (
   req: Request,
@@ -52,8 +53,8 @@ export const criaConsulta = async (
   consulta.data = data
   consulta.desejaLembrete = desejaLembrete
 
-  if (desejaLembrete === true) {
-    consulta.lembretes = lembretes
+  if (desejaLembrete === true && lembretes !== undefined) {
+    consulta.lembretes = mapeiaLembretes(lembretes)
   }
   await AppDataSource.manager.save(Consulta, consulta)
   return res.json(consulta)

@@ -28,7 +28,6 @@ export class Clinica {
   @OneToMany(() => Especialista, (especialista) => especialista.clinica)
     especialistas: Relation<Especialista[]>
 
-  // Para um array de enums, a documentação recomenda usar o tipo 'set' (https://dev.mysql.com/doc/refman/5.7/en/set.html)
-  @Column({ type: 'set', enum: planosSaude })
-    planoDeSaudeAceitos: planosSaude[]
+  @Column({ type: 'simple-array' })
+    planoDeSaudeAceitos: string[]
 }

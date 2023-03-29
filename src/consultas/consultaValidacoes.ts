@@ -7,13 +7,13 @@ import { Consulta } from './consultaEntity.js'
 const horarioInicioDaClinica: number = 7
 const horarioFechamentoDaClinica: number = 19
 
- const validaClinicaEstaAberta = (data: Date): boolean => {
-  const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-  const dataObj = new Date(data);
-  const diaDaSemana = diasDaSemana[dataObj.getUTCDay()];
-  const hora = dataObj.getUTCHours();
-  return diaDaSemana !== 'Domingo' && hora >= horarioInicioDaClinica && hora < horarioFechamentoDaClinica;
- }
+const validaClinicaEstaAberta = (data: Date): boolean => {
+  const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado']
+  const dataObj = new Date(data)
+  const diaDaSemana = diasDaSemana[dataObj.getUTCDay()]
+  const hora = dataObj.getUTCHours()
+  return diaDaSemana !== 'Domingo' && hora >= horarioInicioDaClinica && hora < horarioFechamentoDaClinica
+}
 
 // export const validaDuracaoConsulta = async (tempoInicio: Date, tempoFim: Date): Promise<boolean> => {
 //   const duracaoConsulta = 60 * 60 * 1000 // 1 HORA DE DURACAO
@@ -21,13 +21,12 @@ const horarioFechamentoDaClinica: number = 19
 // }
 
 const validaAntecedenciaMinima = (horario: Date, antecedencia_minima): boolean => {
+  const agora = new Date()
+  const horarioDaConsulta = new Date(horario)
 
-  let agora = new Date();
-  const horarioDaConsulta = new Date(horario);
- 
-   agora.setMinutes(agora.getMinutes() - antecedencia_minima);
- 
-   return horarioDaConsulta > agora;
+  agora.setMinutes(agora.getMinutes() - antecedencia_minima)
+
+  return horarioDaConsulta > agora
 }
 
 const estaAtivoPaciente = async (pacienteId: string): Promise<boolean> => {
@@ -47,7 +46,7 @@ const estaAtivoEspecialista = async (especialistaId: string): Promise<boolean> =
 }
 
 const pacienteEstaDisponivel = async (pacienteId: string, tempoDaData: Date): Promise<boolean> => {
-  const dataObj = new Date(tempoDaData);
+  const dataObj = new Date(tempoDaData)
   const consultations = await AppDataSource.manager.find(Consulta, {
     where: {
       paciente: { id: pacienteId },
@@ -61,7 +60,7 @@ const pacienteEstaDisponivel = async (pacienteId: string, tempoDaData: Date): Pr
 }
 
 const especialistaEstaDisponivel = async (especialistaId: string, tempoDaData: Date): Promise<boolean> => {
-  const dataObj = new Date(tempoDaData);
+  const dataObj = new Date(tempoDaData)
   const consultations = await AppDataSource.manager.find(Consulta, {
     where: {
       especialista: { id: especialistaId },
@@ -71,8 +70,8 @@ const especialistaEstaDisponivel = async (especialistaId: string, tempoDaData: D
       )
     }
   })
-  
+
   return consultations.length === 0
 }
 
-export { validaClinicaEstaAberta, validaAntecedenciaMinima, estaAtivoPaciente, estaAtivoEspecialista, pacienteEstaDisponivel, especialistaEstaDisponivel}
+export { validaClinicaEstaAberta, validaAntecedenciaMinima, estaAtivoPaciente, estaAtivoEspecialista, pacienteEstaDisponivel, especialistaEstaDisponivel }

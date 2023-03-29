@@ -8,7 +8,7 @@ export class Avaliacoes {
     id: string
 
   @CreateDateColumn({
-    type: 'timestamp'
+    type: 'text'
   })
     createdAt!: Date // Gerar automaticamente e puxar no GET o horário no CRUD
 

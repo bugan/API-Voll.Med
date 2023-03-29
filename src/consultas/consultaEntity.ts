@@ -1,5 +1,5 @@
 
-import { Entity, PrimaryGeneratedColumn, ManyToOne, Column, JoinColumn } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, ManyToOne, Column } from 'typeorm'
 import { Especialista } from '../especialistas/EspecialistaEntity.js'
 import { Paciente } from '../pacientes/pacienteEntity.js'
 
@@ -33,13 +33,13 @@ export class Consulta {
   @Column({ type: 'boolean', default: false })
     desejaLembrete: boolean
 
-  @Column({ type: 'set', enum: Lembrete })
-    lembretes?: Lembrete[]
+  @Column({ type: 'simple-array', nullable: true })
+    lembretes: string[]
 
   @Column({ name: 'motivo_cancelamento', nullable: true })
-    motivoCancelamento: MotivoCancelamento
+    motivoCancelamento: string
 
-  cancelar (motivo: MotivoCancelamento): void {
+  cancelar (motivo: string): void {
     this.motivoCancelamento = motivo
   }
 }

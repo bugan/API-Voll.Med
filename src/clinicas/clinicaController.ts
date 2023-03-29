@@ -3,6 +3,7 @@ import { type Request, type Response } from 'express'
 import { AppDataSource } from '../data-source.js'
 import { Endereco } from '../enderecos/enderecoEntity.js'
 import { Especialista } from '../especialistas/EspecialistaEntity.js'
+import { mapeiaPlano } from '../utils/planoSaudeUtils.js'
 import { Clinica } from './clinicaEntity.js'
 
 export const criarClinica = async (req: Request, res: Response): Promise<void> => {
@@ -22,7 +23,8 @@ export const criarClinica = async (req: Request, res: Response): Promise<void> =
   await AppDataSource.manager.save(Endereco, enderecoClinica)
 
   clinica.endereco = enderecoClinica
-  clinica.planoDeSaudeAceitos = planoDeSaudeAceitos
+
+  clinica.planoDeSaudeAceitos = mapeiaPlano(planoDeSaudeAceitos)
 
   await AppDataSource.manager.save(Clinica, clinica)
   res.json(clinica)
@@ -56,12 +58,13 @@ export const atualizarClinica = async (req: Request, res: Response): Promise<voi
     relations: ['endereco']
   })
   if (clinica !== null) {
-    clinica.planoDeSaudeAceitos = planoDeSaudeAceitos
-    clinica.endereco.cep = endereco.cep
-    clinica.endereco.rua = endereco.rua
-    clinica.endereco.numero = endereco.numero
-    clinica.endereco.complemento = endereco.complemento
-
+    if (planoDeSaudeAceitos !== null) { clinica.planoDeSaudeAceitos = mapeiaPlano(planoDeSaudeAceitos) }
+    if (endereco !== null) {
+      clinica.endereco.cep = endereco.cep
+      clinica.endereco.rua = endereco.rua
+      clinica.endereco.numero = endereco.numero
+      clinica.endereco.complemento = endereco.complemento
+    }
     await AppDataSource.manager.save(Clinica, clinica)
   }
 

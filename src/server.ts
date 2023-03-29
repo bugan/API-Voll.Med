@@ -34,6 +34,7 @@ rotaPlanoDeSaude(app)
 
 app.use(erro) // do middleware, precisa ser inserido antes do app listen
 
+// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 app.listen(process.env.SERVER_PORT, () => { console.log(`server running on port ${process.env.SERVER_PORT}`) }
 )
 

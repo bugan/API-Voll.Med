@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { verificaTokenJWT } from '../auth/verificaTokenJWT.js'
+import { resolver } from '../apiError/ErrorHandler.js'
 import {
   lerPacientes,
   criarPaciente,
@@ -8,20 +9,19 @@ import {
   desativaPaciente,
   atualizarEnderecoPaciente,
   loginPaciente,
-  logoutPaciente,
+  logoutPaciente
 } from './pacienteController.js'
-
 
 export const pacienteRouter = Router()
 
-pacienteRouter.get('/', lerPacientes)
-pacienteRouter.post('/', criarPaciente)
-pacienteRouter.get('/:id', lerPaciente)
-pacienteRouter.put('/:id', verificaTokenJWT, atualizarPaciente)
-pacienteRouter.delete('/:id', verificaTokenJWT, desativaPaciente)
-pacienteRouter.patch('/:id', verificaTokenJWT, atualizarEnderecoPaciente)
-pacienteRouter.post('/login', loginPaciente)
-pacienteRouter.post('/logout', verificaTokenJWT, logoutPaciente)
+pacienteRouter.get('/', resolver(lerPacientes))
+pacienteRouter.post('/', resolver(criarPaciente))
+pacienteRouter.get('/:id', resolver(lerPaciente))
+pacienteRouter.put('/:id', verificaTokenJWT, resolver(atualizarPaciente))
+pacienteRouter.delete('/:id', verificaTokenJWT, resolver(desativaPaciente))
+pacienteRouter.patch('/:id', verificaTokenJWT, resolver(atualizarEnderecoPaciente))
+pacienteRouter.post('/login', resolver(loginPaciente))
+pacienteRouter.post('/logout', verificaTokenJWT, resolver(logoutPaciente))
 
 export default (app) => {
   app.use('/paciente', pacienteRouter)
