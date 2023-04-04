@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv'
 import express from 'express'
 // import express, { Router, Request, Response } from 'express'
+import cors from 'cors'
 import 'reflect-metadata'
 import rotaPaciente from './pacientes/pacienteRoutes.js'
 import rotaEspecialista from './especialistas/especialistaRoutes.js'
@@ -14,6 +15,21 @@ import { erro } from './apiError/ErrorHandler.js'
 dotenv.config({ path: '.env' })
 
 const app = express()
+
+const corsOpts = {
+  origin: '*',
+
+  methods: [
+    'GET',
+    'POST',
+  ],
+
+  allowedHeaders: [
+    'Content-Type',
+  ],
+};
+
+app.use(cors(corsOpts));
 
 app.use(express.json())
 
