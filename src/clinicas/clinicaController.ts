@@ -24,9 +24,10 @@ export const criarClinica = async (req: Request, res: Response): Promise<void> =
 
   clinica.endereco = enderecoClinica
 
-  clinica.planoDeSaudeAceitos = mapeiaPlano(planoDeSaudeAceitos)
+  if (planoDeSaudeAceitos !== undefined) {
+    clinica.planoDeSaudeAceitos = mapeiaPlano(planoDeSaudeAceitos)
+  }
 
-  await AppDataSource.manager.save(Clinica, clinica)
   res.json(clinica)
 }
 

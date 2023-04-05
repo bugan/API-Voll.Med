@@ -1,17 +1,6 @@
-
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, Relation } from 'typeorm'
 import { Endereco } from '../enderecos/enderecoEntity.js'
 import { Especialista } from '../especialistas/EspecialistaEntity.js'
-
-enum planosSaude {
-  Sulamerica,
-  Unimed,
-  Bradesco,
-  Amil,
-  Biosaude,
-  Biovida,
-  Outro
-}
 
 @Entity()
 export class Clinica {
@@ -28,6 +17,6 @@ export class Clinica {
   @OneToMany(() => Especialista, (especialista) => especialista.clinica)
     especialistas: Relation<Especialista[]>
 
-  @Column({ type: 'simple-array' })
+  @Column({ type: 'simple-array', nullable: true })
     planoDeSaudeAceitos: string[]
 }
