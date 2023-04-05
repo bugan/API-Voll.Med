@@ -18,8 +18,11 @@ export class Avaliacoes {
   @ManyToOne(() => Paciente, (paciente) => paciente.avaliacoes)
     paciente: Relation<Paciente>
 
-  @Column({ type: 'int' })
+  @Column()
     nota: number
+
+  @Column({ nullable: true })
+    descricao: string
 
   @Column({ nullable: true })
     especialistaId: string
