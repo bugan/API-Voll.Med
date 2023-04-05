@@ -40,6 +40,7 @@ export const criarPaciente = async (req: Request, res: Response): Promise<void> 
     if (endereco !== undefined) {
       enderecoPaciente.cep = endereco.cep
       enderecoPaciente.rua = endereco.rua
+      enderecoPaciente.estado = endereco.estado
       enderecoPaciente.numero = endereco.numero
       enderecoPaciente.complemento = endereco.complemento
 
@@ -160,7 +161,7 @@ export const atualizarPaciente = async (req: Request, res: Response): Promise<vo
 
 export const atualizarEnderecoPaciente = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params
-  const { cep, rua, numero, complemento } = req.body
+  const { cep, rua, numero, estado, complemento } = req.body
   const paciente = await AppDataSource.manager.findOne(Paciente, {
     where: { id },
     relations: ['endereco']
@@ -173,6 +174,7 @@ export const atualizarEnderecoPaciente = async (req: Request, res: Response): Pr
       const endereco = new Endereco()
       endereco.cep = cep
       endereco.rua = rua
+      endereco.estado = estado
       endereco.numero = numero
       endereco.complemento = complemento
 
@@ -182,6 +184,7 @@ export const atualizarEnderecoPaciente = async (req: Request, res: Response): Pr
     } else {
       paciente.endereco.cep = cep
       paciente.endereco.rua = rua
+      paciente.endereco.estado = estado
       paciente.endereco.numero = numero
       paciente.endereco.complemento = complemento
     }

@@ -17,6 +17,7 @@ export const criarClinica = async (req: Request, res: Response): Promise<void> =
   const enderecoClinica = new Endereco()
   enderecoClinica.cep = endereco.cep
   enderecoClinica.rua = endereco.rua
+  enderecoClinica.estado = endereco.estado
   enderecoClinica.numero = endereco.numero
   enderecoClinica.complemento = endereco.complemento
 
@@ -63,6 +64,7 @@ export const atualizarClinica = async (req: Request, res: Response): Promise<voi
     if (endereco !== null) {
       clinica.endereco.cep = endereco.cep
       clinica.endereco.rua = endereco.rua
+      clinica.endereco.estado = endereco.estado
       clinica.endereco.numero = endereco.numero
       clinica.endereco.complemento = endereco.complemento
     }
@@ -115,9 +117,10 @@ export const deletarClinica = async (req: Request, res: Response): Promise<void>
     relations: ['endereco']
   })
   if (clinica !== null) {
-    const endereco = clinica.endereco
     await AppDataSource.manager.remove(Clinica, clinica)
-    await AppDataSource.manager.remove(Endereco, endereco)
+
+    // const endereco = clinica.endereco
+    // await AppDataSource.manager.remove(Endereco, endereco)
     res.json({ message: 'Clinica apagada!' })
   }
 }

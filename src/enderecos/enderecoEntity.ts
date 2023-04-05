@@ -15,6 +15,9 @@ export class Endereco {
   @Column({ type: 'int' })
     numero: number
 
+  @Column({ type: 'int' })
+    estado: string
+
   @Column('varchar', { length: 100 })
     complemento: string
 }
