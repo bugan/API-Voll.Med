@@ -1,13 +1,16 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   Relation
 } from 'typeorm'
 import { Avaliacoes } from '../avaliacoes/avaliacoesEntity.js'
 import { Clinica } from '../clinicas/clinicaEntity.js'
+import { Endereco } from '../enderecos/enderecoEntity.js'
 
 @Entity()
 export class Especialista {
@@ -48,6 +51,12 @@ export class Especialista {
 
   @Column({ type: 'simple-array', nullable: true })
     planosSaude: string
+
+  @OneToOne(() => Endereco, {
+    cascade: ['update']
+  })
+  @JoinColumn({ referencedColumnName: 'id' })
+    endereco: Relation<Endereco>
 
   constructor (nome, crm, imagem, estaAtivo, especialidade, email, telefone, possuiPlanoSaude, planosSaude) {
     this.nome = nome

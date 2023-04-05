@@ -3,6 +3,7 @@ import { AppDataSource } from '../data-source.js'
 import { Especialista } from './EspecialistaEntity.js'
 import { BadRequestError, NotFoundError } from '../apiError/api-error.js'
 import { mapeiaPlano } from '../utils/planoSaudeUtils.js'
+import { Endereco } from '../enderecos/enderecoEntity.js'
 
 // Get All
 export const especialistas = async (
@@ -22,7 +23,7 @@ export const criarEspecialista = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  let { nome, crm, imagem, especialidade, email, telefone, estaAtivo, possuiPlanoSaude, planosSaude } = req.body
+  let { nome, crm, imagem, especialidade, endereco, email, telefone, estaAtivo, possuiPlanoSaude, planosSaude } = req.body
 
   if (possuiPlanoSaude === true && planosSaude !== undefined) {
     // transforma array de numbers em array de strings com os nomes dos planos definidos no enum correspondente
@@ -39,6 +40,22 @@ export const criarEspecialista = async (
     telefone, possuiPlanoSaude, planosSaude
   )
 
+  const enderecoPaciente = new Endereco()
+
+  if (endereco !== undefined) {
+    enderecoPaciente.cep = endereco.cep
+    enderecoPaciente.rua = endereco.rua
+    enderecoPaciente.estado = endereco.estado
+    enderecoPaciente.numero = endereco.numero
+    enderecoPaciente.complemento = endereco.complemento
+
+    especialista.endereco = enderecoPaciente
+
+    await AppDataSource.manager.save(Endereco, enderecoPaciente).catch((err) => {
+      console.log(err)
+    })
+  }
+
   try {
     await AppDataSource.manager.save(Especialista, especialista)
     res.status(200).json(especialista)
@@ -46,7 +63,6 @@ export const criarEspecialista = async (
     if ((await AppDataSource.manager.findOne(Especialista, { where: { crm } })) != null) {
       res.status(422).json({ message: 'Crm já cadastrado' })
     } else {
-      console.log(error)
       throw new BadRequestError('Especialista não foi criado')
     }
   }
@@ -139,4 +155,16 @@ export const atualizaContato = async (
   } else {
     throw new BadRequestError('Telefone não atualizado')
   }
+}
+
+export const buscarEspecialistas = async (req: Request, res: Response): Promise<Response> => {
+  const { especialidade, estado } = req.body
+
+  const especialistas = await AppDataSource.manager.find(Especialista, {
+    where: { especialidade }, relations: ['endereco']
+  })
+
+  const resultado = especialistas.filter(especialista => especialista.endereco.estado === estado)
+
+  return res.json(resultado)
 }

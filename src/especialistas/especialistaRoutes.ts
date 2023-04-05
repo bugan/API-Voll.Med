@@ -6,7 +6,8 @@ import {
   especialistaById,
   atualizarEspecialista,
   apagarEspecialista,
-  atualizaContato
+  atualizaContato,
+  buscarEspecialistas
 
 } from './especialistaController.js'
 
@@ -14,6 +15,7 @@ export const especialistaRouter = Router()
 
 especialistaRouter.get('/', resolver(especialistas))
 especialistaRouter.post('/', resolver(criarEspecialista))
+especialistaRouter.get('/busca', resolver(buscarEspecialistas))
 especialistaRouter.get('/:id', resolver(especialistaById))
 especialistaRouter.put('/:id', resolver(atualizarEspecialista))
 especialistaRouter.delete('/:id', resolver(apagarEspecialista))
