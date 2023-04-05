@@ -9,7 +9,8 @@ import {
   desativaPaciente,
   atualizarEnderecoPaciente,
   loginPaciente,
-  logoutPaciente
+  logoutPaciente,
+  listaConsultasPaciente
 } from './pacienteController.js'
 
 export const pacienteRouter = Router()
@@ -17,6 +18,7 @@ export const pacienteRouter = Router()
 pacienteRouter.get('/', resolver(lerPacientes))
 pacienteRouter.post('/', resolver(criarPaciente))
 pacienteRouter.get('/:id', resolver(lerPaciente))
+pacienteRouter.get('/:id/consultas', resolver(listaConsultasPaciente))
 pacienteRouter.put('/:id', verificaTokenJWT, resolver(atualizarPaciente))
 pacienteRouter.delete('/:id', verificaTokenJWT, resolver(desativaPaciente))
 pacienteRouter.patch('/:id', verificaTokenJWT, resolver(atualizarEnderecoPaciente))

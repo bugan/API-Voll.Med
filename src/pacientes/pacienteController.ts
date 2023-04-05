@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken'
 import * as dotenv from 'dotenv'
 import { mapeiaPlano } from '../utils/planoSaudeUtils.js'
 import { BadRequestError } from '../apiError/api-error.js'
+import { Consulta } from '../consultas/consultaEntity.js'
 dotenv.config()
 
 export const criarPaciente = async (req: Request, res: Response): Promise<void> => {
@@ -79,6 +80,32 @@ export const lerPaciente = async (req: Request, res: Response): Promise<void> =>
   } else {
     res.status(200).json(paciente)
   }
+}
+
+export const listaConsultasPaciente = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const { id } = req.params
+  const paciente = await AppDataSource.manager.findOne(Paciente, {
+    where: { id }
+  })
+  if (paciente == null) {
+    throw new BadRequestError('Paciente não encontrado!')
+  }
+  const consultas = await AppDataSource.manager.find(Consulta, { where: { paciente: { id: paciente.id } } })
+
+  const consultadasTratadas = consultas.map(consulta => {
+    return {
+      id: consulta.id,
+      data: consulta.data,
+      desejaLembrete: consulta.desejaLembrete,
+      lembretes: consulta.lembretes,
+      especialista: consulta.especialista
+    }
+  })
+
+  return res.json(consultadasTratadas)
 }
 
 // update
