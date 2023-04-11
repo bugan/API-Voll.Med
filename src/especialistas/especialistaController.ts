@@ -158,10 +158,13 @@ export const atualizaContato = async (
 }
 
 export const buscarEspecialistas = async (req: Request, res: Response): Promise<Response> => {
-  const { especialidade, estado } = req.body
+  const { especialidade, estado } = req.query
+
+  if (especialidade === null || estado === null) { throw new BadRequestError('Especialidade ou estados inválidos') }
 
   const especialistas = await AppDataSource.manager.find(Especialista, {
-    where: { especialidade }, relations: ['endereco']
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    where: especialidade ? { especialidade: especialidade as string } : undefined, relations: ['endereco']
   })
 
   const resultado = especialistas.filter(especialista => especialista.endereco.estado === estado)
