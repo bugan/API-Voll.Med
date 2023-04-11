@@ -37,13 +37,16 @@ export class Paciente {
   @Column({ type: 'simple-array', nullable: true })
     planosSaude: string
 
+  @Column({ type: 'simple-array', nullable: true })
+    historico: string
+
   @Column('varchar', { nullable: true })
     imagem: string
 
   @OneToMany(() => Avaliacoes, (avaliacoes) => avaliacoes.paciente)
     avaliacoes: Relation<Avaliacoes>
 
-  constructor (cpf, nome, email, senha, telefone, planosSaude, estaAtivo, imagem) {
+  constructor (cpf, nome, email, senha, telefone, planosSaude, estaAtivo, imagem, historico) {
     this.cpf = cpf
     this.nome = nome
     this.email = email
@@ -52,5 +55,6 @@ export class Paciente {
     this.telefone = telefone
     this.planosSaude = planosSaude
     this.imagem = imagem
+    this.historico = historico
   }
 }

@@ -10,7 +10,10 @@ import { BadRequestError } from '../apiError/api-error.js'
 import { Consulta } from '../consultas/consultaEntity.js'
 dotenv.config()
 
-export const criarPaciente = async (req: Request, res: Response): Promise<void> => {
+export const criarPaciente = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   let {
     cpf,
     nome,
@@ -20,7 +23,9 @@ export const criarPaciente = async (req: Request, res: Response): Promise<void> 
     possuiPlanoSaude,
     endereco,
     telefone,
-    planosSaude, imagem
+    planosSaude,
+    imagem,
+    historico
   } = req.body
 
   if (!CPFValido(cpf)) {
@@ -33,7 +38,17 @@ export const criarPaciente = async (req: Request, res: Response): Promise<void> 
   }
 
   try {
-    const paciente = new Paciente(cpf, nome, email, senha, telefone, planosSaude, estaAtivo, imagem)
+    const paciente = new Paciente(
+      cpf,
+      nome,
+      email,
+      senha,
+      telefone,
+      planosSaude,
+      estaAtivo,
+      imagem,
+      historico
+    )
     paciente.possuiPlanoSaude = possuiPlanoSaude
     const enderecoPaciente = new Endereco()
 
@@ -56,7 +71,10 @@ export const criarPaciente = async (req: Request, res: Response): Promise<void> 
     res.status(502).json({ 'Paciente não foi criado': error })
   }
 }
-export const lerPacientes = async (req: Request, res: Response): Promise<void> => {
+export const lerPacientes = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const tabelaPaciente = AppDataSource.getRepository(Paciente)
   const allPacientes = await tabelaPaciente.find()
 
@@ -67,7 +85,10 @@ export const lerPacientes = async (req: Request, res: Response): Promise<void> =
   }
 }
 
-export const lerPaciente = async (req: Request, res: Response): Promise<void> => {
+export const lerPaciente = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { id } = req.params
   const paciente = await AppDataSource.manager.findOne(Paciente, {
     where: { id },
@@ -94,9 +115,11 @@ export const listaConsultasPaciente = async (
   if (paciente == null) {
     throw new BadRequestError('Paciente não encontrado!')
   }
-  const consultas = await AppDataSource.manager.find(Consulta, { where: { paciente: { id: paciente.id } } })
+  const consultas = await AppDataSource.manager.find(Consulta, {
+    where: { paciente: { id: paciente.id } }
+  })
 
-  const consultadasTratadas = consultas.map(consulta => {
+  const consultadasTratadas = consultas.map((consulta) => {
     return {
       id: consulta.id,
       data: consulta.data,
@@ -110,7 +133,10 @@ export const listaConsultasPaciente = async (
 }
 
 // update
-export const atualizarPaciente = async (req: Request, res: Response): Promise<void> => {
+export const atualizarPaciente = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   let {
     nome,
     email,
@@ -119,7 +145,9 @@ export const atualizarPaciente = async (req: Request, res: Response): Promise<vo
     telefone,
     possuiPlanoSaude,
     planosSaude,
-    cpf, imagem
+    cpf,
+    imagem,
+    historico
   } = req.body
 
   const { id } = req.params
@@ -151,6 +179,7 @@ export const atualizarPaciente = async (req: Request, res: Response): Promise<vo
       paciente.planosSaude = planosSaude
       paciente.estaAtivo = estaAtivo
       paciente.imagem = imagem
+      paciente.historico = historico
 
       await AppDataSource.manager.save(Paciente, paciente)
       res.status(200).json(paciente)
@@ -160,7 +189,10 @@ export const atualizarPaciente = async (req: Request, res: Response): Promise<vo
   }
 }
 
-export const atualizarEnderecoPaciente = async (req: Request, res: Response): Promise<void> => {
+export const atualizarEnderecoPaciente = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { id } = req.params
   const { cep, rua, numero, estado, complemento } = req.body
   const paciente = await AppDataSource.manager.findOne(Paciente, {
@@ -197,7 +229,10 @@ export const atualizarEnderecoPaciente = async (req: Request, res: Response): Pr
 }
 
 // Não deleta o paciente, fica inativo
-export const desativaPaciente = async (req: Request, res: Response): Promise<void> => {
+export const desativaPaciente = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { id } = req.params
   const paciente = await AppDataSource.manager.findOne(Paciente, {
     where: { id }
@@ -205,13 +240,14 @@ export const desativaPaciente = async (req: Request, res: Response): Promise<voi
   if (paciente !== null) {
     paciente.estaAtivo = false
     res.json({
-      message:
-
-      'Paciente desativado!'
+      message: 'Paciente desativado!'
     })
   }
 }
-export const loginPaciente = async (req: Request, res: Response): Promise<void> => {
+export const loginPaciente = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { email, senha } = req.body
   const paciente = await AppDataSource.manager.findOne(Paciente, {
     where: { email, senha }
@@ -226,6 +262,9 @@ export const loginPaciente = async (req: Request, res: Response): Promise<void> 
   }
 }
 
-export const logoutPaciente = async (req: Request, res: Response): Promise<void> => {
+export const logoutPaciente = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   res.status(200).json({ auth: false, token: null })
 }
