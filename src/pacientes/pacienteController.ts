@@ -20,7 +20,7 @@ export const criarPaciente = async (req: Request, res: Response): Promise<void> 
     possuiPlanoSaude,
     endereco,
     telefone,
-    planosSaude
+    planosSaude, imagem
   } = req.body
 
   if (!CPFValido(cpf)) {
@@ -33,7 +33,7 @@ export const criarPaciente = async (req: Request, res: Response): Promise<void> 
   }
 
   try {
-    const paciente = new Paciente(cpf, nome, email, senha, telefone, planosSaude, estaAtivo)
+    const paciente = new Paciente(cpf, nome, email, senha, telefone, planosSaude, estaAtivo, imagem)
     paciente.possuiPlanoSaude = possuiPlanoSaude
     const enderecoPaciente = new Endereco()
 
@@ -119,7 +119,7 @@ export const atualizarPaciente = async (req: Request, res: Response): Promise<vo
     telefone,
     possuiPlanoSaude,
     planosSaude,
-    cpf
+    cpf, imagem
   } = req.body
 
   const { id } = req.params
@@ -150,6 +150,7 @@ export const atualizarPaciente = async (req: Request, res: Response): Promise<vo
       paciente.telefone = telefone
       paciente.planosSaude = planosSaude
       paciente.estaAtivo = estaAtivo
+      paciente.imagem = imagem
 
       await AppDataSource.manager.save(Paciente, paciente)
       res.status(200).json(paciente)
