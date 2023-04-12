@@ -23,7 +23,7 @@ export const criarEspecialista = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  let { nome, crm, imagem, especialidade, endereco, email, telefone, estaAtivo, possuiPlanoSaude, planosSaude } = req.body
+  let { nome, crm, imagem, especialidade, endereco, email, telefone, estaAtivo, possuiPlanoSaude, planosSaude, senha } = req.body
 
   if (possuiPlanoSaude === true && planosSaude !== undefined) {
     // transforma array de numbers em array de strings com os nomes dos planos definidos no enum correspondente
@@ -37,7 +37,7 @@ export const criarEspecialista = async (
     estaAtivo,
     especialidade,
     email,
-    telefone, possuiPlanoSaude, planosSaude
+    telefone, possuiPlanoSaude, planosSaude, senha
   )
 
   const enderecoPaciente = new Endereco()
@@ -83,7 +83,7 @@ export const especialistaById = async (req: Request, res: Response): Promise<voi
 
 // Put especialista/:id
 export const atualizarEspecialista = async (req: Request, res: Response): Promise<void> => {
-  let { nome, crm, imagem, especialidade, email, telefone, estaAtivo, possuiPlanoSaude, planosSaude } = req.body
+  let { nome, crm, imagem, especialidade, email, telefone, estaAtivo, possuiPlanoSaude, planosSaude, senha } = req.body
   const { id } = req.params
 
   if (possuiPlanoSaude === true && planosSaude !== undefined) {
@@ -107,6 +107,7 @@ export const atualizarEspecialista = async (req: Request, res: Response): Promis
     especialistaUpdate.telefone = telefone
     especialistaUpdate.possuiPlanoSaude = possuiPlanoSaude
     especialistaUpdate.planosSaude = planosSaude
+    especialidade.senha = senha
 
     await AppDataSource.manager.save(Especialista, especialistaUpdate)
     res.json(especialistaUpdate)

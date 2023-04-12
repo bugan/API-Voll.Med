@@ -1,9 +1,10 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, Relation, OneToMany } from 'typeorm'
 import { Endereco } from '../enderecos/enderecoEntity.js'
 import { Avaliacoes } from '../avaliacoes/avaliacoesEntity.js'
+import { type IAutenticavel } from '../auth/IAutencavel.js'
 
 @Entity()
-export class Paciente {
+export class Paciente implements IAutenticavel {
   @PrimaryGeneratedColumn('uuid')
     id: string
 

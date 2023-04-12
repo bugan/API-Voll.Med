@@ -1,15 +1,19 @@
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, Relation } from 'typeorm'
 import { Endereco } from '../enderecos/enderecoEntity.js'
 import { Especialista } from '../especialistas/EspecialistaEntity.js'
+import { type IAutenticavel } from '../auth/IAutencavel.js'
 
 @Entity()
-export class Clinica {
+export class Clinica implements IAutenticavel {
   @PrimaryGeneratedColumn('uuid')
     id: string
 
   @OneToOne(() => Endereco, {
     cascade: ['update']
   })
+
+  @Column('varchar', { length: 100 })
+    nome: string
 
   @JoinColumn({ referencedColumnName: 'id' })
     endereco: Relation<Endereco>
@@ -19,4 +23,10 @@ export class Clinica {
 
   @Column({ type: 'simple-array', nullable: true })
     planoDeSaudeAceitos: string[]
+
+  @Column('varchar', { length: 100 })
+    email: string
+
+  @Column('varchar', { length: 100, select: false })
+    senha: string // Criptografia?
 }

@@ -11,9 +11,10 @@ import {
 import { Avaliacoes } from '../avaliacoes/avaliacoesEntity.js'
 import { Clinica } from '../clinicas/clinicaEntity.js'
 import { Endereco } from '../enderecos/enderecoEntity.js'
+import { type IAutenticavel } from '../auth/IAutencavel.js'
 
 @Entity()
-export class Especialista {
+export class Especialista implements IAutenticavel {
   @PrimaryGeneratedColumn('uuid')
     id: string
 
@@ -34,6 +35,9 @@ export class Especialista {
 
   @Column('varchar', { length: 100, nullable: true })
     email: string
+
+  @Column('varchar', { length: 100, select: false })
+    senha: string // Criptografia?
 
   @Column('varchar', { nullable: true })
     telefone: string
@@ -58,7 +62,7 @@ export class Especialista {
   @JoinColumn({ referencedColumnName: 'id' })
     endereco: Relation<Endereco>
 
-  constructor (nome, crm, imagem, estaAtivo, especialidade, email, telefone, possuiPlanoSaude, planosSaude) {
+  constructor (nome, crm, imagem, estaAtivo, especialidade, email, telefone, possuiPlanoSaude, planosSaude, senha) {
     this.nome = nome
     this.crm = crm
     this.imagem = imagem
@@ -68,5 +72,6 @@ export class Especialista {
     this.telefone = telefone
     this.possuiPlanoSaude = possuiPlanoSaude
     this.planosSaude = planosSaude
+    this.senha = senha
   }
 }

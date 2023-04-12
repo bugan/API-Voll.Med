@@ -14,7 +14,7 @@ export const erro = (
 
 // adaptador da rota
 
-export const resolver = (handlerFn: Handler) => {
+export const resolver = async (handlerFn: Handler) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       await Promise.resolve(handlerFn(req, res, next)); return

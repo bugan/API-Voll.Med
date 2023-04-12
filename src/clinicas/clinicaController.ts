@@ -8,12 +8,16 @@ import { Clinica } from './clinicaEntity.js'
 
 export const criarClinica = async (req: Request, res: Response): Promise<void> => {
   const {
-    endereco,
+    endereco, nome,
+    email, senha,
+
     planoDeSaudeAceitos
   } = req.body
 
   const clinica = new Clinica()
-
+  clinica.nome = nome
+  clinica.email = email
+  clinica.senha = senha
   const enderecoClinica = new Endereco()
   enderecoClinica.cep = endereco.cep
   enderecoClinica.rua = endereco.rua
@@ -29,6 +33,7 @@ export const criarClinica = async (req: Request, res: Response): Promise<void> =
     clinica.planoDeSaudeAceitos = mapeiaPlano(planoDeSaudeAceitos)
   }
 
+  await AppDataSource.manager.save(Clinica, clinica)
   res.json(clinica)
 }
 
@@ -49,7 +54,7 @@ export const buscarClinica = async (req: Request, res: Response): Promise<void> 
 
 export const atualizarClinica = async (req: Request, res: Response): Promise<void> => {
   const {
-    endereco,
+    endereco, email, senha,
     planoDeSaudeAceitos
   } = req.body
 
@@ -67,6 +72,10 @@ export const atualizarClinica = async (req: Request, res: Response): Promise<voi
       clinica.endereco.estado = endereco.estado
       clinica.endereco.numero = endereco.numero
       clinica.endereco.complemento = endereco.complemento
+    }
+    if (email !== null && senha !== null) {
+      clinica.email = email
+      clinica.senha = senha
     }
     await AppDataSource.manager.save(Clinica, clinica)
   }
@@ -87,8 +96,6 @@ export const listaEspecialistasPorClinica = async (req: Request, res: Response):
 }
 
 export const atualizaEspecialistaPeloIdDaClinica = async (req: Request, res: Response): Promise<Response> => {
-  //! Não consegui pegar o especialistaId pelo req.params
-  // const { id, especialistaId } = req.params
   const { id } = req.params
   const { especialistaId } = req.body
 

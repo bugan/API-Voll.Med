@@ -3,6 +3,7 @@ import express from 'express'
 // import express, { Router, Request, Response } from 'express'
 import cors from 'cors'
 import 'reflect-metadata'
+import rotaAuth from './auth/authRoutes.js'
 import rotaPaciente from './pacientes/pacienteRoutes.js'
 import rotaEspecialista from './especialistas/especialistaRoutes.js'
 import rotaPlanoDeSaude from './planosDeSaude/planosDeSaudeRoutes.js'
@@ -21,15 +22,15 @@ const corsOpts = {
 
   methods: [
     'GET',
-    'POST',
+    'POST'
   ],
 
   allowedHeaders: [
-    'Content-Type',
-  ],
-};
+    'Content-Type'
+  ]
+}
 
-app.use(cors(corsOpts));
+app.use(cors(corsOpts))
 
 app.use(express.json())
 
@@ -47,6 +48,7 @@ rotaAvaliacoes(app)
 rotaClinica(app)
 rotaConsulta(app)
 rotaPlanoDeSaude(app)
+rotaAuth(app)
 
 app.use(erro) // do middleware, precisa ser inserido antes do app listen
 
