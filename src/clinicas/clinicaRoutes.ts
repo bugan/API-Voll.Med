@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Router } from 'express'
-
 import {
   listarClinicas,
   criarClinica,
@@ -13,6 +12,9 @@ import {
 } from './clinicaController.js'
 
 export const clinicaRouter = Router()
+// const rbac = new RBAC({
+//   roles: ['admin', 'user']
+// })
 
 clinicaRouter.get('/', listarClinicas)
 clinicaRouter.post('/', criarClinica)
