@@ -1,4 +1,5 @@
 export interface IAutenticavel {
-  email: string
-  senha: string
+  id: string;
+  email: string;
+  senha: string;
 }
