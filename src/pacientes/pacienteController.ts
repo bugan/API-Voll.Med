@@ -6,6 +6,7 @@ import { CPFValido } from './validacaoCPF.js'
 import { mapeiaPlano } from '../utils/planoSaudeUtils.js'
 import { BadRequestError } from '../apiError/api-error.js'
 import { Consulta } from '../consultas/consultaEntity.js'
+import * as crypto from 'node:crypto'
 
 export const criarPaciente = async (
   req: Request,
@@ -57,6 +58,9 @@ export const criarPaciente = async (
       enderecoPaciente.complemento = endereco.complemento
 
       paciente.endereco = enderecoPaciente
+
+      // const password = senha
+      // const hash = crypto.createHash('sha256').update(password).digest('hex')
 
       await AppDataSource.manager.save(Endereco, enderecoPaciente)
     }
