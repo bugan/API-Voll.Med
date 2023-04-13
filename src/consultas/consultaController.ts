@@ -9,8 +9,8 @@ import {
   pacienteEstaDisponivel,
   especialistaEstaDisponivel
 } from './consultaValidacoes.js'
-import { BadRequestError, NotFoundError } from '../apiError/api-error.js'
 import { mapeiaLembretes } from '../utils/consultaUtils.js'
+import { AppError, Status } from '../error/ErrorHandler.js'
 
 export const criaConsulta = async (
   req: Request,
@@ -19,31 +19,31 @@ export const criaConsulta = async (
   const { especialista, paciente, data, desejaLembrete, lembretes } = req.body
 
   if (!validaClinicaEstaAberta(data)) {
-    throw new BadRequestError('A clinica não está aberta nesse horário')
+    throw new AppError('A clinica não está aberta nesse horário')
   }
 
   if (!validaAntecedenciaMinima(data, 30)) {
-    throw new BadRequestError(
-      'A consulta deve ser agendada com 30 minutos de antecedência'
+    throw new AppError(
+      'A consulta deve ser agendada com 30 minutos de antecedência', Status.BAD_REQUEST
     )
   }
   const situacaoPaciente = await estaAtivoPaciente(paciente)
   if (!situacaoPaciente) {
-    throw new BadRequestError('Paciente não está ativo')
+    throw new AppError('Paciente não está ativo', Status.BAD_REQUEST)
   }
 
   const situacaoEspecialista = await estaAtivoEspecialista(especialista)
 
   if (!situacaoEspecialista) {
-    throw new BadRequestError('Especialista não está ativo')
+    throw new AppError('Especialista não está ativo', Status.BAD_REQUEST)
   }
 
   if (!(await pacienteEstaDisponivel(paciente, data))) {
-    throw new BadRequestError('Paciente não está disponível nesse horário')
+    throw new AppError('Paciente não está disponível nesse horário', Status.BAD_REQUEST)
   }
 
   if (!(await especialistaEstaDisponivel(especialista, data))) {
-    throw new BadRequestError('Paciente não está disponível nesse horário')
+    throw new AppError('Paciente não está disponível nesse horário', Status.BAD_REQUEST)
   }
 
   const consulta = new Consulta()
@@ -78,10 +78,10 @@ export const buscaConsultaPorId = async (req: Request, res: Response
   if (consulta !== null) {
     res.json(consulta)
   } else {
-    throw new NotFoundError('Consulta não encontrada')
+    throw new AppError('Consulta não encontrada', Status.BAD_REQUEST)
   }
   // if (!consulta) {
-  //   throw new NotFoundError("Consulta não encontrada");
+  //   throw new AppError("Consulta não encontrada");
   // }
   // res.json(consulta);
 }
@@ -97,12 +97,12 @@ export const deletaConsulta = async (
   })
 
   if (consulta == null) {
-    throw new NotFoundError('Consulta não encontrada')
+    throw new AppError('Consulta não encontrada')
   }
 
   const HORA = 60 * 24
   if (!validaAntecedenciaMinima(consulta.data, HORA)) {
-    throw new BadRequestError(
+    throw new AppError(
       'A consulta deve ser desmarcada com 1 dia de antecedência'
     )
   }
@@ -110,5 +110,5 @@ export const deletaConsulta = async (
   consulta.cancelar = motivo_cancelamento
 
   await AppDataSource.manager.delete(Consulta, { id })
-  res.send('Consulta cancelada com sucesso')
+  res.json('Consulta cancelada com sucesso')
 }

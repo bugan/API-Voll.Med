@@ -29,8 +29,6 @@ especialistaRouter.delete(
 )
 especialistaRouter.patch('/:id', atualizaContato)
 
-// (res:Response)=>res.status(404).send())
-
 export default (app) => {
   app.use('/especialista', especialistaRouter)
 }

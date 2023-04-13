@@ -1,17 +1,18 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import * as dotenv from 'dotenv'
 import express from 'express'
-// import express, { Router, Request, Response } from 'express'
 import cors from 'cors'
+import 'express-async-errors'
 import 'reflect-metadata'
 import rotaAuth from './auth/authRoutes.js'
-import rotaPaciente from './pacientes/pacienteRoutes.js'
-import rotaEspecialista from './especialistas/especialistaRoutes.js'
-import rotaPlanoDeSaude from './planosDeSaude/planosDeSaudeRoutes.js'
-import rotaClinica from './clinicas/clinicaRoutes.js'
-import { AppDataSource } from './data-source.js'
 import rotaAvaliacoes from './avaliacoes/avaliacoesRoutes.js'
+import rotaClinica from './clinicas/clinicaRoutes.js'
 import rotaConsulta from './consultas/consultaRoutes.js'
-import { erro } from './apiError/ErrorHandler.js'
+import { AppDataSource } from './data-source.js'
+import rotaEspecialista from './especialistas/especialistaRoutes.js'
+import rotaPaciente from './pacientes/pacienteRoutes.js'
+import rotaPlanoDeSaude from './planosDeSaude/planosDeSaudeRoutes.js'
+import errorMiddleware from './error/errorMiddleware.js'
 
 dotenv.config({ path: '.env' })
 
@@ -49,8 +50,7 @@ rotaClinica(app)
 rotaConsulta(app)
 rotaPlanoDeSaude(app)
 rotaAuth(app)
-
-app.use(erro) // do middleware, precisa ser inserido antes do app listen
+app.use(errorMiddleware)
 
 // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 app.listen(process.env.SERVER_PORT, () => { console.log(`server running on port ${process.env.SERVER_PORT}`) }

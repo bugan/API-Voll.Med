@@ -4,9 +4,9 @@ import { AppDataSource } from '../data-source.js'
 import { Endereco } from '../enderecos/enderecoEntity.js'
 import { CPFValido } from './validacaoCPF.js'
 import { mapeiaPlano } from '../utils/planoSaudeUtils.js'
-import { BadRequestError } from '../apiError/api-error.js'
 import { Consulta } from '../consultas/consultaEntity.js'
 import * as crypto from 'node:crypto'
+import { AppError } from '../error/ErrorHandler.js'
 
 export const criarPaciente = async (
   req: Request,
@@ -27,7 +27,7 @@ export const criarPaciente = async (
   } = req.body
 
   if (!CPFValido(cpf)) {
-    throw new BadRequestError('CPF Inválido!')
+    throw new AppError('CPF Inválido!')
   }
 
   if (possuiPlanoSaude === true && planosSaude !== undefined) {
@@ -36,11 +36,12 @@ export const criarPaciente = async (
   }
 
   try {
+    const senhaCriptografada = crypto.createHash('sha256').update(senha).digest('hex')
     const paciente = new Paciente(
       cpf,
       nome,
       email,
-      senha,
+      senhaCriptografada,
       telefone,
       planosSaude,
       estaAtivo,
@@ -58,9 +59,6 @@ export const criarPaciente = async (
       enderecoPaciente.complemento = endereco.complemento
 
       paciente.endereco = enderecoPaciente
-
-      // const password = senha
-      // const hash = crypto.createHash('sha256').update(password).digest('hex')
 
       await AppDataSource.manager.save(Endereco, enderecoPaciente)
     }
@@ -114,7 +112,7 @@ export const listaConsultasPaciente = async (
     where: { id }
   })
   if (paciente == null) {
-    throw new BadRequestError('Paciente não encontrado!')
+    throw new AppError('Paciente não encontrado!')
   }
   const consultas = await AppDataSource.manager.find(Consulta, {
     where: { paciente: { id: paciente.id } }
@@ -186,7 +184,7 @@ export const atualizarPaciente = async (
       res.status(200).json(paciente)
     }
   } catch (error) {
-    res.status(502).send('Paciente não foi atualizado!')
+    res.status(502).json('Paciente não foi atualizado!')
   }
 }
 
