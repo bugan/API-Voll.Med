@@ -1,4 +1,4 @@
-import { Router, Response } from 'express'
+import { Router, Response } from "express";
 import {
   especialistas,
   criarEspecialista,
@@ -6,22 +6,31 @@ import {
   atualizarEspecialista,
   apagarEspecialista,
   atualizaContato,
-  buscarEspecialistas
+  buscarEspecialistas,
+} from "./especialistaController.js";
+import { Role } from "../auth/roles.js";
+import { verificaTokenJWT } from "../auth/verificaTokenJWT.js";
 
-} from './especialistaController.js'
+export const especialistaRouter = Router();
 
-export const especialistaRouter = Router()
-
-especialistaRouter.get('/', especialistas)
-especialistaRouter.post('/', criarEspecialista)
-especialistaRouter.get('/busca', buscarEspecialistas)
-especialistaRouter.get('/:id', especialistaById)
-especialistaRouter.put('/:id', atualizarEspecialista)
-especialistaRouter.delete('/:id', apagarEspecialista)
-especialistaRouter.patch('/:id', atualizaContato)
+especialistaRouter.get("/", especialistas);
+especialistaRouter.post("/", verificaTokenJWT(Role.clinica), criarEspecialista);
+especialistaRouter.get("/busca", buscarEspecialistas);
+especialistaRouter.get("/:id", especialistaById);
+especialistaRouter.put(
+  "/:id",
+  verificaTokenJWT(Role.especialista),
+  atualizarEspecialista
+);
+especialistaRouter.delete(
+  "/:id",
+  verificaTokenJWT(Role.clinica, Role.especialista),
+  apagarEspecialista
+);
+especialistaRouter.patch("/:id", atualizaContato);
 
 // (res:Response)=>res.status(404).send())
 
 export default (app) => {
-  app.use('/especialista', especialistaRouter)
-}
+  app.use("/especialista", especialistaRouter);
+};

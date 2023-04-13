@@ -7,16 +7,24 @@ import { AppDataSource } from "../data-source.js";
 export const login = async (req: Request, res: Response): Promise<void> => {
   const { email, senha } = req.body;
   const autenticavel = await AppDataSource.manager.findOne(Autenticaveis, {
-    select: ["id"],
+    select: ["id", "rota", "role"],
     where: { email, senha },
   });
 
   if (autenticavel == null) {
     res.status(500).json({ message: "Login inválido!" });
   } else {
-    const id = autenticavel.id;
-    const token = jwt.sign({ id }, process.env.SECRET, { expiresIn: 86400 }); // expira em 24 horas
-    res.status(200).json({ auth: true, token });
+    const { id, rota, role } = autenticavel;
+
+    const token = jwt.sign({ id, role }, process.env.SECRET, {
+      expiresIn: 86400,
+    }); // expira em 24 horas
+
+    res.status(200).json({
+      auth: true,
+      token,
+      rota,
+    });
   }
 };
 
