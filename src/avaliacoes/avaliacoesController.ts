@@ -3,6 +3,7 @@ import { AppDataSource } from '../data-source.js'
 import { Avaliacoes } from './avaliacoesEntity.js'
 import { Paciente } from '../pacientes/pacienteEntity.js'
 import { Especialista } from '../especialistas/EspecialistaEntity.js'
+import { AppError, Status } from '../error/ErrorHandler.js'
 
 export const listaAvaliacoes = async (req: Request, res: Response): Promise<void> => {
   const allAvaliacoes = await AppDataSource.manager.find(Avaliacoes)
@@ -27,7 +28,7 @@ export const criaAvaliacao = async (req: Request, res: Response): Promise<void> 
   const avaliacao = new Avaliacoes()
 
   if ((especialista == null) || (paciente == null)) {
-    throw new Error('Especialista ou Paciente não encontrado')
+    throw new AppError('Especialista ou Paciente não encontrado', Status.NOT_FOUND)
   }
 
   avaliacao.especialista = especialista

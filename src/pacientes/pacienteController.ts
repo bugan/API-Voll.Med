@@ -5,7 +5,7 @@ import { Endereco } from '../enderecos/enderecoEntity.js'
 import { CPFValido } from './validacaoCPF.js'
 import { mapeiaPlano } from '../utils/planoSaudeUtils.js'
 import { Consulta } from '../consultas/consultaEntity.js'
-import { AppError } from '../error/ErrorHandler.js'
+import { AppError, Status } from '../error/ErrorHandler.js'
 import { encryptPassword } from '../utils/senhaUtils.js'
 
 export const criarPaciente = async (
@@ -112,7 +112,7 @@ export const listaConsultasPaciente = async (
     where: { id }
   })
   if (paciente == null) {
-    throw new AppError('Paciente não encontrado!')
+    throw new AppError('Paciente não encontrado!', Status.NOT_FOUND)
   }
   const consultas = await AppDataSource.manager.find(Consulta, {
     where: { paciente: { id: paciente.id } }
@@ -152,7 +152,7 @@ export const atualizarPaciente = async (
   const { id } = req.params
 
   if (!CPFValido(cpf)) {
-    throw new Error('CPF Inválido!')
+    throw new AppError('CPF Inválido!', Status.BAD_REQUEST)
   }
 
   if (possuiPlanoSaude === true && planosSaude !== undefined) {
