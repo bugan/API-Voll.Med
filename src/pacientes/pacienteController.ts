@@ -5,8 +5,8 @@ import { Endereco } from '../enderecos/enderecoEntity.js'
 import { CPFValido } from './validacaoCPF.js'
 import { mapeiaPlano } from '../utils/planoSaudeUtils.js'
 import { Consulta } from '../consultas/consultaEntity.js'
-import * as crypto from 'node:crypto'
 import { AppError } from '../error/ErrorHandler.js'
+import { encryptPassword } from '../utils/senhaUtils.js'
 
 export const criarPaciente = async (
   req: Request,
@@ -36,7 +36,7 @@ export const criarPaciente = async (
   }
 
   try {
-    const senhaCriptografada = crypto.createHash('sha256').update(senha).digest('hex')
+    const senhaCriptografada = encryptPassword(senha)
     const paciente = new Paciente(
       cpf,
       nome,
@@ -172,7 +172,6 @@ export const atualizarPaciente = async (
       paciente.cpf = cpf
       paciente.nome = nome
       paciente.email = email
-      paciente.senha = senha
       paciente.possuiPlanoSaude = possuiPlanoSaude
       paciente.telefone = telefone
       paciente.planosSaude = planosSaude

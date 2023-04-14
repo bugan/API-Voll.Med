@@ -10,12 +10,14 @@ export function verificaTokenJWT (...role: Role[]) {
     const tokenString: string[] = req.headers.authorization.split(' ')
     const token = tokenString[1]
 
+    // Nenhuma token informado
     if (!token) {
       return res
         .status(403)
         .json({ auth: false, message: 'Nenhum token informado.' })
     }
 
+    // Verifica se o token é válido
     jwt.verify(token, process.env.SECRET, function (err, decoded) {
       if (err) {
         return res

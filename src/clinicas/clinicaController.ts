@@ -5,6 +5,7 @@ import { Endereco } from '../enderecos/enderecoEntity.js'
 import { Especialista } from '../especialistas/EspecialistaEntity.js'
 import { mapeiaPlano } from '../utils/planoSaudeUtils.js'
 import { Clinica } from './clinicaEntity.js'
+import { encryptPassword } from '../utils/senhaUtils.js'
 
 export const criarClinica = async (req: Request, res: Response): Promise<void> => {
   const {
@@ -14,10 +15,12 @@ export const criarClinica = async (req: Request, res: Response): Promise<void> =
     planoDeSaudeAceitos
   } = req.body
 
+  const senhaCriptografada = encryptPassword(senha)
+
   const clinica = new Clinica()
   clinica.nome = nome
   clinica.email = email
-  clinica.senha = senha
+  clinica.senha = senhaCriptografada
   const enderecoClinica = new Endereco()
   enderecoClinica.cep = endereco.cep
   enderecoClinica.rua = endereco.rua
@@ -75,7 +78,6 @@ export const atualizarClinica = async (req: Request, res: Response): Promise<voi
     }
     if (email !== null && senha !== null) {
       clinica.email = email
-      clinica.senha = senha
     }
     await AppDataSource.manager.save(Clinica, clinica)
   }
