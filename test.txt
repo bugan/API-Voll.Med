@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  db:
+    image: sqlite:latest
+    ports:
+      - "3306:3306"
+    networks:
+      - my-networks
+
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+    networks:
+      - my-networks
+
+networks:
+  my-networks:
+    driver: bridge

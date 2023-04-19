@@ -2,16 +2,11 @@ version: "3"
 
 services:
   db:
-    image: mysql:latest
-    ports:
-      - "3306:3306"
+    image: nouchka/sqlite3
     environment:
-      MYSQL_ROOT_PASSWORD: 12345
-      MYSQL_DATABASE: testemed
+      - DB_NAME=testemed
     volumes:
-      - ./mysql:/var/lib/mysql
-    networks:
-      - my-networks
+      - ./src/database:/data
 
   app:
     build: .
@@ -19,11 +14,15 @@ services:
       - "3000:3000"
     depends_on:
       - db
+      - redis
     environment:
-      - DB_HOST=db
-    networks:
-      - my-networks
+      - DB_HOST=./src/database/database.sqlite
+      - ACCESS_TOKENS_STORAGE=sqlite
+      - REFRESH_TOKENS_STORAGE=redis
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
 
-networks:
-  my-networks:
-    driver: bridge
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
