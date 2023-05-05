@@ -17,6 +17,7 @@ import errorMiddleware from './error/errorMiddleware.js'
 dotenv.config({ path: '.env' })
 
 const app = express()
+import ('./database/cache/allowListRefreshToken.js')
 
 const corsOpts = {
   origin: '*',

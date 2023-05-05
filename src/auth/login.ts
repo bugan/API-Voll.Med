@@ -5,6 +5,7 @@ import { Autenticaveis } from './authEntity.js'
 import { AppDataSource } from '../data-source.js'
 import { decryptPassword } from '../utils/senhaUtils.js'
 import { AppError } from '../error/ErrorHandler.js'
+import criaTokenOpaco from './criaTokenOpaco.js'
 
 export const login = async (req: Request, res: Response): Promise<void> => {
   const { email, senha } = req.body
@@ -24,13 +25,20 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       throw new AppError('Senha incorreta!', 401)
     }
 
-    const token = jwt.sign({ id, role }, process.env.SECRET, {
-      expiresIn: 86400
-    }) // expira em 24 horas
+    const refreshToken = await criaTokenOpaco(id)
+    console.log(refreshToken)
+
+    const payload = { id, role }
+    const accessToken = jwt.sign(payload, process.env.SECRET, {
+      expiresIn: '15m'
+    }) // expira em 15 minutos
+
+    res.set('Authorization', accessToken)
 
     res.status(200).json({
       auth: true,
-      token,
+      accessToken,
+      refreshToken,
       rota
     })
   }
