@@ -70,7 +70,7 @@ export const criarPaciente = async (
     res.status(502).json({ 'Paciente não foi criado': error })
   }
 }
-export const lerPacientes = async (
+export const exibeTodosPacientes = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -78,7 +78,7 @@ export const lerPacientes = async (
   const allPacientes = await tabelaPaciente.find()
 
   if (allPacientes.length === 0) {
-    res.status(404).json('Não encontramos pacientes!')
+    res.status(200).json([])
   } else {
     res.status(200).json(allPacientes)
   }

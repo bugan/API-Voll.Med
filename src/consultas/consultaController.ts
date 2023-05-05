@@ -91,7 +91,7 @@ export const deletaConsulta = async (
   res: Response
 ): Promise<void> => {
   const { id } = req.params
-  const { motivo_cancelamento } = req.body
+  const { motivoCancelamento } = req.body
   const consulta = await AppDataSource.manager.findOne(Consulta, {
     where: { id }
   })
@@ -107,7 +107,7 @@ export const deletaConsulta = async (
     )
   }
 
-  consulta.cancelar = motivo_cancelamento
+  consulta.cancelar = motivoCancelamento
 
   await AppDataSource.manager.delete(Consulta, { id })
   res.json('Consulta cancelada com sucesso')

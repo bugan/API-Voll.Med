@@ -2,7 +2,7 @@ import { Router } from "express";
 import { verificaTokenJWT } from "../auth/verificaTokenJWT.js";
 
 import {
-  lerPacientes,
+  exibeTodosPacientes,
   criarPaciente,
   lerPaciente,
   atualizarPaciente,
@@ -14,7 +14,7 @@ import { Role } from "../auth/roles.js";
 
 export const pacienteRouter = Router();
 
-pacienteRouter.get("/", lerPacientes);
+pacienteRouter.get("/", exibeTodosPacientes);
 pacienteRouter.post("/", criarPaciente);
 pacienteRouter.get("/:id", lerPaciente);
 pacienteRouter.get("/:id/consultas", listaConsultasPaciente);

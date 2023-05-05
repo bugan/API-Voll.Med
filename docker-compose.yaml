@@ -1,28 +1,26 @@
 version: "3"
 
 services:
-  db:
-    image: nouchka/sqlite3
-    environment:
-      - DB_NAME=testemed
-    volumes:
-      - ./src/database:/data
-
   app:
     build: .
     ports:
       - "3000:3000"
-    depends_on:
-      - db
-      - redis
+    volumes:
+      - ./src:/app/src
+      - ./src/database:/app/src/database/ # não precisa por todo o código estar do lado de fora
+    # depends_on:
+    #   - redis
     environment:
       - DB_HOST=./src/database/database.sqlite
       - ACCESS_TOKENS_STORAGE=sqlite
       - REFRESH_TOKENS_STORAGE=redis
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - SERVER_PORT=3000
+      - SECRET=qualquercoisa
+      - SECRET_KEY=senha32bits
 
-  redis:
-    image: redis:latest
-    ports:
-      - "6379:6379"
+  # redis:
+  #   image: redis:latest
+  #   ports:
+  #     - "6379:6379"
