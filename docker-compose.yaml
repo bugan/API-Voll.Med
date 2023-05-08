@@ -1,26 +1,37 @@
 version: "3"
 
 services:
+  db:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_DATABASE: testemed
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - my-networks
+
   app:
     build: .
     ports:
       - "3000:3000"
-    volumes:
-      - ./src:/app/src
-      - ./src/database:/app/src/database/ # não precisa por todo o código estar do lado de fora
-    # depends_on:
-    #   - redis
+    depends_on:
+      - db
+      - redis
     environment:
-      - DB_HOST=./src/database/database.sqlite
-      - ACCESS_TOKENS_STORAGE=sqlite
-      - REFRESH_TOKENS_STORAGE=redis
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - SERVER_PORT=3000
-      - SECRET=qualquercoisa
-      - SECRET_KEY=senha32bits
+      - DB_HOST=db
+    networks:
+      - my-networks
 
-  # redis:
-  #   image: redis:latest
-  #   ports:
-  #     - "6379:6379"
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - my-networks
+
+networks:
+  my-networks:
+    driver: bridge

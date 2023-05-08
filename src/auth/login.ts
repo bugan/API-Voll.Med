@@ -29,7 +29,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     console.log(refreshToken)
 
     const payload = { id, role }
-    const accessToken = jwt.sign(payload, process.env.SECRET, {
+    const accessToken = jwt.sign(payload, process.env.SECRET_JWT, {
       expiresIn: '15m'
     }) // expira em 15 minutos
 

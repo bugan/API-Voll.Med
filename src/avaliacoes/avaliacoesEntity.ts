@@ -7,9 +7,7 @@ export class Avaliacoes {
   @PrimaryGeneratedColumn('uuid')
     id: string
 
-  @CreateDateColumn({
-    type: 'text'
-  })
+  @CreateDateColumn()
     createdAt!: Date // Gerar automaticamente e puxar no GET o horário no CRUD
 
   @ManyToOne(() => Especialista, (especialista) => especialista.avaliacoes)
