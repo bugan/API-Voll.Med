@@ -5,7 +5,7 @@ import { AppError, Status } from '../error/ErrorHandler.js'
 
 export function verificaTokenJWT (...role: Role[]) {
   return (req, res, next): any => {
-    if (!req.headers.authorization) { throw new AppError('Nenhum token informado.', Status.BAD_REQUEST) }
+    if (!req.headers.authorization) { throw new AppError('Nenhum token informado.', Status.FORBIDDEN) }
 
     const tokenString: string[] = req.headers.authorization.split(' ')
     const token = tokenString[1]
