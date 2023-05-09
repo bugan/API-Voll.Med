@@ -3,8 +3,8 @@ import jwt from 'jsonwebtoken'
 import { Autenticaveis } from './authEntity.js'
 
 import { AppDataSource } from '../data-source.js'
-import { decryptPassword } from '../utils/senhaUtils.js'
 import { AppError } from '../error/ErrorHandler.js'
+import { decryptPassword } from '../utils/senhaUtils.js'
 // import criaTokenOpaco from './criaTokenOpaco.js'
 
 export const login = async (req: Request, res: Response): Promise<void> => {
@@ -34,7 +34,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     }) // expira em 15 minutos
 
     res.set('Authorization', accessToken)
-    console.log(accessToken)
     res.status(200).json({
       auth: true,
       accessToken,
