@@ -15,7 +15,7 @@ export class Endereco {
   @Column({ type: 'int' })
     numero: number
 
-  @Column({ type: 'int' })
+  @Column()
     estado: string
 
   @Column('varchar', { length: 100 })
