@@ -13,9 +13,11 @@ import rotaEspecialista from './especialistas/especialistaRoutes.js'
 import rotaPaciente from './pacientes/pacienteRoutes.js'
 import rotaPlanoDeSaude from './planosDeSaude/planosDeSaudeRoutes.js'
 import errorMiddleware from './error/errorMiddleware.js'
+import faltamVariaveisDeAmbiente from './utils/serverUtils.js'
+
+await faltamVariaveisDeAmbiente()
 
 dotenv.config({ path: '.env' })
-
 const app = express()
 // import ('./database/cache/allowListRefreshToken.js')
 
