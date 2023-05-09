@@ -12,11 +12,7 @@ export const especialistas = async (
   res: Response
 ): Promise<void> => {
   const allEspecialistas = await AppDataSource.manager.find(Especialista)
-  if (allEspecialistas.length > 0) {
-    res.status(200).json(allEspecialistas)
-  } else {
-    throw new AppError('Não encontramos especialistas')
-  }
+  res.status(200).json(allEspecialistas)
 }
 // Post
 // Se o especialista for criado apenas com os atributos opcionais, enviar mensagem avisando quais campos faltam
