@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
+import cors from 'cors'
 import * as dotenv from 'dotenv'
 import express from 'express'
-import cors from 'cors'
 import 'express-async-errors'
 import 'reflect-metadata'
 import rotaAuth from './auth/authRoutes.js'
@@ -9,23 +9,13 @@ import rotaAvaliacoes from './avaliacoes/avaliacoesRoutes.js'
 import rotaClinica from './clinicas/clinicaRoutes.js'
 import rotaConsulta from './consultas/consultaRoutes.js'
 import { AppDataSource } from './data-source.js'
+import errorMiddleware from './error/errorMiddleware.js'
 import rotaEspecialista from './especialistas/especialistaRoutes.js'
 import rotaPaciente from './pacientes/pacienteRoutes.js'
 import rotaPlanoDeSaude from './planosDeSaude/planosDeSaudeRoutes.js'
-import errorMiddleware from './error/errorMiddleware.js'
 import faltamVariaveisDeAmbiente from './utils/serverUtils.js'
-// import redis from 'redis'
 
 await faltamVariaveisDeAmbiente()
-// const client = createClient({ url: 'redis://redis:6379' })
-
-// client.on('error', err => { console.log('Redis Client Error', err) })
-
-// await client.connect()
-// await client.set('key_maneira', 'hello world')
-// const value = await client.get('key_maneira')
-// console.log(value)
-// await client.disconnect()
 
 dotenv.config({ path: '.env' })
 
