@@ -30,7 +30,7 @@
       "http-status-codes": "^2.2.0",
       "jsonwebtoken": "^9.0.0",
       "moment": "^2.29.4",
-      "mysql2": "^2.3.3",
+      "mysql2": "^3.3.0",
       "rbac": "^5.0.3",
       "redis": "^4.6.6",
       "reflect-metadata": "^0.1.13",
