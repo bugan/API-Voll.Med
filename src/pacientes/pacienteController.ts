@@ -235,8 +235,13 @@ export const desativaPaciente = async (
   const paciente = await AppDataSource.manager.findOne(Paciente, {
     where: { id }
   })
+
   if (paciente !== null) {
     paciente.estaAtivo = false
+    await AppDataSource.manager.save(Paciente, paciente)
+
+    //! Caso deseje deletar o paciente, basta descomentar a linha abaixo
+    // await AppDataSource.manager.delete(Paciente, paciente)
     res.json({
       message: 'Paciente desativado!'
     })
