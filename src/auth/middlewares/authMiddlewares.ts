@@ -2,10 +2,10 @@
 import jwt from 'jsonwebtoken'
 import { AppError, Status } from '../../error/ErrorHandler.js'
 import { type Role } from '../roles'
-import { refresh } from '../tokens.js'
+import { access, refresh } from '../tokens.js'
 
 function verificaTokenJWT (...role: Role[]) {
-  return (req, res, next): any => {
+  return async (req, res, next): Promise<any> => {
     if (!req.headers.authorization) { throw new AppError('Nenhum token informado.', Status.FORBIDDEN) }
 
     const tokenString: string[] = req.headers.authorization.split(' ')
@@ -17,6 +17,8 @@ function verificaTokenJWT (...role: Role[]) {
         .status(403)
         .json({ auth: false, message: 'Nenhum token informado.' })
     }
+    // Verifica se o token é válido
+    await access.verifica(token)
 
     // Verifica se o token é válido
     jwt.verify(token, process.env.SECRET_JWT, function (err, decoded) {

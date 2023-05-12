@@ -28,7 +28,7 @@ function criaTokenJWT (id, role, [tempoQuantidade, tempoUnidade]: string[]): str
 // }
 
 async function verificaTokenNaBlocklist (token, nome: string, blocklist): Promise<void> {
-  const tokenNaBlocklist = await blocklist.contemToken(token)
+  const tokenNaBlocklist = await blocklist.contemChave(token)
   if (tokenNaBlocklist) {
     throw new AppError(`${nome} inválido!`, Status.UNAUTHORIZED)
   }
