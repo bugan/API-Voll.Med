@@ -121,7 +121,6 @@ export const apagarEspecialista = async (
   const especialistaDel = await AppDataSource.manager.findOneBy(Especialista, {
     id
   })
-  console.log(especialistaDel)
   if (especialistaDel !== null) {
     await AppDataSource.manager.remove(Especialista, especialistaDel)
     res.json({ message: 'Especialista apagado!' })

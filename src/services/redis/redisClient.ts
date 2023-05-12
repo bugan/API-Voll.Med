@@ -1,5 +1,5 @@
 import { type RedisClientType, createClient } from 'redis'
-
+import jwt from 'jsonwebtoken'
 export default class ClienteRedis {
   private readonly cliente: RedisClientType
   private readonly prefixo: string
@@ -30,6 +30,10 @@ export default class ClienteRedis {
   }
 
   async adiciona (chave: string, valor, dataExpiracao): Promise<void> {
+    if (valor == null && dataExpiracao == null) {
+      dataExpiracao = jwt.decode(chave).exp
+      valor = ''
+    }
     await this.cliente.set(this.prefixo + chave, valor, { EX: dataExpiracao })
   }
 

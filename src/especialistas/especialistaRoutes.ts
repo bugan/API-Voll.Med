@@ -9,7 +9,7 @@ import {
   buscarEspecialistas
 } from './especialistaController.js'
 import { Role } from '../auth/roles.js'
-import { verificaTokenJWT } from '../auth/verificaTokenJWT.js'
+import { verificaTokenJWT } from '../auth/middlewares/authMiddlewares.js'
 
 export const especialistaRouter = Router()
 

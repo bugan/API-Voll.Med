@@ -47,12 +47,12 @@ AppDataSource.initialize()
   })
 
 rotaPaciente(app)
+rotaAuth(app)
 rotaEspecialista(app)
 rotaAvaliacoes(app)
 rotaClinica(app)
 rotaConsulta(app)
 rotaPlanoDeSaude(app)
-rotaAuth(app)
 app.use(errorMiddleware)
 
 // eslint-disable-next-line @typescript-eslint/restrict-template-expressions

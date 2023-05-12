@@ -1,13 +1,33 @@
-import { type Request, type Response } from 'express'
-import jwt from 'jsonwebtoken'
+import { request, type Request, type Response } from 'express'
 import { Autenticaveis } from './authEntity.js'
+import { access, refresh } from './tokens.js'
 
 import { AppDataSource } from '../data-source.js'
 import { AppError } from '../error/ErrorHandler.js'
 import { decryptPassword } from '../utils/senhaUtils.js'
 
-export const login = async (req: Request, res: Response): Promise<void> => {
+export const login = async (req: Request, res: Response): Promise<Response> => {
   const { email, senha } = req.body
+
+  if (req.userId) {
+    const autenticavel = await AppDataSource.manager.findOne(Autenticaveis, {
+      select: ['id', 'role', 'rota'],
+      where: { id: req.userId }
+    })
+
+    if (autenticavel == null) {
+      throw new AppError('Não encontrado!', 404)
+    }
+
+    const newAccessToken = access.cria(req.userId, autenticavel.role)
+    const newRefreshToken = await refresh.cria(req.userId)
+    return res.status(200).json({
+      auth: true,
+      newAccessToken,
+      newRefreshToken,
+      rota: autenticavel.rota
+    })
+  }
 
   const autenticavel = await AppDataSource.manager.findOne(Autenticaveis, {
     select: ['id', 'rota', 'role', 'senha'],
@@ -24,21 +44,23 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       throw new AppError('Senha incorreta!', 401)
     }
 
-    const payload = { id, role }
-    const accessToken = jwt.sign(payload, process.env.SECRET_JWT, {
-      expiresIn: '15m'
-    }) // expira em 15 minutos
+    // aqui passo o role pq vai pro payload
+    const accessToken = access.cria(id, role)
+    const refreshToken = await refresh.cria(id)
 
-    res.set('Authorization', accessToken)
-    res.status(200).json({
+    return res.status(200).json({
       auth: true,
       accessToken,
-      // refreshToken,
+      refreshToken,
       rota
     })
   }
 }
 
 export const logout = async (req: Request, res: Response): Promise<void> => {
-  res.status(200).json({ auth: false, token: null })
+  const token = req.headers.authorization?.replace('Bearer ', '')
+  if (token != null) {
+    await access.invalida(token)
+  }
+  res.status(204).json({ auth: false, token: null, message: 'Logout realizado com sucesso!' })
 }

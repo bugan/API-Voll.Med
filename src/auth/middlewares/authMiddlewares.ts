@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import jwt from 'jsonwebtoken'
-import { type Role } from './roles'
-import { AppError, Status } from '../error/ErrorHandler.js'
+import { AppError, Status } from '../../error/ErrorHandler.js'
+import { type Role } from '../roles'
+import { refresh } from '../tokens.js'
 
-export function verificaTokenJWT (...role: Role[]) {
+function verificaTokenJWT (...role: Role[]) {
   return (req, res, next): any => {
     if (!req.headers.authorization) { throw new AppError('Nenhum token informado.', Status.FORBIDDEN) }
 
@@ -22,7 +23,7 @@ export function verificaTokenJWT (...role: Role[]) {
       if (err) {
         return res
           .status(403)
-          .json({ auth: false, message: 'Falha ao autenticar o token.' })
+          .json({ auth: false, message: 'Falha ao autenticar o token. Token expirou' })
       }
 
       if (role.length > 0 && !role.includes(decoded.role)) {
@@ -30,7 +31,20 @@ export function verificaTokenJWT (...role: Role[]) {
       }
 
       req.userId = decoded.id
+      req.userRole = decoded.role
       next()
     })
   }
 }
+
+async function refreshMiddleware () {
+  return async (req, _, next): Promise<void> => {
+    const { refreshToken } = req.body
+    const id = await refresh.verifica(refreshToken)
+    req.userId = id
+    await refresh.invalida(refreshToken)
+    return next()
+  }
+}
+
+export { verificaTokenJWT, refreshMiddleware }
