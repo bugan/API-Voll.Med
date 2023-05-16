@@ -8,6 +8,7 @@ import { Consulta } from '../consultas/consultaEntity.js'
 import { AppError, Status } from '../error/ErrorHandler.js'
 import { encryptPassword } from '../utils/senhaUtils.js'
 import { schemaCriarPaciente } from './pacienteYupSchemas.js'
+import { getRepository } from 'typeorm'
 
 // export const criarPaciente = async (
 //   req: Request,
@@ -97,6 +98,13 @@ export const criarPaciente = async (
       throw new AppError('CPF Inválido!')
     }
 
+    const existePacienteComCPF = await AppDataSource.getRepository(Paciente).findOne({
+      where: { cpf }
+    })
+    if (existePacienteComCPF != null) {
+      res.status(409).json({ message: 'Já existe um paciente com esse CPF!' })
+    }
+
     if (possuiPlanoSaude === true && planosSaude !== undefined) {
       // transforma array de numbers em array de strings com os nomes dos planos definidos no enum correspondente
       planosSaude = mapeiaPlano(planosSaude)
@@ -147,7 +155,6 @@ export const exibeTodosPacientes = async (
 ): Promise<void> => {
   const tabelaPaciente = AppDataSource.getRepository(Paciente)
   const allPacientes = await tabelaPaciente.find()
-
   if (allPacientes.length === 0) {
     res.status(200).json([])
   } else {

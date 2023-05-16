@@ -17,7 +17,7 @@ export class Paciente implements IAutenticavel {
   @PrimaryGeneratedColumn('uuid')
     id: string
 
-  @Column('varchar', { length: 11 })
+  @Column('varchar', { length: 11, unique: true })
     cpf: string
 
   @Column('varchar', { length: 100 })
