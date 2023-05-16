@@ -7,35 +7,101 @@ import { mapeiaPlano } from '../utils/planoSaudeUtils.js'
 import { Consulta } from '../consultas/consultaEntity.js'
 import { AppError, Status } from '../error/ErrorHandler.js'
 import { encryptPassword } from '../utils/senhaUtils.js'
+import { schemaCriarPaciente } from './pacienteYupSchemas.js'
+
+// export const criarPaciente = async (
+//   req: Request,
+//   res: Response
+// ): Promise<void> => {
+//   let {
+//     cpf,
+//     nome,
+//     email,
+//     senha,
+//     estaAtivo,
+//     possuiPlanoSaude,
+//     endereco,
+//     telefone,
+//     planosSaude,
+//     imagem,
+//     historico
+//   } = req.body
+
+//   if (!CPFValido(cpf)) {
+//     throw new AppError('CPF Inválido!')
+//   }
+
+//   if (possuiPlanoSaude === true && planosSaude !== undefined) {
+//     // transforma array de numbers em array de strings com os nomes dos planos definidos no enum correspondente
+//     planosSaude = mapeiaPlano(planosSaude)
+//   }
+
+//   try {
+//     const senhaCriptografada = encryptPassword(senha)
+//     const paciente = new Paciente(
+//       cpf,
+//       nome,
+//       email,
+//       senhaCriptografada,
+//       telefone,
+//       planosSaude,
+//       estaAtivo,
+//       imagem,
+//       historico
+//     )
+//     paciente.possuiPlanoSaude = possuiPlanoSaude
+//     const enderecoPaciente = new Endereco()
+
+//     if (endereco !== undefined) {
+//       enderecoPaciente.cep = endereco.cep
+//       enderecoPaciente.rua = endereco.rua
+//       enderecoPaciente.estado = endereco.estado
+//       enderecoPaciente.numero = endereco.numero
+//       enderecoPaciente.complemento = endereco.complemento
+
+//       paciente.endereco = enderecoPaciente
+
+//       await AppDataSource.manager.save(Endereco, enderecoPaciente)
+//     }
+
+//     await AppDataSource.manager.save(Paciente, paciente)
+
+//     res.status(202).json(paciente)
+//   } catch (error) {
+//     res.status(502).json({ 'Paciente não foi criado': error })
+//   }
+// }
 
 export const criarPaciente = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  let {
-    cpf,
-    nome,
-    email,
-    senha,
-    estaAtivo,
-    possuiPlanoSaude,
-    endereco,
-    telefone,
-    planosSaude,
-    imagem,
-    historico
-  } = req.body
-
-  if (!CPFValido(cpf)) {
-    throw new AppError('CPF Inválido!')
-  }
-
-  if (possuiPlanoSaude === true && planosSaude !== undefined) {
-    // transforma array de numbers em array de strings com os nomes dos planos definidos no enum correspondente
-    planosSaude = mapeiaPlano(planosSaude)
-  }
-
   try {
+    const pacienteData = req.body
+    await schemaCriarPaciente.validate(pacienteData)
+    let {
+      cpf,
+      nome,
+      email,
+      senha,
+      estaAtivo,
+      possuiPlanoSaude,
+      endereco,
+      telefone,
+      planosSaude,
+      imagem,
+      historico
+    } = pacienteData
+
+    if (!CPFValido(cpf)) {
+      throw new AppError('CPF Inválido!')
+    }
+
+    if (possuiPlanoSaude === true && planosSaude !== undefined) {
+      // transforma array de numbers em array de strings com os nomes dos planos definidos no enum correspondente
+      planosSaude = mapeiaPlano(planosSaude)
+    }
+
     const senhaCriptografada = encryptPassword(senha)
     const paciente = new Paciente(
       cpf,
@@ -67,9 +133,14 @@ export const criarPaciente = async (
 
     res.status(202).json(paciente)
   } catch (error) {
-    res.status(502).json({ 'Paciente não foi criado': error })
+    if (error.name === 'ValidationError') {
+      res.status(400).json({ message: error.message })
+    } else {
+      res.status(502).json({ 'Paciente não foi criado': error })
+    }
   }
 }
+
 export const exibeTodosPacientes = async (
   req: Request,
   res: Response

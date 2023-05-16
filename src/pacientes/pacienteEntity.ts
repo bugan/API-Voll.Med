@@ -35,8 +35,8 @@ export class Paciente implements IAutenticavel {
   @JoinColumn({ referencedColumnName: 'id' })
     endereco: Relation<Endereco>
 
-  @Column({ type: 'int' })
-    telefone: number
+  @Column()
+    telefone: string
 
   @Column({ type: 'boolean', default: true })
     estaAtivo: boolean
