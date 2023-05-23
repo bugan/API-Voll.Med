@@ -12,10 +12,6 @@ import {
 } from './clinicaController.js'
 
 export const clinicaRouter = Router()
-// const rbac = new RBAC({
-//   roles: ['admin', 'user']
-// })
-
 clinicaRouter.get('/', listarClinicas)
 clinicaRouter.post('/', criarClinica)
 clinicaRouter.get('/:id', buscarClinica)

@@ -36,7 +36,7 @@ export class Clinica implements IAutenticavel {
     email: string
 
   @Column('varchar', { length: 100, select: false })
-    senha: string // Criptografia?
+    senha: string
 
   @Column('varchar', { nullable: false, default: Role.clinica })
     role: Role

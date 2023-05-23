@@ -32,6 +32,7 @@
       "http-status-codes": "^2.2.0",
       "jsonwebtoken": "^9.0.0",
       "moment": "^2.29.4",
+      "multer": "^1.4.5-lts.1",
       "mysql2": "^3.3.0",
       "rbac": "^5.0.3",
       "redis": "^4.6.6",

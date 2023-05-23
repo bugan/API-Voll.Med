@@ -1,6 +1,4 @@
 import crypto from 'crypto'
-// import * as dotenv from 'dotenv'
-// dotenv.config()
 
 function encryptPassword (password): string {
   const iv = crypto.randomBytes(16)

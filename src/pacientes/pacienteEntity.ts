@@ -11,6 +11,7 @@ import { Endereco } from '../enderecos/enderecoEntity.js'
 import { Avaliacoes } from '../avaliacoes/avaliacoesEntity.js'
 import { type IAutenticavel } from '../auth/IAutencavel.js'
 import { Role } from '../auth/roles.js'
+import { Imagem } from '../imagem/imagemEntity.js'
 
 @Entity()
 export class Paciente implements IAutenticavel {
@@ -27,13 +28,19 @@ export class Paciente implements IAutenticavel {
     email: string
 
   @Column('varchar', { length: 100, select: false })
-    senha: string // Criptografia?
+    senha: string
 
   @OneToOne(() => Endereco, {
     cascade: ['update']
   })
   @JoinColumn({ referencedColumnName: 'id' })
     endereco: Relation<Endereco>
+
+  @OneToOne(() => Imagem, {
+    cascade: ['update'], nullable: true
+  })
+  @JoinColumn({ referencedColumnName: 'id' })
+    imagem: Relation<Imagem>
 
   @Column()
     telefone: string
@@ -49,9 +56,6 @@ export class Paciente implements IAutenticavel {
 
   @Column({ type: 'simple-array', nullable: true })
     historico: string
-
-  @Column('varchar', { nullable: true })
-    imagem: string
 
   @Column('varchar', { nullable: false })
     role: Role

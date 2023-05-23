@@ -20,11 +20,9 @@ export class Consulta {
     id: string
 
   @ManyToOne(() => Especialista, { eager: true })
-  // @JoinColumn({ name: 'especialista_id' })
     especialista: Especialista
 
   @ManyToOne(() => Paciente, { eager: true })
-  // @JoinColumn({ name: 'paciente_id' })
     paciente: Paciente
 
   @Column({ type: 'datetime', nullable: true })

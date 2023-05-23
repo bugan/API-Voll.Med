@@ -5,6 +5,7 @@ import { Paciente } from './pacientes/pacienteEntity.js'
 import { Endereco } from './enderecos/enderecoEntity.js'
 import { Especialista } from './especialistas/EspecialistaEntity.js'
 import { Avaliacoes } from './avaliacoes/avaliacoesEntity.js'
+import { Imagem } from './imagem/imagemEntity.js'
 import * as dotenv from 'dotenv'
 import { Clinica } from './clinicas/clinicaEntity.js'
 import { Consulta } from './consultas/consultaEntity.js'
@@ -20,7 +21,7 @@ const AppDataSourceMysql = new DataSource({
   database: process.env.DB_DATABASE,
   synchronize: true,
   logging: false,
-  entities: [Paciente, Endereco, Especialista, Avaliacoes, Clinica, Consulta, Autenticaveis],
+  entities: [Paciente, Endereco, Especialista, Avaliacoes, Clinica, Consulta, Autenticaveis, Imagem],
   migrations: [],
   subscribers: []
 })
@@ -30,7 +31,7 @@ const AppDataSourceSqlite = new DataSource({
   database: './src/database/database.sqlite', // caminho para o arquivo do banco de dados SQLite
   synchronize: true,
   logging: false,
-  entities: [Paciente, Endereco, Especialista, Avaliacoes, Clinica, Consulta, Autenticaveis],
+  entities: [Paciente, Endereco, Especialista, Avaliacoes, Clinica, Consulta, Autenticaveis, Imagem],
   migrations: [],
   subscribers: []
 })

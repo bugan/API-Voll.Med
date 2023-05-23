@@ -80,10 +80,6 @@ export const buscaConsultaPorId = async (req: Request, res: Response
   } else {
     throw new AppError('Consulta não encontrada', Status.BAD_REQUEST)
   }
-  // if (!consulta) {
-  //   throw new AppError("Consulta não encontrada");
-  // }
-  // res.json(consulta);
 }
 
 export const deletaConsulta = async (

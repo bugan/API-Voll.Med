@@ -12,7 +12,6 @@ const TEMPO_EXPIRACAO_REFRESH_TOKEN = [5, 'd']
 const allowlistRefreshToken = new ClienteRedis('allowlist-refresh-token: ')
 const blocklistAccessToken = new ClienteRedis('blocklist-access-token: ')
 
-// TODO mudar depois para criaAccessToken, parece mais legível
 function criaTokenJWT (id, role, [tempoQuantidade, tempoUnidade]: string[]): string {
   const payload = { id, role }
   const token = jwt.sign(payload, process.env.SECRET_JWT, {
@@ -20,12 +19,6 @@ function criaTokenJWT (id, role, [tempoQuantidade, tempoUnidade]: string[]): str
   })
   return token
 }
-
-// async function verificaTokenJWT (token, nome, blocklist): Promise<string> {
-//   await verificaTokenNaBlocklist(token, nome, blocklist)
-//   const { id } = jwt.verify(token, process.env.SECRET_JWT)
-//   return id
-// }
 
 async function verificaTokenNaBlocklist (token, nome: string, blocklist): Promise<void> {
   const tokenNaBlocklist = await blocklist.contemChave(token)

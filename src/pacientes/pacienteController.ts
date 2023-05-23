@@ -8,70 +8,6 @@ import { Consulta } from '../consultas/consultaEntity.js'
 import { AppError, Status } from '../error/ErrorHandler.js'
 import { encryptPassword } from '../utils/senhaUtils.js'
 import { schemaCriarPaciente } from './pacienteYupSchemas.js'
-import { getRepository } from 'typeorm'
-
-// export const criarPaciente = async (
-//   req: Request,
-//   res: Response
-// ): Promise<void> => {
-//   let {
-//     cpf,
-//     nome,
-//     email,
-//     senha,
-//     estaAtivo,
-//     possuiPlanoSaude,
-//     endereco,
-//     telefone,
-//     planosSaude,
-//     imagem,
-//     historico
-//   } = req.body
-
-//   if (!CPFValido(cpf)) {
-//     throw new AppError('CPF Inválido!')
-//   }
-
-//   if (possuiPlanoSaude === true && planosSaude !== undefined) {
-//     // transforma array de numbers em array de strings com os nomes dos planos definidos no enum correspondente
-//     planosSaude = mapeiaPlano(planosSaude)
-//   }
-
-//   try {
-//     const senhaCriptografada = encryptPassword(senha)
-//     const paciente = new Paciente(
-//       cpf,
-//       nome,
-//       email,
-//       senhaCriptografada,
-//       telefone,
-//       planosSaude,
-//       estaAtivo,
-//       imagem,
-//       historico
-//     )
-//     paciente.possuiPlanoSaude = possuiPlanoSaude
-//     const enderecoPaciente = new Endereco()
-
-//     if (endereco !== undefined) {
-//       enderecoPaciente.cep = endereco.cep
-//       enderecoPaciente.rua = endereco.rua
-//       enderecoPaciente.estado = endereco.estado
-//       enderecoPaciente.numero = endereco.numero
-//       enderecoPaciente.complemento = endereco.complemento
-
-//       paciente.endereco = enderecoPaciente
-
-//       await AppDataSource.manager.save(Endereco, enderecoPaciente)
-//     }
-
-//     await AppDataSource.manager.save(Paciente, paciente)
-
-//     res.status(202).json(paciente)
-//   } catch (error) {
-//     res.status(502).json({ 'Paciente não foi criado': error })
-//   }
-// }
 
 export const criarPaciente = async (
   req: Request,
@@ -154,7 +90,7 @@ export const exibeTodosPacientes = async (
   res: Response
 ): Promise<void> => {
   const tabelaPaciente = AppDataSource.getRepository(Paciente)
-  const allPacientes = await tabelaPaciente.find()
+  const allPacientes = await tabelaPaciente.find({ relations: ['imagem'] })
   if (allPacientes.length === 0) {
     res.status(200).json([])
   } else {
@@ -170,7 +106,8 @@ export const lerPaciente = async (
   const paciente = await AppDataSource.manager.findOne(Paciente, {
     where: { id },
     relations: {
-      endereco: true
+      endereco: true,
+      imagem: true
     }
   })
 
@@ -314,12 +251,14 @@ export const desativaPaciente = async (
     where: { id }
   })
 
-  if (paciente !== null) {
+  if (paciente === null) {
+    res.status(404).json('Paciente não encontrado!')
+  } else {
     paciente.estaAtivo = false
-    await AppDataSource.manager.save(Paciente, paciente)
+    // await AppDataSource.manager.save(Paciente, paciente)
 
     //! Caso deseje deletar o paciente, basta descomentar a linha abaixo
-    // await AppDataSource.manager.delete(Paciente, paciente)
+    await AppDataSource.manager.delete(Paciente, { id: paciente.id })
     res.json({
       message: 'Paciente desativado!'
     })

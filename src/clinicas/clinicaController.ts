@@ -128,8 +128,6 @@ export const deletarClinica = async (req: Request, res: Response): Promise<void>
   if (clinica !== null) {
     await AppDataSource.manager.remove(Clinica, clinica)
 
-    // const endereco = clinica.endereco
-    // await AppDataSource.manager.remove(Endereco, endereco)
     res.json({ message: 'Clinica apagada!' })
   }
 }

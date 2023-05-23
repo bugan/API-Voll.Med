@@ -15,11 +15,6 @@ const validaClinicaEstaAberta = (data: Date): boolean => {
   return diaDaSemana !== 'Domingo' && hora >= horarioInicioDaClinica && hora < horarioFechamentoDaClinica
 }
 
-// export const validaDuracaoConsulta = async (tempoInicio: Date, tempoFim: Date): Promise<boolean> => {
-//   const duracaoConsulta = 60 * 60 * 1000 // 1 HORA DE DURACAO
-//   return tempoFim.getTime() - tempoInicio.getTime() === duracaoConsulta
-// }
-
 const validaAntecedenciaMinima = (horario: Date, antecedencia_minima): boolean => {
   const agora = new Date()
   const horarioDaConsulta = new Date(horario)
