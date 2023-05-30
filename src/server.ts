@@ -42,8 +42,8 @@ app.use(cors(corsOpts))
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true })) // envio de arquivo
-express.static(resolve(__dirname, '..', '..', 'tmp', 'uploads'))
-console.log(resolve(__dirname, '..', '..', 'tmp', 'uploads'))
+app.use(express.static('tmp'))
+
 AppDataSource.initialize()
   .then(() => {
     console.log('App Data Source inicializado')

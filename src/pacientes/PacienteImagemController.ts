@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { type Request, type Response } from 'express'
+import { unlinkSync } from 'node:fs'
+import { dirname, resolve } from 'path'
 import { AppDataSource } from '../data-source.js'
-import { Paciente } from './pacienteEntity.js'
 import { AppError, Status } from '../error/ErrorHandler.js'
 import { Imagem } from '../imagem/imagemEntity.js'
-import { unlinkSync } from 'node:fs'
-import { extname, resolve, dirname } from 'path'
+import { Paciente } from './pacienteEntity.js'
 
 const __filename = import.meta.url.substring(7)
 const __dirname = dirname(__filename)
@@ -27,7 +27,6 @@ export const criaImagem = async (req: Request, res: Response): Promise<Response>
     if (paciente.imagem != null) {
       throw new AppError('Este paciente já possui uma imagem', Status.BAD_REQUEST)
     }
-    console.log(req.file)
     const { originalname: nome, size: tamanho, filename: key, url = '' } = req.file
 
     const imagem = new Imagem()
@@ -40,10 +39,11 @@ export const criaImagem = async (req: Request, res: Response): Promise<Response>
     await AppDataSource.manager.save(Imagem, imagem)
 
     if (imagem.url === '') {
-      imagem.url = `${process.env.APP_URL}/tmp/uploads/${key}`
+      imagem.url = `localhost:${process.env.SERVER_PORT}/uploads/${key}`
     }
 
     paciente.imagem = imagem
+
     await AppDataSource.manager.save(Paciente, paciente)
 
     return res.json(imagem)
