@@ -21,3 +21,8 @@ npm start
 ```
 
 Assim o seu projeto será compilado e o servidor será esecutado na url `localhost:3000`
+
+
+## Contato
+
+Para dúvidas, problemas ou solicitação de novas features, basta criar uma issue aqui no projeto do github
